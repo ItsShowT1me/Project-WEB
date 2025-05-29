@@ -11,6 +11,19 @@ a {
     text-decoration: none;
 }
 
+img {
+  border-radius: 50%;
+  width: 150px
+  
+}
+
+button:hover {
+    background: var(--blue);
+    color: white;
+    transform: scale(1.05);
+}
+
+
 li {
     list-style: none;
 }
