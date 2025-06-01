@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="admin-dashboard.css">
+    <link rel="stylesheet" href="user_dashoard.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
@@ -56,34 +56,65 @@
         <main>
             <div class="des-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <style>
-                  button {
+                    button {
                     
-                    border-radius: 5px;
-                    width: 100px;
-                    height: 30px;
-                    text-align: center;
-                    padding: 0;
-                  }
+                      border-radius: 5px;
+                      width: 100px;
+                      height: 30px;
+                      text-align: center;
+                      padding: 0;
+                    }   
+                    dialog {
+                        border: none;
+                        border-radius: 10px;
+                        padding: 20px;
+                        width: 400px;
+                        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+                        text-align: left;
+                    }
+
+                    dialog::backdrop {
+                       background: rgba(0, 0, 0, 0.4);
+                    }
+
+
+
+                    input[type="text"],
+                    input[type="email"],
+                    input[type="tel"] {
+                      width: 100%;
+                      padding: 8px;
+                      margin-top: 4px;
+                      margin-bottom: 12px;
+                      border: 1px solid #ccc;
+                      border-radius: 4px;
+                    }
+                
+                    button {
+                      margin-right: 10px;
+                    }
+                
                 </style>
                 
-                <h2>Welcome back, User!</h2>
-                <button type="button">แก้ไข Profile</button>
+                <div><h2>Welcome back, User!</h2></div>
+                <div><button onclick="showDialog()" id="btn_edit" class="btn_edit">
+                    แก้ไข Profile</button></div>
                 <p>&nbsp;</p>
                 
                 
             </div>
             
             <div class ="des-detail">
-                <p>&nbsp;</p>
+                <br>
                 <h3>Description</h3>
 
-                <p>&nbsp;</p>
+                <br>
                 <h3>ชื่อ</h3>
                 <p>เป็น ...</p>
-                <p>&nbsp;</p>
+                <br>
                 
                 <p>เวลาทำการ</p>
-                <p>&nbsp;</p>
+                <br>
 
             </div>
                 
@@ -92,15 +123,54 @@
             </div>
             
             <div class="contrat">
-                <p>&nbsp;</p>
+                <br>
                 <h3>Contract Information<h3>
             </div>
     
             
+            <div><dialog id="edit_pfp">
+                <h2>แก้ไข Profile</h2>
+                <form method="dialog">
+                    <label for="name">ชื่อ:</label>
+                    <input type="text" id="name" name="name" >
+                    <br>
+                    <label for="detail">ข้อมูล:</label>
+                    <input type="text" id="detail" name="detail" >
+                    <br>
+                    <label for="email">อีเมล:</label>
+                    <input type="email" id="email" name="email" >
+                    <br>
+                    <label for="phone">เบอร์โทรศัพท์:</label>
+                    <input type="tel" id="phone" name="phone" >
+                    <br>
+                    <div class="button-group">
+                      <button type="submit">บันทึก</button>
+                      <button type="reset">รีเซต</button>
+                      <button type="button" onclick="closeDialog()">ปิด</button>
+                    </div>
+                </form>
+            </div>
+
+            <script>
+                const editButton = document.querySelector('btn_edit');
+                const dialog = document.getElementById('edit_pfp');
+
+                function showDialog() {
+                    dialog.showModal();
+                }
+                function closeDialog() {
+                    dialog.close();
+                }
+                    
+            </script>
+            
+
+
+
+
+
         </main>
     </section>
-    
-    
     
     
 </body>
