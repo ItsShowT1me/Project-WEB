@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BUMBTI</title>
 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="index-style.css">
 </head>
@@ -14,7 +16,7 @@
       <div class="col-md-3 mb-2 mb-md-0"></div>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="index.html" class="nav-link px-5">Home</a></li>
+        <li><a href="#" class="nav-link px-5">Home</a></li>
         <li><a href="#" class="nav-link px-5">/</a></li>
         <li><a href="#" class="nav-link px-5">About</a></li>
       </ul>
@@ -25,128 +27,238 @@
     </header>
   </div>
 
-  <!-- Personal Information Form -->
-  <div class="container">
-    <div id="form1" class="main-home">
-      <div class="main-title">Personal Information Form</div>
-      <form action="#">
-        <div class="user-details">
-          <div class="input-box">
-            <span class="details">Full Name</span>
-            <input type="text" placeholder="Enter your name" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Date of Birth</span>
-            <input type="date" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Address</span>
-            <input type="text" placeholder="Enter your address" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Phone Number</span>
-            <input type="tel" placeholder="Enter your phone number" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Email</span>
-            <input type="email" placeholder="Enter your email" required>
-          </div>
-        </div>
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <a href="#" class="brand">
+      <span class="text">Find the MBTI you want.</span>
+    </a>
 
-        <!-- Gender Selection -->
-        <div class="gender-details">
-          <span class="gender-title">Gender</span>
-          <div class="category">
-            <label>
-              <input type="radio" name="gender" value="male">
-              <span class="gender">Male</span>
-            </label>
-          </div>
-          <div class="category">
-            <label>
-              <input type="radio" name="gender" value="female">
-              <span class="gender">Female</span>
-            </label>
-          </div>
-          <div class="category">
-            <label>
-              <input type="radio" name="gender" value="other">
-              <span class="gender">Prefer not to say</span>
-            </label>
-          </div>
-        </div>
-        <div class="second-title">Details Information Form</div>
-        <div class="user-details">
-          <div class="input-box">
-            <span class="details">Personalities your type *(MBTI)</span>
-            <select name="mbti"  class="mbti-choose" required>
-              <option value="" disabled selected>Choose your MBTI type</option>
-              <option value="ISTJ">ISTJ - The Inspector</option>
-              <option value="ISFJ">ISFJ - The Protector</option>
-              <option value="INFJ">INFJ - The Advocate</option>
-              <option value="INTJ">INTJ - The Mastermind</option>
-              <option value="ISTP">ISTP - The Virtuoso</option>
-              <option value="ISFP">ISFP - The Composer</option>
-              <option value="INFP">INFP - The Mediator</option>
-              <option value="INTP">INTP - The Architect</option>
-              <option value="ESTP">ESTP - The Dynamo</option>
-              <option value="ESFP">ESFP - The Performer</option>
-              <option value="ENFP">ENFP - The Campaigner</option>
-              <option value="ENTP">ENTP - The Debater</option>
-              <option value="ESTJ">ESTJ - The Executive</option>
-              <option value="ESFJ">ESFJ - The Consul</option>
-              <option value="ENFJ">ENFJ - The Protagonist</option>
-              <option value="ENTJ">ENTJ - The Commander</option>
-          </select>
-          </div>
-          <div class="input-box">
-            <span class="details">Soft Skill</span>
-            <select id="languageSelect">
-                <option value="th">(TH) Thailand</option>
-                <option value="en">(EN) English</option>
-                <option value="jp">(JP) Japanese</option>
-                <option value="cn">(CN) China</option>
-                <option value="fr">(FR) Français</option>
-            </select>
-            
-            <span class="details">Languae your level</span>
-            <select id="languageLevel">
-              <option value="beginner">Beginner (ผู้เริ่มต้น)</option>
-              <option value="intermediate">Intermediate (ระดับกลาง)</option>
-              <option value="advanced">Advanced (ขั้นสูง)</option>
-            </select>
-            <!-- <input type="text" placeholder="Enter " required> -->
-          </div>
-          <!-- <div class="input-box">
-            <span class="details">Interested position</span>
-            <input type="text" placeholder="Enter " required>
-          </div> -->
-          <div class="input-box">
-            <span class="details">Global Standard Work Hours</span>
-            <select name="mbti"  class="mbti-choose" required>
-              <option value="" disabled selected>Choose the time you want to work</option>
-              <option value="ISTJ">Morning Shift: 06:00 AM - 02:00 PM</option>
-              <option value="ISFJ">Afternoon Shift: 02:00 PM - 10:00 PM</option>
-              <option value="INFJ">Night Shift: 10:00 PM - 06:00 AM</option>
-          </select>
-          </div>
-          <div class="input-box">
-            <span class="details">Educational record</span>
-            <input type="text" placeholder="Enter " required>
-          </div>
-          <div class="input-box">
-            <span class="details">Work history</span>
-            <input type="text" placeholder="Enter " required>
-          </div>
-        <div class="button-next">
-          <button class="btn-save" id="Save-btn" onclick="showSaveform()">Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
+    <ul class="sidebar-menu">
+      <li><a href="#"><i class="bx bxs-home"></i><span class="text">Main</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ISTJ - The Inspector</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ISFJ - The Protector</span></a></li>
+      <li><a href="#"><i ></i><span class="text">INFJ - The Advocate</span></a></li>
+      <li><a href="#"><i ></i><span class="text">INTJ - The Mastermind</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ISTP - The Virtuoso</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ISFP - The Composer</span></a></li>
+      <li><a href="#"><i ></i><span class="text">INFP - The Mediator</span></a></li>
+      <li><a href="#"><i ></i><span class="text">INTP - The Architect</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ESTP - The Dynamo</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ESFP - The Performer</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ENFP - The Campaigner</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ENTP - The Debater</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ESTJ - The Executive</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ESFJ - The Consul</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ENFJ - The Protagonist</span></a></li>
+      <li><a href="#"><i ></i><span class="text">ENTJ - The Commander</span></a></li>
+      <li><a href="#"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+    </ul>
+  </nav>
   
 
+  <div class="main">
+
+    <div class="search-container">
+      <input type="text" id="searchBox" class="search-input" placeholder="search MBTI...">
+      <div id="results" class="search-results"></div>
+    </div>
+
+      <!-- Modal สำหรับแสดง PDF -->
+  <div id="pdfModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
+    </div>
+  </div>
+  
+
+  <section class="album">
+      <div class="container">
+        <div class="row">
+          <!-- ตัวอย่างการ์ด -->
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <!-- เพิ่มการ์ดอื่น ๆ ได้ที่นี่ -->
+        </div>
+      </div>
+    </section>
+  </div>
 
   <!-- Footer -->
   <div class="container">
