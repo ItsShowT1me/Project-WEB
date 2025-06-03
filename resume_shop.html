@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MBTI Sidebar Example</title>
+  <link rel="stylesheet" href="resume_shop.css" />
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Find the MBTI you want.</h2>
+    <ul>
+      <li><a href="#">Main</a></li>
+      <li><a href="#">ISTJ - The Inspector</a></li>
+      <li><a href="#">ISFJ - The Protector</a></li>
+      <li><a href="#">INFJ - The Advocate</a></li>
+      <li><a href="#">INTJ - The Mastermind</a></li>
+      <li><a href="#">ISTP - The Virtuoso</a></li>
+      <li><a href="#">ISFP - The Composer</a></li>
+      <li><a href="#">INFP - The Mediator</a></li>
+      <li><a href="#">INTP - The Architect</a></li>
+      <li><a href="#">ESTP - The Dynamo</a></li>
+      <li><a href="#">ESFP - The Performer</a></li>
+      <li><a href="#">ENFP - The Campaigner</a></li>
+      <li><a href="#">ENTP - The Debater</a></li>
+      <li><a href="#">ESTJ - The Executive</a></li>
+      <li><a href="#">ESFJ - The Consul</a></li>
+      <li><a href="#">ENFJ - The Protagonist</a></li>
+      <li><a href="#">ENTJ - The Commander</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <button id="toggleBtn">☰</button>
+
+    <div class="search-container">
+      <input type="text" id="searchBox" class="search-input" placeholder="search MBTI...">
+      <div id="results" class="search-results"></div>
+    </div>
+
+      <!-- Modal สำหรับแสดง PDF -->
+  <div id="pdfModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
+    </div>
+  </div>
+
+
+    <section class="album">
+      <div class="container">
+        <div class="row">
+          <!-- ตัวอย่างการ์ด -->
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image"></div>
+            <div class="card-body">
+              <p class="card-text">This is a card with some sample text to display layout without Bootstrap.</p>
+              <div class="card-actions">
+                <button class="view-btn" data-pdf="files/sample.pdf">View</button>
+                <button class="add-to-cart-btn" data-item="Item Name">Add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <!-- เพิ่มการ์ดอื่น ๆ ได้ที่นี่ -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="resume_shop.js"></script>
+</body>
+</html>
