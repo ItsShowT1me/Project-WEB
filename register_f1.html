@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - BUMBTI</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="register_f1.css" />
+</head>
+<body>
+  <div class="wrapper" style="height: 580px;">
+    <div class="form-header">
+      <div class="titles">
+        <div class="title-register" style="opacity: 1; top: 50%;">Register</div>
+      </div>
+    </div>
+
+    <!-- Register Form -->
+    <form action="#" class="register-form" autocomplete="off" style="left: 50%; opacity: 1;">
+      <div class="input-box">
+        <input type="text" class="input-field" id="reg-name" required />
+        <label for="reg-name" class="label">Username</label>
+        <i class='bx bx-user icon'></i>
+      </div>
+      <div class="input-box">
+        <input type="text" class="input-field" id="reg-email" required />
+        <label for="reg-email" class="label">Email</label>
+        <i class='bx bxs-envelope icon'></i>
+      </div>
+      <div class="input-box">
+        <input type="password" class="input-field" id="reg-pass" required />
+        <label for="reg-pass" class="label">Password</label>
+        <i class='bx bxs-lock-alt icon'></i>
+      </div>
+      <div class="form-cols">
+        <div class="col-1">
+          <input type="checkbox" id="agree" />
+          <label for="agree"> I agree to terms & condition</label>
+        </div>
+        <div class="col_2"></div>
+      </div>
+      <div class="input-box">
+        <a href="login_f1.html" class="btn-submit" id="SignUpbtn">
+          Sign Up <i class='bx bx-log-out'></i>
+  </a>
+  </div>
+
+      <div class="switch-form">
+        <span>Already have an account? <a href="login_f1.html">Login</a></span>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- toast Register Successfully -->
+    <div id="toast" class="toast-regis">Register successfully</div>
+
+
+  <script src="register_f1.js"></script>
+  <script src="login_f1.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg, #e0e7ff 0%, #f5f7fa 100%);
+  color: #22223b;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.about-hero {
+  background: linear-gradient(90deg, #3C5C9E 60%, #0D1936 100%);
+  color: #fff;
+  padding: 64px 0 40px 0;
+  text-align: center;
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 4px 24px rgba(60,92,158,0.08);
+}
+.about-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.about-hero p {
+  font-size: 1.3rem;
+  opacity: 0.95;
+}
+
+.about-mission {
+  background: #fff;
+  margin-top: 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(60,92,158,0.06);
+  padding: 32px 0;
+  text-align: center;
+}
+.about-mission h2 {
+  color: #3C5C9E;
+  margin-bottom: 10px;
+}
+.about-mission p {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.about-team {
+  margin-top: 40px;
+  background: #f0f4ff;
+  border-radius: 16px;
+  padding: 32px 0 40px 0;
+  box-shadow: 0 2px 12px rgba(60,92,158,0.05);
+}
+.about-team h2 {
+  color: #3C5C9E;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+.team-member {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(60,92,158,0.07);
+  padding: 24px 20px 16px 20px;
+  width: 220px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.team-member:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(60,92,158,0.13);
+}
+.team-member img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+  border: 3px solid #3C5C9E;
+}
+.team-member h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.15rem;
+  color: #0D1936;
+}
+.team-member p {
+  margin: 0;
+  color: #3C5C9E;
+  font-size: 0.98rem;
+}
+
+.about-contact {
+  margin-top: 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(60,92,158,0.06);
+  padding: 32px 0;
+  text-align: center;
+}
+.about-contact h2 {
+  color: #3C5C9E;
+  margin-bottom: 10px;
+}
+.about-contact a {
+  color: #0D1936;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.about-contact a:hover {
+  color: #3C5C9E;
+}
+
+@media (max-width: 700px) {
+  .team-members {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .container {
+    padding: 18px 4vw;
+  }
+  .about-hero {
+    padding: 40px 0 24px 0;
+  }
+  .about-team, .about-mission, .about-contact {
+    padding: 18px 0;
+  }
+}

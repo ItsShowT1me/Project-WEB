@@ -3,8 +3,26 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: "poppins";
+    font-family: "poppins" , sans-serif;
 }
+
+:root { 
+    --poppins: 'Poppins', sans-serif;
+    --light: #F9F9F9;
+    --blue: #3C91E6;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #342e37;
+    --red: #DB504A;
+    --yellow: #ffce26;
+    --orange: #FD7238;
+    --main-color: #3C91E6;
+    --bg-color: #f5f5f5;
+    --white: #fff;
+    --text: #333;
+    --border: #ddd;
+}
+
 body { 
     display: flex;
     justify-content: center;
@@ -15,8 +33,10 @@ body {
     position: relative;
     width: 100%;
     height: 100vh;
-    background-image: url('mbti-Image/bu-bg.jpg');
-    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #0D1936, #3C5C9E);
     background-size: cover; 
     background-position: center;
     display: flex;
@@ -39,7 +59,8 @@ body {
     background: #ffffff;
 }
 .submit-form{
-    background: #808080;
+    background:linear-gradient(to right, #ab56d3, #3C5C9E);
+   
 }
 .frist-text{
     padding-left: 20px;
@@ -71,7 +92,7 @@ body {
 }
 .social-media i:hover{
     background: #fff;
-    color: #808080;
+    color: #9e7a7a;
 }
 .secnd-text{
     font-weight: 500;
@@ -127,14 +148,15 @@ form{
     transition: all 0.3s ease;
 }
 
-.input-box-x .input:focus ~ label,
-.input-box-x .input:valid ~ label {
+  .input-box-x .input:focus ~ label,
+  .input-box-x .input:valid ~ label {
     top: -10px;
     left: 10px;
-    background: #808080;
+    background: #fff;
     font-size: 12px;
-    padding: 5px;
-}
+    padding: 0 8px;
+    color: #0D1936;
+  }
 
 textarea.input { 
     resize: none;
@@ -145,14 +167,14 @@ textarea.input {
 .btn-submit-con{
     position: relative;
     top: 120px;
-    background: #fff;
+    background: var(--blue);
     outline: none;
     border: none;
     border-radius: 4px;
     height: 45px;
     width: 30%;
     font-size: 16px;
-    color: #000000;
+    color: #fafafa;
     cursor: pointer;
     font-weight: 500;
 

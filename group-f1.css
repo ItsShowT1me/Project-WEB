@@ -1,0 +1,250 @@
+/* Header bar with dog animation */
+.header-bar-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.dog-animation-container {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  height: 60px;
+}
+.dog-walk-gif {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  margin: 0 8px;
+  /* Optionally add a little shadow for fun */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+}
+/* Header Flex Layout */
+.header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.header-center {
+  flex: 1 1 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 220px;
+  font-size: 1.1rem;
+  color: #444;
+  text-align: center;
+}
+.header-quote {
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #444;
+}
+.group-card-flex.editing {
+  outline: 3px solid #ffce26;
+  box-shadow: 0 0 0 4px #ffce2622, 0 2px 8px rgba(60,92,158,0.07);
+  position: relative;
+  z-index: 2;
+}
+.group-card-flex {
+  display: flex;
+  align-items: flex-start;
+  background: #f8faff;
+  border: 1.5px solid #3C91E6;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(60,92,158,0.07);
+  gap: 20px;
+}
+.group-card-photo img {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+}
+.group-card-info {
+  flex: 1;
+}
+.group-card-info h4 {
+  color: #3C91E6;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+.group-card-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+.group-btn {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.edit-btn {
+  background: #3C91E6;
+  color: #fff;
+}
+.edit-btn:hover {
+  background: #2575FC;
+}
+.delete-btn {
+  background: #DB504A;
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #b92d23;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  align-items: center;
+  justify-content: center;
+}
+/* CSS moved to group-f1.css from group-f1.html */
+.modal-content {
+  background: #f8faff;
+  border-radius: 18px;
+  max-width: 440px;
+  width: 92vw;
+  padding: 38px 28px 30px 28px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(60,92,158,0.18);
+  border: 2px solid #3C91E6;
+}
+
+#closeModalBtn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2em;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.modal-header i {
+  font-size: 2.2em;
+  color: #3C91E6;
+}
+.modal-header h3 {
+  margin: 0;
+  color: #3C91E6;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#projectForm {
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  font-weight: 500;
+  color: #3C5C9E;
+}
+
+#projectName,
+#numPeople,
+.mbti-choose,
+#projectDetail {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #3C91E6;
+  border-radius: 8px;
+  font-size: 1em;
+  margin-top: 4px;
+  background: #fff;
+}
+
+.user-details {
+  margin-bottom: 18px;
+}
+.input-box {
+  margin-bottom: 14px;
+}
+.details {
+  font-weight: 500;
+  color: #3C5C9E;
+}
+
+.create-group-btn {
+  margin-top: 10px;
+  padding: 12px 0;
+  background: linear-gradient(90deg,#3C91E6,#6A11CB);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(60,92,158,0.10);
+  transition: background 0.2s;
+}
+
+.groups-list {
+  max-width: 600px;
+  margin: 80px auto 0 auto;
+}
+.pin {
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #d9534f;
+    text-align: center;
+}
+:root { 
+    --poppins: 'Poppins', sans-serif;
+    --light: #F9F9F9;
+    --blue: #3C91E6;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #342e37;
+    --red: #DB504A;
+    --yellow: #ffce26;
+    --orange: #FD7238;
+    --main-color: #3C91E6;
+    --bg-color: #f5f5f5;
+    --white: #fff;
+    --text: #333;
+    --border: #ddd;
+}
+
+.btn-join , .btn-create{ 
+    background: var(--blue);
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}   
+
+.btn-join { 
+    margin-right: 12px ;
+}

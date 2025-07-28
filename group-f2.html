@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUMBTI</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="test2.css">
+    <link rel="stylesheet" href="group-f2.css">
+</head>
+<body>
+  <div class="container">
+      <!-- Header -->
+      <header class="top-header">
+        <div class="breadcrumbs">
+          <a href="index.html">Home</a> / <a href="#">About</a>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-join">Join Group</button>
+            <button class="btn-create">Create Group</button>
+        </div>
+      </header>
+  </div>
+
+  <!-- Sidebar -->
+  <nav id="sidebar">
+        <a href="#" class="brand">
+            <i class="bx bxs-smile"></i>
+            <span class="text">Menu</span>
+        </a>
+        <ul class="sidebar-menu">
+            <li><a href="index.html"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
+            <li class="active"><a href="group-f1.html"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
+            <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
+        </ul>
+        <ul class="sidebar-menu">
+            <li><a href="login_f1.html"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+        </ul>
+    </nav>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="chat-container">
+      <!-- Detail Group Section -->
+      <div class="detail-group">
+        <h3>Detail Group</h3>
+        <div class="group-info">
+          <p><strong>Group Name:</strong><br>Project Team</p>
+          <p><strong>Created:</strong><br>01/06/2023</p>
+          <p><strong>Members:</strong><br>5</p>
+        </div>
+      </div>
+
+      <!-- Chat Section -->
+      <div class="chat-section">
+        <div class="chat-header">
+          <h3>Chat</h3>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be displayed here -->
+        </div>
+        <div class="chat-input">
+          <input type="text" id="messageInput" placeholder="Type your message...">
+          <button id="sendButton"><i class='bx bxs-send'></i></button>
+        </div>
+      </div>
+
+      <!-- Member Section -->
+      <div class="member-section">
+        <h3>Member</h3>
+        <ul class="member-list">
+          <li>
+            <div class="member-avatar">J</div>
+            <div class="member-info">
+              <span class="member-name">John</span>
+              <span class="member-mbti">(ENFP)</span>
+            </div>
+          </li>
+          <li>
+            <div class="member-avatar">S</div>
+            <div class="member-info">
+              <span class="member-name">Sarah</span>
+              <span class="member-mbti">(INTJ)</span>
+            </div>
+          </li>
+          <li>
+            <div class="member-avatar">M</div>
+            <div class="member-info">
+              <span class="member-name">Mike</span>
+              <span class="member-mbti">(ESFJ)</span>
+            </div>
+          </li>
+          <li>
+            <div class="member-avatar">L</div>
+            <div class="member-info">
+              <span class="member-name">Lisa</span>
+              <span class="member-mbti">(ISTP)</span>
+            </div>
+          </li>
+          <li>
+            <div class="member-avatar">D</div>
+            <div class="member-info">
+              <span class="member-name">David</span>
+              <span class="member-mbti">(ENFJ)</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Find You — Discover careers that match your MBTI type. All rights reserved.</p>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Saved successfully!</div>
+
+  <script src="js/bootstrap.min.js"></script>
+  <script src="group-f2.js"></script>
+</body>
+</html>
