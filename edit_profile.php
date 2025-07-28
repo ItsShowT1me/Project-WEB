@@ -50,8 +50,8 @@ if (isset($_POST['save_profile'])) {
             <textarea class="form-control" id="about" name="about" rows="3"><?php echo htmlspecialchars($user['about'] ?? ''); ?></textarea>
         </div>
         <div class="mb-3">
-            <label for="mbti" class="form-label">MBTI</label>
-            <input type="text" class="form-control" id="mbti" name="mbti" value="<?php echo htmlspecialchars($user['mbti']); ?>">
+            <label for="mbti" class="form-label" style="text-transform: uppercase;">MBTI</label>
+            <input type="text" class="form-control" id="mbti" name="mbti" value="<?php echo htmlspecialchars($user['mbti']); ?>" style="text-transform: uppercase;">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>

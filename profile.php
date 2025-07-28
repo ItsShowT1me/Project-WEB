@@ -66,7 +66,7 @@ $user = mysqli_fetch_assoc($result);
       <div class="about">
         <h3>About me</h3>
         <p><?php echo nl2br(htmlspecialchars($user['about'] ?? '')); ?></p>
-        <p>My MBTI is <strong><?php echo htmlspecialchars($user['mbti']); ?></strong></p>
+        <p>My MBTI is <strong><?php echo strtoupper(htmlspecialchars($user['mbti'])); ?></strong></p>
       </div>
 
       <div class="details">
