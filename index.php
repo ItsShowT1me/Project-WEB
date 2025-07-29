@@ -127,6 +127,29 @@ session_start();
   <!-- Toast -->
   <div id="toast" class="toast">Saved successfully!</div>
 
+  <?php
+// Fetch all users except the current user
+$current_user_id = $user_data['user_id'];
+$users = [];
+$result = mysqli_query($con, "SELECT user_name, mbti FROM users WHERE user_id != '$current_user_id'");
+while ($row = mysqli_fetch_assoc($result)) {
+    $users[] = $row;
+}
+?>
+
+<!-- User List -->
+<div class="user-list" style="margin: 32px 0;">
+    <h3>Looking for Collaborators</h3>
+    <ul>
+        <?php foreach ($users as $user): ?>
+            <li>
+                <strong><?php echo htmlspecialchars($user['user_name']); ?></strong>
+                <span style="color: #3a7bd5;">(<?php echo htmlspecialchars($user['mbti']); ?>)</span>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
   <script src="index.js"></script>
   <script src="test2.js"></script>
   <script src="js/bootstrap.min.js"></script>

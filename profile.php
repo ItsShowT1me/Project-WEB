@@ -28,6 +28,14 @@ $user = mysqli_fetch_assoc($result);
     #sidebar {
       z-index: 1 !important; /* Make sure sidebar is under modal */
     }
+    @media (max-width: 768px) {
+    .profile-box {
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        gap: 16px;
+    }
+}
 </style>
 <head>
   <meta charset="UTF-8">
@@ -85,7 +93,7 @@ $user = mysqli_fetch_assoc($result);
     </div>
 
     <!-- Edit Button -->
-    <a href="edit_profile.php" class="btn btn-primary">Edit Profile</a>
+    <a href="edit_profile.php" class="btn btn-primary" style="margin-top:24px;">Edit Profile</a>
   
   </div>
 
