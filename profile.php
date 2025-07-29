@@ -46,7 +46,7 @@ $user = mysqli_fetch_assoc($result);
         </a>
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
-            <li><a href="group-f1.html"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
+            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
             <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
             <li><a href="profile.php"><i class="bx bx-profile"></i><span class="text">Profile</span></a></li>
         </ul>
@@ -86,10 +86,13 @@ $user = mysqli_fetch_assoc($result);
 
     <!-- Edit Button -->
     <a href="edit_profile.php" class="btn btn-primary">Edit Profile</a>
-
+  
   </div>
 
   <!-- Bootstrap JS (for modal) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="footer">
+    <p>© 2025 Find You — Discover careers that match your MBTI type. All rights reserved.</p>
+  </footer>
 </body>
 </html>

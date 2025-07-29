@@ -67,7 +67,7 @@ session_start();
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="login_f1.css" />
+  <link rel="stylesheet" href="CSS code/login_f1.css" />
 </head>
 <body>
   <div class="wrapper">

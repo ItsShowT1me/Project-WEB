@@ -21,7 +21,7 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="CSS code/index.css">
     
 </head>
 <body>
@@ -45,7 +45,7 @@ session_start();
         </a>
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
-            <li><a href="group-f1.html"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
+            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
             <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
             <li><a href="profile.php"><i class="bx bx-profile"></i><span class="text">Profile</span></a></li>
         </ul>
