@@ -53,15 +53,16 @@ nav {
 
 /* ====== SIDEBAR ====== */
 #sidebar {
-      z-index: 1 !important;
-      width: 250px;           /* Set sidebar width */
-      height: 100vh;          /* Full height */
-      position: fixed;        /* Fixed to the left */
-      left: 0;
-      top: 0;
-      background: #23395d;    /* Or your sidebar color */
-      overflow-y: auto;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #3a7bd5 0%, #6A11CB 60%, #bfc1c2 100%);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
 
 #sidebar .brand {
     font-size: 24px;

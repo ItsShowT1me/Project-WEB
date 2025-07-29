@@ -1,16 +1,19 @@
 <?php
 session_start();
 
-  include 'function.php';
-  include 'connection.php';
-  
-  
-  $user_data = check_login($con);
+include 'function.php';
+include 'connection.php';
 
+$user_data = check_login($con);
+$user_id = $_SESSION['user_id'];
 
-  // Example: Fetch groups from database
+// Fetch only groups the user has joined
 $groups = [];
-$result = mysqli_query($con, "SELECT * FROM groups");
+$result = mysqli_query($con, "
+    SELECT g.* FROM groups g
+    JOIN user_groups ug ON g.id = ug.group_id
+    WHERE ug.user_id = '$user_id'
+");
 while ($row = mysqli_fetch_assoc($result)) {
     $groups[] = $row;
 }
