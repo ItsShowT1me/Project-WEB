@@ -5,7 +5,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-   
 }
 a{ 
   text-decoration: none;
@@ -14,7 +13,6 @@ a{
 li { 
   list-style: none;
 }
-
 
 :root { 
     --poppins: 'Poppins', sans-serif;
@@ -40,88 +38,18 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 0;
-  padding-left: 280px;
   min-height: 100vh;
   color: #fff;
 }
-nav { 
-  background: var(--grey);
-    padding-left: 5px;  /* สำหรับ Sidebar */
-    transition: 0.3s ease;
-}
-
-
-/* ====== SIDEBAR ====== */
-#sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100vh;
-    background: linear-gradient(135deg, #3a7bd5 0%, #6A11CB 100%);
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-    }
-
-#sidebar .brand {
-    font-size: 24px;
-    font-weight: 700;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    color: var(--light);
-    padding: 0 20px;
-}
-
-#sidebar .sidebar-menu {
-    padding: 20px;
-}
-
-#sidebar .sidebar-menu li {
-    margin-bottom: 10px;
-}
-
-#sidebar .sidebar-menu li a {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    color: var(--light);
-    padding: 12px 16px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-#sidebar .sidebar-menu li a:hover,
-#sidebar .sidebar-menu li a.active {
-    background: var(--blue);
-    color: white;
-    transform: scale(1.05);
-}
-
-/* ====== SIDEBAR TOGGLE ====== */
-#sidebar-toggle {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 30px;
-    color: var(--blue);
-    cursor: pointer;
-    z-index: 1100;
-    display: none;
-}
 
 .content {
-  margin-left: 280px;
+  margin-left: 0;
   padding: 20px;
   width: 100%;
 }
 
-
-
-
 .main {
-  margin-left: 250px;
+  margin-left: 0;
   padding: 20px;
   transition: margin-left 0.3s ease;
 }
@@ -129,16 +57,6 @@ nav {
 .main.expanded {
   margin-left: 0;
 }
-
-/* #toggleBtn {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 18px;
-  cursor: pointer;
-  margin-bottom: 20px;
-} */
 
 .search-container {
   display: flex;
@@ -200,7 +118,6 @@ nav {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
-  /* flex-direction: column; */
 }
 
 .card-image {
@@ -246,7 +163,6 @@ nav {
   background-color: #e9ecef;
 }
 
-
 .modal {
   display: none;
   position: fixed;
@@ -277,10 +193,11 @@ nav {
   font-size: 28px;
   cursor: pointer;
 }
+
 .top-header {
   position: fixed;
   top: 0;
-  left: 340px; /* เลื่อนขอบซ้ายเท่าความกว้าง sidebar */
+  left: 0;
   right: 100px;
   height: 60px;
   padding: 0 20px;
@@ -310,7 +227,7 @@ nav {
 .footer {
   position: fixed;
   bottom: 0;
-  left: 340px;
+  left: 0;
   right: 50px;
   height: 50px;
   background: var(--white);
@@ -324,7 +241,6 @@ nav {
   box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
 
-/* ====== TOP BAR ====== */
 .top-bar {
     display: flex;
     align-items: center;
@@ -344,11 +260,10 @@ nav {
     gap: 10px;
 }
 
-/* ====== HEADER BAR ====== */
 .header-bar {
     position: fixed;
     top: 0;
-    left: 250px; /* match sidebar width */
+    left: 0;
     right: 0;
     height: 70px;
     background: #222;
@@ -369,29 +284,13 @@ nav {
     gap: 16px;
 }
 .container-main {
-    margin-left: 280px; /* Align with sidebar width */
-    margin-top: 90px; /* Keep space for header-bar */
-    padding: 20px; /* Add padding for content */
-    width: calc(100% - 280px); /* Adjust width to exclude sidebar */
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    margin-left: 0;
+    margin-top: 90px;
 }
 
-/* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
     body {
         padding-left: 0;
-    }
-
-    #sidebar {
-        transform: translateX(-100%);
-    }
-
-    #sidebar.active {
-        transform: translateX(0);
-    }
-
-    #sidebar-toggle {
-        display: block;
     }
 
     #content {
@@ -417,12 +316,76 @@ nav {
 
 .group-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-    gap: 32px; /* Space between cards */
-    margin: 0 auto; /* Center the grid */
-    justify-items: start; /* Align items to the start */
-    max-width: 1200px; /* Limit the width of the grid */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 32px 0 0 0;
+    justify-items: start;
+    width: 100%;
 }
 
+.group-card {
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0004;
+    width: 260px;
+    min-height: 120px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #fff;
+    position: relative;
+}
 
+.group-card .group-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+}
 
+.group-card .group-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.group-card .group-actions {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    gap: 12px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 32px;
+}
+
+.top-bar h2 {
+    margin: 0;
+}
+
+.btn {
+    margin-left: 8px;
+}
+
+.group-card-link {
+    color: inherit;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.group-card-link:hover .group-card {
+    box-shadow: 0 4px 16px #0006;
+    transform: translateY(-2px) scale(1.03);
+    transition: 0.2s;
+}

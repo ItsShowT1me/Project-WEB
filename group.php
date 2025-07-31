@@ -32,31 +32,69 @@ while ($row = mysqli_fetch_assoc($result)) {
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS code/group.css">
     <style>
-        body { background: #222; color: #fff; }
-        .group-grid { display: flex; flex-wrap: wrap; gap: 24px; margin: 32px; }
-        .group-card {
-            background: #222;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px #0004;
-            width: 260px;
-            min-height: 120px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            color: #fff;
-            position: relative;
-        }
-        .group-card .group-color {
-            width: 40px; height: 40px; border-radius: 8px; margin-bottom: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5em;
-        }
-        .group-card .group-title { font-size: 1.1em; font-weight: bold; margin-bottom: 8px; }
-        .group-card .group-actions { position: absolute; right: 16px; bottom: 16px; display: flex; gap: 12px; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin: 32px; }
-        .top-bar h2 { margin: 0; }
-        .btn { margin-left: 8px; }
+    /* New group card styles */
+    .group-card {
+        background: #222; /* Dark background for cards */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        width: 300px; /* Fixed width for cards */
+        height: 150px; /* Fixed height for cards */
+        padding: 16px; /* Padding inside the card */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Space between elements */
+        color: #fff; /* White text color */
+        position: relative;
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+    }
+    .group-card:hover {
+        transform: scale(1.05); /* Slight zoom on hover */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    }
+    .group-card-row {
+        display: flex;
+        align-items: center;
+        gap: 12px; /* Space between elements */
+    }
+    .group-color {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%; /* Circular shape */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        background: #3a7bd5; /* Default color */
+    }
+    .group-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #fff;
+    }
+    .group-actions {
+        display: flex;
+        gap: 16px;
+        font-size: 1.2rem;
+        color: #fff;
+        opacity: 0.8;
+    }
+    .group-actions i:hover {
+        color: #ffce26; /* Highlight color on hover */
+        cursor: pointer;
+        opacity: 1;
+    }
+    .group-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+        gap: 24px; /* Space between cards */
+        margin: 32px auto; /* Center the grid vertically and horizontally */
+        justify-items: center; /* Center items within the grid */
+        max-width: 1400px; /* Limit the width of the grid */
+    }
     </style>
+    
 </head>
 <body>
   
@@ -89,20 +127,26 @@ while ($row = mysqli_fetch_assoc($result)) {
     </div>
 </div>
 <div class="group-grid">
-            <?php foreach ($groups as $group): ?>
-                <div class="group-card">
-                    <div class="group-color" style="background:<?= htmlspecialchars($group['color'] ?? '#3498db') ?>">
+    <?php foreach ($groups as $group): ?>
+        <a href="view_group.php?id=<?= $group['id'] ?>" class="group-card-link" style="text-decoration:none;">
+            <div class="group-card">
+                <div class="group-card-row">
+                    <div class="group-color" style="background:<?= htmlspecialchars($group['color'] ?? '#3a7bd5') ?>;">
                         <?= strtoupper(substr($group['name'], 0, 2)) ?>
                     </div>
-                    <div class="group-title"><?= htmlspecialchars($group['name']) ?></div>
-                    <div class="group-actions">
-                        <a href="view_group.php?id=<?= $group['id'] ?>" title="View"><i class='bx bx-show'></i></a>
-                        <a href="#" title="Lock"><i class='bx bx-lock'></i></a>
-                        <a href="edit_group.php?id=<?= $group['id'] ?>" title="Edit"><i class='bx bx-edit'></i></a>
+                    <div class="group-info">
+                        <div class="group-title"><?= htmlspecialchars($group['name']) ?></div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <div class="group-actions">
+                    <i class='bx bx-show' title="View"></i>
+                    <i class='bx bx-lock' title="Lock"></i>
+                    <i class='bx bx-edit' title="Edit"></i>
+                </div>
+            </div>
+        </a>
+    <?php endforeach; ?>
+</div>
     </div>
 
     <footer class="footer">

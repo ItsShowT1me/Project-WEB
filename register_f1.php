@@ -16,7 +16,7 @@ session_start();
       
       
       // Save to database
-      $user_id = random_num(20);
+      $user_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT); // 6-digit numeric user_id
       $query = "INSERT INTO users (user_id, user_name, email, password) 
                 VALUES ('$user_id', '$user_name', '$email', '$password')";
 
