@@ -1,6 +1,5 @@
 <?php
-session_start();
-
+session_start(); // <-- Always first!
 include 'function.php';
 include 'connection.php';
 
@@ -49,7 +48,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
     .group-card:hover {
         transform: scale(1.05); /* Slight zoom on hover */
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
     }
     .group-card-row {
         display: flex;
@@ -128,7 +127,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 </div>
 <div class="group-grid">
     <?php foreach ($groups as $group): ?>
-        <a href="view_group.php?id=<?= $group['id'] ?>" class="group-card-link" style="text-decoration:none;">
+        <a href="chat.php?group_id=<?= $group['id'] ?>" class="group-card-link" style="text-decoration:none;">
             <div class="group-card">
                 <div class="group-card-row">
                     <div class="group-color" style="background:<?= htmlspecialchars($group['color'] ?? '#3a7bd5') ?>;">

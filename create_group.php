@@ -15,12 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "INSERT INTO groups (group_id, name, pin, color) VALUES ('$group_id', '$name', '$pin', '$color')";
     if (mysqli_query($con, $sql)) {
-        // Get the inserted group's id
-        $group_row = mysqli_query($con, "SELECT id FROM groups WHERE group_id = '$group_id' LIMIT 1");
-        $group = mysqli_fetch_assoc($group_row);
+        // Get the inserted group's id using mysqli_insert_id for reliability
+        $inserted_id = mysqli_insert_id($con);
         $user_id = $_SESSION['user_id'];
         // Add creator to user_groups
-        if (mysqli_query($con, "INSERT INTO user_groups (user_id, group_id) VALUES ('$user_id', '{$group['id']}')")) {
+        if (mysqli_query($con, "INSERT INTO user_groups (user_id, group_id) VALUES ('$user_id', '$inserted_id')")) {
             header("Location: group.php");
             exit();
         } else {

@@ -1,11 +1,9 @@
 <?php
-session_start();
+session_start(); // <-- Always first!
+include 'function.php';
+include 'connection.php';
 
-  include 'function.php';
-  include 'connection.php';
-  
-  
-  $user_data = check_login($con);
+$user_data = check_login($con);
 
 
 ?>

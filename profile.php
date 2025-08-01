@@ -2,17 +2,20 @@
 session_start();
 include("connection.php");
 
-// ถ้าไม่ได้ login ให้กลับไปที่ login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login_f1.php");
-    exit();
-}
+
 
 // ดึงข้อมูลผู้ใช้
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE user_id = '$user_id' LIMIT 1";
 $result = mysqli_query($con, $query);
 $user = mysqli_fetch_assoc($result);
+
+if (!$user) {
+    echo "<!DOCTYPE html><html><head><title>Profile</title></head><body>";
+    echo "<div style='padding:40px;'><h2 style='color:#3a7bd5;'>User not found.</h2><p>Please check your account or contact support.</p></div>";
+    echo "</body></html>";
+    exit();
+}
 ?>
 
 
