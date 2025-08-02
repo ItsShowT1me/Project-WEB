@@ -6,7 +6,7 @@ $group_id = intval($_GET['group_id']);
 $result = mysqli_query($con, "
     SELECT m.*, u.user_name, u.mbti 
     FROM messages m
-    JOIN users u ON m.user_id = u.id
+    JOIN users u ON m.user_id = u.user_id
     WHERE m.group_id = '$group_id'
     ORDER BY m.created_at ASC
 ");

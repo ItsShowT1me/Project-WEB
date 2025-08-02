@@ -13,7 +13,7 @@ if ($group) {
     $res = mysqli_query($con, "
         SELECT u.user_name, u.mbti 
         FROM user_groups ug
-        JOIN users u ON ug.user_id = u.id
+        JOIN users u ON ug.user_id = u.user_id
         WHERE ug.group_id = '$group_id'
     ");
     while ($row = mysqli_fetch_assoc($res)) {
@@ -85,9 +85,11 @@ if ($group) {
     <div class="chat-area">
         <h4>Chat</h4>
         <div id="chat-box"></div>
-        <form id="chat-form">
+        <form id="chat-form" enctype="multipart/form-data">
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
             <input type="text" name="message" placeholder="Type your message..." required>
+            <input type="file" name="file" id="file-input" style="display:none;">
+            <button type="button" id="attach-btn" title="Attach file">&#128206;</button>
             <button type="submit" class="send-btn">&#9658;</button>
         </form>
     </div>

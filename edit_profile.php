@@ -21,13 +21,30 @@ if (isset($_POST['save_profile'])) {
     $facebook = mysqli_real_escape_string($con, $_POST['facebook']);
     $linkedin = mysqli_real_escape_string($con, $_POST['linkedin']);
 
+    $image_path = $user['image'] ?? null;
+    // Handle file upload
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (in_array($ext, $allowed)) {
+            $upload_dir = 'uploads/';
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+            $filename = 'profile_' . $user_id . '_' . time() . '.' . $ext;
+            $target = $upload_dir . $filename;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+                $image_path = $target;
+            }
+        }
+    }
+
     $update = "UPDATE users SET 
         about = '$about',
         mbti = '$mbti',
         email = '$email',
         phone = '$phone',
         facebook = '$facebook',
-        linkedin = '$linkedin'
+        linkedin = '$linkedin',
+        image = " . ($image_path ? "'$image_path'" : "NULL") . "
         WHERE user_id = '$user_id' LIMIT 1";
     mysqli_query($con, $update);
     header("Location: profile.php");
@@ -44,7 +61,7 @@ if (isset($_POST['save_profile'])) {
 <body>
 <div class="container mt-5">
     <h2>Edit Profile</h2>
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="about" class="form-label">About Me</label>
             <textarea class="form-control" id="about" name="about" rows="3"><?php echo htmlspecialchars($user['about'] ?? ''); ?></textarea>
@@ -68,6 +85,13 @@ if (isset($_POST['save_profile'])) {
         <div class="mb-3">
             <label for="linkedin" class="form-label">LinkedIn URL</label>
             <input type="url" class="form-control" id="linkedin" name="linkedin" value="<?php echo htmlspecialchars($user['linkedin'] ?? ''); ?>">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Profile Image</label><br>
+            <?php if (!empty($user['image'])): ?>
+                <img src="<?= htmlspecialchars($user['image']) ?>" alt="Profile Image" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
+            <?php endif; ?>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
         <button type="submit" name="save_profile" class="btn btn-primary">Save</button>
         <a href="profile.php" class="btn btn-secondary">Cancel</a>

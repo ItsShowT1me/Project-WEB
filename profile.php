@@ -71,7 +71,7 @@ if (!$user) {
 
     <div class="profile-box">
       <div class="profile-image">
-        <img src="https://img.freepik.com/free-photo/happy-young-man-holding-laptop-standing-against-beige-background_176420-21783.jpg?w=360" alt="<?php echo htmlspecialchars($user['user_name']); ?>">
+        <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'https://img.freepik.com/free-photo/happy-young-man-holding-laptop-standing-against-beige-background_176420-21783.jpg?w=360' ?>" alt="<?php echo htmlspecialchars($user['user_name']); ?>">
       </div>
 
       <div class="about">

@@ -129,7 +129,7 @@ $user_data = check_login($con);
 // Fetch all users except the current user
 $current_user_id = $user_data['user_id'];
 $users = [];
-$result = mysqli_query($con, "SELECT user_name, mbti FROM users WHERE user_id != '$current_user_id'");
+$result = mysqli_query($con, "SELECT user_name, mbti, image FROM users WHERE user_id != '$current_user_id'");
 while ($row = mysqli_fetch_assoc($result)) {
     $users[] = $row;
 }
@@ -146,6 +146,21 @@ while ($row = mysqli_fetch_assoc($result)) {
             </li>
         <?php endforeach; ?>
     </ul>
+</div>
+
+<!-- User Grid -->
+<div class="user-grid">
+    <?php foreach ($users as $user): ?>
+        <div class="user-card">
+            <div class="user-image">
+                <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'default-user.png' ?>" alt="Profile" />
+            </div>
+            <div class="user-info">
+                <div class="user-name"><?= htmlspecialchars($user['user_name']) ?></div>
+                <div class="user-mbti">(<?= htmlspecialchars($user['mbti']) ?>)</div>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
   <script src="index.js"></script>
