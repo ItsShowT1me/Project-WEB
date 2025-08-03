@@ -177,7 +177,8 @@ textarea.input {
     color: #fafafa;
     cursor: pointer;
     font-weight: 500;
-
+    display: block;
+    margin: 0 auto;
 }
 @media(max-width:850px){
     .item{
