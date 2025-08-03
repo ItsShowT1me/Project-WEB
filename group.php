@@ -36,7 +36,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         background: #222; /* Dark background for cards */
         border-radius: 12px; /* Rounded corners */
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-        width: 300px; /* Fixed width for cards */
+        width: 200px; /* Fixed width for cards */
         height: 150px; /* Fixed height for cards */
         padding: 16px; /* Padding inside the card */
         display: flex;
@@ -86,11 +86,11 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
     .group-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-        gap: 24px; /* Space between cards */
-        margin: 32px auto; /* Center the grid vertically and horizontally */
-        justify-items: center; /* Center items within the grid */
-        max-width: 1400px; /* Limit the width of the grid */
+        grid-template-columns: repeat(4, 1fr); /* 3 cards per row */
+        gap: 24px;
+        margin: 100px 0 32px 0; /* 100px top, 0 left for sidebar alignment */
+        justify-items: center;
+        max-width: 1400px;
     }
     </style>
     
@@ -115,7 +115,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </ul>
     </nav>
 
-    <div class="container-main">
+    
         <div class="header-bar">
     <div class="header-title">
         <h2>Groups</h2>
@@ -125,6 +125,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <a href="create_group.php" class="btn btn-info">Create Group</a>
     </div>
 </div>
+
 <div class="group-grid">
     <?php foreach ($groups as $group): ?>
         <a href="chat.php?group_id=<?= $group['id'] ?>" class="group-card-link" style="text-decoration:none;">

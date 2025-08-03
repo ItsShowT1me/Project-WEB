@@ -134,19 +134,42 @@ nav {
 .top-header {
   position: fixed;
   top: 0;
-  left: 340px; /* เลื่อนขอบซ้ายเท่าความกว้าง sidebar */
-  right: 100px;
-  height: 60px;
-  padding: 0 20px;
-  background: var(--white);
+  left: 250px; /* or 280px if your sidebar is 280px */
+  right: 0;
+  height: 70px;
+  background: #3a7bd5;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  z-index: 20;
+  justify-content: space-between; /* This spaces left and right */
+  z-index: 100;
+  padding: 0 40px;
+  box-shadow: 0 2px 8px #6A11CB;
 }
 
 
+
+.breadcrumbs {
+  font-size: 2rem;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-separator {
+  color: #bfc1c2;
+  margin: 0 4px;
+}
+
+.breadcrumbs a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
 
 .footer {
   position: fixed;
@@ -168,10 +191,11 @@ nav {
 /* User Grid Layout */
 .user-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    margin: 40px 0;
-    justify-items: center;
+        grid-template-columns: repeat(4, 1fr); /* 3 cards per row */
+        gap: 24px;
+        margin: 100px 0 32px 0; /* 100px top, 0 left for sidebar alignment */
+        justify-items: center;
+        max-width: 1400px;
 }
 
 .user-card {
@@ -179,7 +203,7 @@ nav {
     border-radius: 18px;
     box-shadow: 0 4px 24px #3a7bd520;
     padding: 28px 20px 20px 20px;
-    width: 200px;
+    width: 250px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -234,6 +258,91 @@ nav {
 .user-list {
     margin: 32px 0;
     text-align: left;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.modal-body {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-primary {
+  background: #3C91E6;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #357ae8;
+}
+
+.btn-secondary {
+  background: #f1f1f1;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #e1e1e1;
 }
 
 /* ====== RESPONSIVE ====== */

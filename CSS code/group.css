@@ -195,16 +195,16 @@ nav {
 .header-bar {
     position: fixed;
     top: 0;
-    left: 250px; /* match sidebar width */
+    left: 0;
     right: 0;
     height: 70px;
-    background: #000000;
+    background: #3a7bd5;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 100;
     padding: 0 40px;
-    box-shadow: 0 2px 8px #0004;
+    box-shadow: 0 2px 8px #6A11CB;
 }
 .header-title h2 {
     color: #fff;
@@ -216,10 +216,10 @@ nav {
     gap: 16px;
 }
 .container-main {
-    margin-left: 280px; /* Align with sidebar width */
-    margin-top: 90px; /* Keep space for header-bar */
-    padding: 20px; /* Add padding for content */
-    width: calc(100% - 280px); /* Adjust width to exclude sidebar */
+    margin-left: 0;         /* Remove sidebar space */
+    margin-top: 90px;       /* Keep space for header-bar */
+    padding: 20px;          /* Add padding for content */
+    width: 100%;            /* Full width */
     box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
@@ -262,14 +262,7 @@ nav {
   }
 }
 
-.group-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-    gap: 32px; /* Space between cards */
-    margin: 0 auto; /* Center the grid */
-    justify-items: start; /* Align items to the start */
-    max-width: 1200px; /* Limit the width of the grid */
-}
+
 
 
 

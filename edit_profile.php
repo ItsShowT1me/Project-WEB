@@ -57,6 +57,7 @@ if (isset($_POST['save_profile'])) {
 <head>
     <title>Edit Profile</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="CSS code/join_group.css">
 </head>
 <body>
 <div class="container mt-5">
@@ -68,7 +69,20 @@ if (isset($_POST['save_profile'])) {
         </div>
         <div class="mb-3">
             <label for="mbti" class="form-label" style="text-transform: uppercase;">MBTI</label>
-            <input type="text" class="form-control" id="mbti" name="mbti" value="<?php echo htmlspecialchars($user['mbti']); ?>" style="text-transform: uppercase;">
+            <select class="form-control" id="mbti" name="mbti" style="text-transform: uppercase;">
+                <?php
+                $mbti_types = [
+                    "INTJ","INTP","ENTJ","ENTP",
+                    "INFJ","INFP","ENFJ","ENFP",
+                    "ISTJ","ISFJ","ESTJ","ESFJ",
+                    "ISTP","ISFP","ESTP","ESFP"
+                ];
+                foreach ($mbti_types as $type) {
+                    $selected = (strtoupper($user['mbti']) == $type) ? 'selected' : '';
+                    echo "<option value=\"$type\" $selected>$type</option>";
+                }
+                ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
