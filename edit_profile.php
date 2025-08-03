@@ -18,21 +18,19 @@ if (isset($_POST['save_profile'])) {
     $mbti = mysqli_real_escape_string($con, $_POST['mbti']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
-    $facebook = mysqli_real_escape_string($con, $_POST['facebook']);
-    $linkedin = mysqli_real_escape_string($con, $_POST['linkedin']);
+    $portfolio = mysqli_real_escape_string($con, $_POST['portfolio']);
+    $portfolio_file_path = $user['portfolio_file'] ?? null;
 
-    $image_path = $user['image'] ?? null;
-    // Handle file upload
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (isset($_FILES['portfolio_file']) && $_FILES['portfolio_file']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['portfolio_file']['name'], PATHINFO_EXTENSION));
+        $allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
         if (in_array($ext, $allowed)) {
             $upload_dir = 'uploads/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-            $filename = 'profile_' . $user_id . '_' . time() . '.' . $ext;
+            $filename = 'portfolio_' . $user_id . '_' . time() . '.' . $ext;
             $target = $upload_dir . $filename;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-                $image_path = $target;
+            if (move_uploaded_file($_FILES['portfolio_file']['tmp_name'], $target)) {
+                $portfolio_file_path = $target;
             }
         }
     }
@@ -42,8 +40,8 @@ if (isset($_POST['save_profile'])) {
         mbti = '$mbti',
         email = '$email',
         phone = '$phone',
-        facebook = '$facebook',
-        linkedin = '$linkedin',
+        portfolio = '$portfolio',
+        portfolio_file = " . ($portfolio_file_path ? "'$portfolio_file_path'" : "NULL") . ",
         image = " . ($image_path ? "'$image_path'" : "NULL") . "
         WHERE user_id = '$user_id' LIMIT 1";
     mysqli_query($con, $update);
@@ -93,12 +91,21 @@ if (isset($_POST['save_profile'])) {
             <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>">
         </div>
         <div class="mb-3">
-            <label for="facebook" class="form-label">Facebook URL</label>
-            <input type="url" class="form-control" id="facebook" name="facebook" value="<?php echo htmlspecialchars($user['facebook'] ?? ''); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="linkedin" class="form-label">LinkedIn URL</label>
-            <input type="url" class="form-control" id="linkedin" name="linkedin" value="<?php echo htmlspecialchars($user['linkedin'] ?? ''); ?>">
+            <label for="portfolio" class="form-label">Portfolio</label>
+            <div class="d-flex gap-2">
+                <input type="url" class="form-control" id="portfolio" name="portfolio" placeholder="Portfolio Link (optional)" value="<?php echo htmlspecialchars($user['portfolio'] ?? ''); ?>">
+                <input type="file" class="form-control" id="portfolio_file" name="portfolio_file" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar">
+            </div>
+            <?php if (!empty($user['portfolio'])): ?>
+                <div class="mt-2">
+                    <a href="<?= htmlspecialchars($user['portfolio']) ?>" target="_blank">Current Portfolio Link</a>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($user['portfolio_file'])): ?>
+                <div class="mt-2">
+                    <a href="<?= htmlspecialchars($user['portfolio_file']) ?>" target="_blank">Current Portfolio File</a>
+                </div>
+            <?php endif; ?>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Profile Image</label><br>

@@ -206,11 +206,17 @@ nav {
     padding: 0 40px;
     box-shadow: 0 2px 8px #6A11CB;
 }
-.header-title h2 {
+
+.header-bar h2 {
     color: #fff;
     margin: 0;
     font-size: 2rem;
+    margin-left: 280px; /* Align with sidebar width */
+    padding-right: 0; 
+    
+    /* Remove the large right padding */
 }
+
 .header-actions {
     display: flex;
     gap: 16px;

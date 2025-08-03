@@ -53,7 +53,6 @@ $user_data = check_login($con);
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
             <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
-            <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
             <li><a href="profile.php"><i class="bx bx-profile"></i><span class="text">Profile</span></a></li>
         </ul>
         <ul class="sidebar-menu">
@@ -81,12 +80,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 <div class="user-grid">
     <?php foreach ($users as $user): ?>
         <div class="user-card"
-             data-name="<?= htmlspecialchars($user['user_name']) ?>"
+             data-name="<?= strtolower(htmlspecialchars($user['user_name'])) ?>"
+             data-mbti="<?= strtolower(htmlspecialchars($user['mbti'])) ?>"
              data-email="<?= htmlspecialchars($user['email']) ?>"
              data-phone="<?= htmlspecialchars($user['phone'] ?? '') ?>"
              data-image="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>"
-             style="cursor:pointer;"
-             data-mbti="<?= htmlspecialchars(strtolower($user['mbti'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+             style="cursor:pointer;">
             <div class="user-image">
                 <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>" alt="Profile" />
             </div>
@@ -100,46 +99,43 @@ while ($row = mysqli_fetch_assoc($result)) {
 </div>
 
 <!-- User Detail Modal -->
-<div id="userModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" id="closeModal" style="cursor:pointer;position:absolute;top:10px;right:20px;font-size:28px;">&times;</span>
-    <div id="modalImage" style="text-align:center;margin-bottom:16px;">
-      <img src="" alt="Profile" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+<div id="userModal" class="modal">
+  <div class="modal-content profile-modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <div class="profile-modal-image">
+      <img src="" alt="Profile">
     </div>
-    <h2 id="modalName"></h2>
-    <p><strong>Email:</strong> <span id="modalEmail"></span></p>
-    <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+    <div class="profile-modal-info">
+      <div class="profile-modal-name" id="modalName"></div>
+      <div class="profile-modal-label"><b>Phone:</b> <span id="modalPhone"></span></div>
+      <div class="profile-modal-label"><b>Email:</b> <span id="modalEmail"></span></div>
+      <div class="profile-modal-label"><b>MBTI:</b> <span id="modalMbti"></span></div>
+    </div>
   </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal functionality
-    const modal = document.getElementById('userModal');
-    const closeModal = document.getElementById('closeModal');
-    const modalImage = document.querySelector('#modalImage img');
-    const modalName = document.getElementById('modalName');
-    const modalEmail = document.getElementById('modalEmail');
-    const modalPhone = document.getElementById('modalPhone');
+    const searchInput = document.getElementById('searchInput');
+    const searchType = document.getElementById('searchType');
+    const userCards = document.querySelectorAll('.user-card');
 
-    document.querySelectorAll('.user-card').forEach(card => {
-        card.addEventListener('click', function() {
-            modalImage.src = card.dataset.image;
-            modalName.textContent = card.dataset.name;
-            modalEmail.textContent = card.dataset.email;
-            modalPhone.textContent = card.dataset.phone || '-';
-            modal.style.display = 'block';
+    function filterUsers() {
+        const query = searchInput.value.trim().toLowerCase();
+        const type = searchType.value; // "name" or "mbti"
+
+        userCards.forEach(card => {
+            const value = card.dataset[type] || '';
+            if (value.includes(query)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
         });
-    });
+    }
 
-    closeModal.onclick = function() {
-        modal.style.display = 'none';
-    };
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    };
+    searchInput.addEventListener('input', filterUsers);
+    searchType.addEventListener('change', filterUsers);
 });
 </script>
   

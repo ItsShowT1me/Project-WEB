@@ -131,7 +131,7 @@ if ($group) {
     <ul class="sidebar-menu">
         <li><a href="index.php"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
         <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
-        <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
+        
         <li><a href="profile.php"><i class="bx bx-profile"></i><span class="text">Profile</span></a></li>
     </ul>
     <ul class="sidebar-menu">

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function filterUsers() {
         const query = searchInput.value.trim().toLowerCase();
-        const type = searchType.value;
+        const type = searchType.value; // "name" or "mbti"
 
         userCards.forEach(card => {
             const value = card.dataset[type] || '';
@@ -30,27 +30,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Modal functionality
     const modal = document.getElementById('userModal');
     const closeModal = document.getElementById('closeModal');
-    const modalImage = document.querySelector('#modalImage img');
+    const modalImage = document.querySelector('.profile-modal-image img');
     const modalName = document.getElementById('modalName');
     const modalEmail = document.getElementById('modalEmail');
     const modalPhone = document.getElementById('modalPhone');
+    const modalMbti = document.getElementById('modalMbti');
 
-    document.querySelectorAll('.user-card').forEach(card => {
+    userCards.forEach(card => {
         card.addEventListener('click', function() {
             modalImage.src = card.dataset.image;
             modalName.textContent = card.dataset.name;
             modalEmail.textContent = card.dataset.email;
             modalPhone.textContent = card.dataset.phone || '-';
-            modal.style.display = 'block';
+            modalMbti.textContent = card.dataset.mbti || '-';
+            modal.classList.add('show');
         });
     });
 
     closeModal.onclick = function() {
-        modal.style.display = 'none';
+        modal.classList.remove('show');
     };
     window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
+        if (event.target === modal) {
+            modal.classList.remove('show');
         }
     };
 });

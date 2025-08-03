@@ -107,7 +107,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bxs-user-detail"></i><span class="text">Main</span></a></li>
             <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
-            <li><a href="#"><i class="bx bx-history"></i><span class="text">History</span></a></li>
             <li><a href="profile.php"><i class="bx bx-profile"></i><span class="text">Profile</span></a></li>
         </ul>
         <ul class="sidebar-menu">
@@ -116,9 +115,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     </nav>
 
     
-        <div class="header-bar">
+<div class="header-bar">
+    <h2>Groups</h2>
     <div class="header-title">
-        <h2>Groups</h2>
+        
     </div>
     <div class="header-actions">
         <a href="join_group.php" class="btn btn-primary">Join Group</a>
