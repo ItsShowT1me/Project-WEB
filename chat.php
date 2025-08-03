@@ -51,6 +51,74 @@ if ($group) {
         .return-btn i {
             font-size: 1.2em;
         }
+        .profile-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px #3a7bd520;
+            width: 340px;
+            margin: 60px auto 0 auto;
+            padding: 32px 28px 24px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 18px;
+            border: 4px solid #3a7bd5;
+            box-shadow: 0 2px 8px #3a7bd520;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .profile-info {
+            width: 100%;
+            text-align: left;
+        }
+
+        .profile-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 12px;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .profile-detail {
+            font-size: 1em;
+            color: #222;
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            color: #e74c3c;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .pdf-link i {
+            margin-right: 6px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>

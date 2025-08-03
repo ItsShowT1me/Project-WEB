@@ -16,7 +16,11 @@ session_start();
       
       
       // Save to database
-      $user_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT); // 6-digit numeric user_id
+      do {
+          $user_id = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT); // never 0
+          $check = mysqli_query($con, "SELECT 1 FROM users WHERE user_id = '$user_id' LIMIT 1");
+      } while(mysqli_num_rows($check) > 0);
+      
       $query = "INSERT INTO users (user_id, user_name, email, password) 
                 VALUES ('$user_id', '$user_name', '$email', '$password')";
 
