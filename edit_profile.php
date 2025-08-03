@@ -20,6 +20,7 @@ if (isset($_POST['save_profile'])) {
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
     $portfolio = mysqli_real_escape_string($con, $_POST['portfolio']);
     $portfolio_file_path = $user['portfolio_file'] ?? null;
+    $image_path = $user['image'] ?? null;
 
     if (isset($_FILES['portfolio_file']) && $_FILES['portfolio_file']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['portfolio_file']['name'], PATHINFO_EXTENSION));
@@ -31,6 +32,20 @@ if (isset($_POST['save_profile'])) {
             $target = $upload_dir . $filename;
             if (move_uploaded_file($_FILES['portfolio_file']['tmp_name'], $target)) {
                 $portfolio_file_path = $target;
+            }
+        }
+    }
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (in_array($ext, $allowed)) {
+            $upload_dir = 'uploads/';
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+            $filename = 'profile_' . $user_id . '_' . time() . '.' . $ext;
+            $target = $upload_dir . $filename;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+                $image_path = $target;
             }
         }
     }

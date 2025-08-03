@@ -20,3 +20,16 @@ body {
 .container {
     position: relative;
 }
+
+
+.container.mt-5 h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.mb-3 label {
+    font-weight: 600;
+    color: #fff;
+}
