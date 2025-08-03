@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body style="position:relative;">
 <div class="container" style="max-width:400px;margin:60px auto;padding:32px;background:#222;border-radius:16px;box-shadow:0 4px 24px #0003;">
     <h2 style="color:#3a7bd5;text-align:center;margin-bottom:32px;">Project group</h2>
+    
     <?php if ($message): ?>
         <p class="error" style="color:#ff4d4f;text-align:center;margin-bottom:16px;">
             <?= $message ?>

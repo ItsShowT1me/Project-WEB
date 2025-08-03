@@ -33,7 +33,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <style>
     /* New group card styles */
     .group-card {
-        background: #222; /* Dark background for cards */
+        background: linear-gradient(180deg, #6A11CB 0%, #3a7bd5 60%, #bfc1c2 100%);/* Dark background for cards */
         border-radius: 12px; /* Rounded corners */
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         width: 200px; /* Fixed width for cards */

@@ -37,23 +37,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Create Group</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS code/create_group.css">
-    
 </head>
 <body>
-<div class="container mt-5">
-    <button class="btn btn-secondary mb-3" onclick="window.history.back();">Return</button>
-    <h2>Create Group</h2>
-    <form method="POST">
-        <div class="mb-3">
-            <label for="name" class="form-label">Group Name</label>
-            <input type="text" name="name" id="name" class="form-control" required>
+<div class="modal-overlay">
+    <div class="create-group-modal">
+        <div class="modal-header">
+            <span class="close-btn" onclick="window.history.back();">&times;</span>
+            <div class="modal-title">
+                <i class="group-icon">👥</i>
+                <span>Create Group</span>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="color" class="form-label">Group Icon Color</label>
-            <input type="color" name="color" id="color" class="form-control form-control-color" value="#3a7bd5" title="Choose your color">
-        </div>
-        <button type="submit" class="btn btn-primary">Create Group</button>
-    </form>
+        <form method="POST">
+            <div class="input-group">
+                <label for="name">Project Name</label>
+                <input type="text" name="name" id="name" placeholder="Enter project name..." required>
+            </div>
+            <div class="input-group">
+                <label for="color">Group Color</label>
+                <div class="color-container">
+                    <input type="color" name="color" id="color" class="form-control form-control-color" value="#3a7bd5" title="Choose your color">
+                    
+                </div>
+            </div>
+            <button type="submit" class="create-btn">Create Group</button>
+        </form>
+    </div>
 </div>
+
+<script>
+document.getElementById('color').addEventListener('input', function() {
+    document.getElementById('colorPreview').style.background = this.value;
+});
+</script>
+
 </body>
 </html>
