@@ -26,68 +26,94 @@ $user_data = check_login($con);
     
 </head>
 <body>
-  <div class="container">
-      <!-- Header -->
-      <header class="top-header">
-        <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px; ">
-          <a href="index.php">MAIN</a>
-        </div>
-          <!-- <div class="search-bar" style="display: flex; align-items: center; gap: 8px;">
-            <form id="searchForm" style="display: flex; align-items: center; gap: 8px;">
-              <input type="text" id="searchInput" class="form-control" placeholder="Search..." style="height:32px; font-size:1em;">
-              <select id="searchType" class="form-select" style="height:32px; font-size:1em;">
-                <option value="name">Name</option>
-                <option value="mbti">MBTI</option>
-              </select>
-            </form>
-          </div> -->
-      </header>
-  </div>
+  <!-- Sidebar -->
+  <nav id="sidebar">
+      <a href="index.php">
+          <div class="sidebar-brand">
+              <img src="images/Logo-nobg.png" alt="Logo" class="logo">
+          </div>
+      </a>
+      <ul class="sidebar-menu">
+          <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
+          <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
+          <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
+          <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
+          <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
+      </ul>
+      <ul class="sidebar-menu">
+          <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+      </ul>
+  </nav>
 
-  <div class="container">
-    <div class="content">
-      <h1>Welcome to TypeToWork</h1>
-      <p>Discover your ideal work group based on your MBTI personality type.</p>
+  <div class="main">
+    <!-- Header -->
+    <header class="top-header" style="display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px;">
+      <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px;">
+        <a href="index.php">MAIN</a>
+      </div>
+      <!-- Dark mode toggle in header, right side -->
+      <label style="margin-left: auto; cursor: pointer;">
+        <input class="slider" type="checkbox" id="themeToggle" style="display:none;">
+        <div class="switch" style="transform: scale(0.85);">
+          <div class="suns"></div>
+          <div class="moons">
+            <div class="star star-1"></div>
+            <div class="star star-2"></div>
+            <div class="star star-3"></div>
+            <div class="star star-4"></div>
+            <div class="star star-5"></div>
+            <div class="first-moon"></div>
+          </div>
+          <div class="sand"></div>
+          <div class="bb8">
+            <div class="antennas">
+              <div class="antenna short"></div>
+              <div class="antenna long"></div>
+            </div>
+            <div class="head">
+              <div class="stripe one"></div>
+              <div class="stripe two"></div>
+              <div class="eyes">
+                <div class="eye one"></div>
+                <div class="eye two"></div>
+              </div>
+              <div class="stripe detail">
+                <div class="detail zero"></div>
+                <div class="detail zero"></div>
+                <div class="detail one"></div>
+                <div class="detail two"></div>
+                <div class="detail three"></div>
+                <div class="detail four"></div>
+                <div class="detail five"></div>
+                <div class="detail five"></div>
+              </div>
+              <div class="stripe three"></div>
+            </div>
+            <div class="ball">
+              <div class="lines one"></div>
+              <div class="lines two"></div>
+              <div class="ring one"></div>
+              <div class="ring two"></div>
+              <div class="ring three"></div>
+            </div>
+            <div class="shadow"></div>
+          </div>
+        </div>
+      </label>
+    </header>
+
+    <div class="container" style="max-width: 900px; margin: 48px auto 0 auto;">
+      <div class="content" style="padding: 48px 36px; border-radius: 18px; box-shadow: 0 4px 24px #3a7bd520;">
+        <h1 style="font-size: 2.8rem; font-weight: 800; color: #3C91E6; margin-bottom: 18px; letter-spacing: 0.02em;">Welcome to TypeToWork</h1>
+        <p style="font-size: 1.25rem; color: #222e3a; font-weight: 500; margin-bottom: 10px; letter-spacing: 0.01em;">
+          Discover your ideal work group based on your MBTI personality type.
+        </p>
+      </div>
     </div>
   </div>
 
 
-  <!-- Sidebar -->
-  <nav id="sidebar">
-        <a href="index.php">
-            <div class="sidebar-brand">
-                <img src="images/Logo-nobg.png" alt="Logo" class="logo">
-            </div>
-        </a>
-        <ul class="sidebar-menu">
-            <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
-            <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-            <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
-        </ul>
-        <ul class="sidebar-menu">
-            <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
-        </ul>
-    </nav>
-  
-
-  
-  
-
-  <?php
-// Fetch all users except the current user
-$current_user_id = $user_data['user_id'];
-$users = [];
-$result = mysqli_query($con, "SELECT user_name, mbti, image, email, phone FROM users WHERE user_id != '$current_user_id'");
-while ($row = mysqli_fetch_assoc($result)) {
-    $users[] = $row;
-}
-?>
-
-
-
-<!-- Popup Recomend What u like it?  -->
+  <!-- Popup Recomend What u like it?  -->
 <div class="popup-overlay" id="popup1">
   <div class="popup1">
     <h2>แจ้งเตือนการใช้งานเว็บไซต์</h2>
@@ -95,14 +121,14 @@ while ($row = mysqli_fetch_assoc($result)) {
       เว็บไซต์นี้ใช้คุกกี้และเทคโนโลยีต่าง ๆ เพื่อพัฒนาประสบการณ์ของคุณ<br>
       กรุณาอ่านและยอมรับข้อกำหนดการใช้งานก่อนใช้งานเว็บไซต์
     </p>
-    <button class="btn-confirm" onclick="acceptUsage()">ยอมรับและดำเนินการต่อ</button>
+    <button class="btn-confirm" onclick="acceptUsage()">Close</button>
   </div>
 </div>
 
 <!-- Popup 2 -->
 <div class="popup-overlay" id="popup2">
   <div class="popup2">
-    <h2>คุณชอบอะไร?</h2>
+    <h2>what you interestes?</h2>
     <div class="options">
       <button class="option-btn" onclick="selectOption('music', 1)" > MUSIC</button>
       <button class="option-btn" onclick="selectOption('sport', 2)">SPORT</button>
@@ -111,7 +137,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       <button class="option-btn" onclick="selectOption('other', 2)">OTHER</button>
     </div>
     <br>
-    <button class="option-btn" onclick="closePopup(2)">X</button>
+    <!-- <button class="option-btn" onclick="closePopup(2)">X</button> -->
   </div>
 </div>
 
@@ -191,8 +217,11 @@ document.querySelectorAll('.popup-overlay').forEach(popup => {
     }
   });
 });
-
+  // Dark mode toggle using the switch
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark', themeToggle.checked);
+  });
 </script>
-  
 </body>
 </html>
