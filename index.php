@@ -14,9 +14,9 @@ $user_data = check_login($con);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUMBTI</title>
+    <title>TypeToWork</title>
 
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <?php $ver = time() - (time() % 60); // changes every minute ?>
 <link rel="stylesheet" href="css/bootstrap.min.css?v=<?= $ver ?>">
@@ -29,30 +29,39 @@ $user_data = check_login($con);
   <div class="container">
       <!-- Header -->
       <header class="top-header">
-  <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px;">
-    <a href="index.php">Home</a>
+        <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px; ">
+          <a href="index.php">MAIN</a>
+        </div>
+          <!-- <div class="search-bar" style="display: flex; align-items: center; gap: 8px;">
+            <form id="searchForm" style="display: flex; align-items: center; gap: 8px;">
+              <input type="text" id="searchInput" class="form-control" placeholder="Search..." style="height:32px; font-size:1em;">
+              <select id="searchType" class="form-select" style="height:32px; font-size:1em;">
+                <option value="name">Name</option>
+                <option value="mbti">MBTI</option>
+              </select>
+            </form>
+          </div> -->
+      </header>
   </div>
-  <div class="search-bar" style="display: flex; align-items: center; gap: 8px;">
-    <form id="searchForm" style="display: flex; align-items: center; gap: 8px;">
-      <input type="text" id="searchInput" class="form-control" placeholder="Search..." style="height:32px; font-size:1em;">
-      <select id="searchType" class="form-select" style="height:32px; font-size:1em;">
-        <option value="name">Name</option>
-        <option value="mbti">MBTI</option>
-      </select>
-    </form>
+
+  <div class="container">
+    <div class="content">
+      <h1>Welcome to TypeToWork</h1>
+      <p>Discover your ideal work group based on your MBTI personality type.</p>
+    </div>
   </div>
-</header>
-  </div>
+
 
   <!-- Sidebar -->
   <nav id="sidebar">
-        <a href="#" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text">Menu</span>
+        <a href="index.php">
+            <div class="sidebar-brand">
+                <img src="images/Logo-nobg.png" alt="Logo" class="logo">
+            </div>
         </a>
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
+            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
             <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
             <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
             <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
@@ -78,27 +87,34 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 
 
-<!-- User Grid -->
-<div class="user-grid">
-    <?php foreach ($users as $user): ?>
-        <div class="user-card"
-             data-name="<?= strtolower(htmlspecialchars($user['user_name'])) ?>"
-             data-mbti="<?= strtolower(htmlspecialchars($user['mbti'])) ?>"
-             data-email="<?= htmlspecialchars($user['email']) ?>"
-             data-phone="<?= htmlspecialchars($user['phone'] ?? '') ?>"
-             data-image="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>"
-             style="cursor:pointer;">
-            <div class="user-image">
-                <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>" alt="Profile" />
-            </div>
-            <div class="user-info">
-                <div class="user-name"><?= htmlspecialchars($user['user_name']) ?></div>
-                <div class="user-mbti">(<?= htmlspecialchars($user['mbti']) ?>)</div>
-                <div class="user-email"><?= htmlspecialchars($user['email']) ?></div>
-            </div>
-        </div>
-    <?php endforeach; ?>
+<!-- Popup Recomend What u like it?  -->
+<div class="popup-overlay" id="popup1">
+  <div class="popup1">
+    <h2>แจ้งเตือนการใช้งานเว็บไซต์</h2>
+    <p>
+      เว็บไซต์นี้ใช้คุกกี้และเทคโนโลยีต่าง ๆ เพื่อพัฒนาประสบการณ์ของคุณ<br>
+      กรุณาอ่านและยอมรับข้อกำหนดการใช้งานก่อนใช้งานเว็บไซต์
+    </p>
+    <button class="btn-confirm" onclick="acceptUsage()">ยอมรับและดำเนินการต่อ</button>
+  </div>
 </div>
+
+<!-- Popup 2 -->
+<div class="popup-overlay" id="popup2">
+  <div class="popup2">
+    <h2>คุณชอบอะไร?</h2>
+    <div class="options">
+      <button class="option-btn" onclick="selectOption('music', 1)" > MUSIC</button>
+      <button class="option-btn" onclick="selectOption('sport', 2)">SPORT</button>
+      <button class="option-btn" onclick="selectOption('movie', 2)">MOVIE</button>
+      <button class="option-btn" onclick="selectOption('game', 2)">GAME</button>
+      <button class="option-btn" onclick="selectOption('other', 2)">OTHER</button>
+    </div>
+    <br>
+    <button class="option-btn" onclick="closePopup(2)">X</button>
+  </div>
+</div>
+
 
 <!-- User Detail Modal -->
 <div id="userModal" class="modal">
@@ -139,6 +155,43 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', filterUsers);
     searchType.addEventListener('change', filterUsers);
 });
+
+function openPopup(num) {
+  document.getElementById('popup' + num).style.display = 'flex';
+}
+
+function closePopup(num) {
+  document.getElementById('popup' + num).style.display = 'none';
+  if (num === 1) {
+    openPopup(2);
+  }
+}
+
+function acceptUsage() {
+  closePopup(1); // ปิด popup1
+  openPopup(2);  // เปิด popup2
+}
+
+function selectOption(choice, popupNum) {
+  alert('คุณเลือก: ' + choice);
+  closePopup(popupNum);
+}
+
+window.onload = function() {
+  openPopup(1);
+};
+
+document.querySelectorAll('.popup-overlay').forEach(popup => {
+  popup.addEventListener('click', e => {
+    if (e.target === popup) {
+      popup.style.display = 'none';
+      if (popup.id === 'popup1') {
+        openPopup(2);
+      }
+    }
+  });
+});
+
 </script>
   
 </body>

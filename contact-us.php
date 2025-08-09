@@ -48,9 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <!-- Sidebar Menu -->
     <nav id="sidebar">
-        <a href="index.php" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text">Menu</span>
+        <a href="index.php">
+            <div class="sidebar-brand">
+                <img src="images/Logo-nobg.png" alt="Logo" class="logo">
+            </div>
         </a>
         <ul class="sidebar-menu">
             <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
