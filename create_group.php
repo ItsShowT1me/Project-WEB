@@ -10,10 +10,11 @@ function generatePin($length = 4) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = mysqli_real_escape_string($con, $_POST['name']);
     $color = mysqli_real_escape_string($con, $_POST['color']);
+    $description = mysqli_real_escape_string($con, $_POST['description']);
     $group_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT); // Numeric only
     $pin = generatePin(rand(4,5)); // 4 or 5 digit pin
 
-    $sql = "INSERT INTO groups (group_id, name, pin, color) VALUES ('$group_id', '$name', '$pin', '$color')";
+    $sql = "INSERT INTO groups (group_id, name, pin, color, description) VALUES ('$group_id', '$name', '$pin', '$color', '$description')";
     if (mysqli_query($con, $sql)) {
         // Get the inserted group's id using mysqli_insert_id for reliability
         $inserted_id = mysqli_insert_id($con);
@@ -60,6 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="color" name="color" id="color" class="form-control form-control-color" value="#3a7bd5" title="Choose your color"  >
                     <span id="colorPreview" style="display:inline-block;width:32px;height:32px;border-radius:8px;border:2px solid #e3e8f0;background:#3a7bd5;"></span>
                 </div>
+            </div>
+            <div class="input-group">
+                <label for="description">Project Detail</label>
+                <textarea name="description" id="description" rows="3" placeholder="Enter details..." required style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;"></textarea>
             </div>
             <button type="submit" class="create-btn">Create Group</button>
         </form>

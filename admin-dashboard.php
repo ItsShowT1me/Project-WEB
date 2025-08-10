@@ -277,30 +277,26 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                     <!-- Recent Groups -->
                     <div class="recent-groups">
                         <h3>Recent Groups</h3>
-                        <?php if (!empty($recent_groups)): ?>
-                            <?php foreach ($recent_groups as $group): ?>
-                                <div class="group-item">
-                                    <div class="group-color-icon" style="background: <?= htmlspecialchars($group['color'] ?? '#667eea') ?>;">
-                                        <?= strtoupper(substr($group['name'], 0, 2)) ?>
-                                    </div>
-                                    <div class="group-info">
-                                        <div class="group-name"><?= htmlspecialchars($group['name']) ?></div>
-                                        <div class="group-date">
-                                            <?php if (isset($group['created_at'])): ?>
-                                                Created: <?= date('M d, Y', strtotime($group['created_at'])) ?>
-                                            <?php else: ?>
-                                                Group ID: <?= htmlspecialchars($group['group_id']) ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <div class="group-members">
-                                        <i class="bx bx-user"></i> <?= $group['member_count'] ?> members
+                        <?php foreach ($recent_groups as $group): ?>
+                            <div class="group-item" data-group-id="<?= $group['id'] ?>" style="cursor:pointer;">
+                                <div class="group-color-icon" style="background: <?= htmlspecialchars($group['color'] ?? '#667eea') ?>;">
+                                    <?= strtoupper(substr($group['name'], 0, 2)) ?>
+                                </div>
+                                <div class="group-info">
+                                    <div class="group-name"><?= htmlspecialchars($group['name']) ?></div>
+                                    <div class="group-date">
+                                        <?php if (isset($group['created_at'])): ?>
+                                            Created: <?= date('M d, Y', strtotime($group['created_at'])) ?>
+                                        <?php else: ?>
+                                            Group ID: <?= htmlspecialchars($group['group_id']) ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No groups found.</p>
-                        <?php endif; ?>
+                                <div class="group-members">
+                                    <i class="bx bx-user"></i> <?= $group['member_count'] ?> members
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -367,6 +363,95 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
             </div>
         </div>
     </div>
+
+    <!-- Group Members Modal -->
+    <div id="groupMembersModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" id="closeGroupModal">&times;</span>
+            <h3 class="modal-title"><i class="bx bx-group"></i> Group Members</h3>
+            <div id="groupMembersList" class="modal-list">Loading...</div>
+        </div>
+    </div>
+    <style>
+    .modal {
+        position: fixed;
+        top:0; left:0; width:100%; height:100%;
+        background:rgba(52,46,55,0.18);
+        display:flex; align-items:center; justify-content:center;
+        z-index:9999;
+        animation: fadeInModal 0.2s;
+    }
+    @keyframes fadeInModal {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .modal-content {
+        background: #fff;
+        padding: 32px 28px 24px 28px;
+        border-radius: 16px;
+        min-width: 340px;
+        max-width: 96vw;
+        box-shadow: 0 8px 32px #342e3720;
+        position:relative;
+        animation: slideUpModal 0.25s;
+    }
+    @keyframes slideUpModal {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .close-btn {
+        position:absolute; top:14px; right:18px;
+        cursor:pointer; font-size:28px; color:#667eea;
+        transition: color 0.2s;
+    }
+    .close-btn:hover { color:#DB504A; }
+    .modal-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        margin-bottom: 18px;
+        color: #3C91E6;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .modal-list {
+        max-height: 320px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+    .modal-list ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    .modal-list li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f4fa;
+        font-size: 1.08em;
+    }
+    .modal-list li:last-child { border-bottom: none; }
+    .modal-member-avatar {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: #eaf3ff;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 600; color: #667eea; font-size: 1.1em;
+    }
+    .modal-member-name {
+        font-weight: 500; color: #222;
+    }
+    .modal-member-mbti {
+        background: #667eea;
+        color: #fff;
+        border-radius: 10px;
+        padding: 2px 8px;
+        font-size: 0.95em;
+        margin-left: 6px;
+    }
+    </style>
 
     <script>
         // User Growth Chart
@@ -440,6 +525,25 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                 }
             });
         });
+
+        // Group Members Modal
+        document.querySelectorAll('.group-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const groupId = this.getAttribute('data-group-id');
+                const modal = document.getElementById('groupMembersModal');
+                const membersList = document.getElementById('groupMembersList');
+                modal.style.display = 'flex';
+                membersList.innerHTML = 'Loading...';
+                fetch('fetch-group-members.php?group_id=' + groupId)
+                    .then(response => response.text())
+                    .then(html => {
+                        membersList.innerHTML = html;
+                    });
+            });
+        });
+        document.getElementById('closeGroupModal').onclick = function() {
+            document.getElementById('groupMembersModal').style.display = 'none';
+        };
     </script>
 </body>
 </html>

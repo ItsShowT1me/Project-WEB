@@ -543,3 +543,19 @@ body {
     gap: 1rem;
     margin-top: 8px;
 }
+
+.input-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e3e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+    resize: vertical;
+    margin-top: 8px;
+}
+
+.input-group textarea:focus {
+    border-color: #3686ea;
+}
