@@ -19,14 +19,12 @@
 }
 
 body {
+  min-height: 100vh;
+  min-width: 100vw;
   display: flex;
+  align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: linear-gradient(to right, #0D1936, #3C5C9E);
-
-  /* background-image: url('mbti-Image/bu-bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover; */
+  background: linear-gradient(120deg, #3C5C9E 0%, #a259c6 100%);
 }
 
 .wrapper {

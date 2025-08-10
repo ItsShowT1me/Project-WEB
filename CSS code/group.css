@@ -58,7 +58,7 @@ nav {
     left: 0;
     width: 280px;
     height: 100vh;
-    background: linear-gradient(135deg, #3a7bd5 0%, #6A11CB 100%);
+    background: linear-gradient(180deg, #3a7bd5 0%, #6A11CB 60%, #bfc1c2 100%);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;

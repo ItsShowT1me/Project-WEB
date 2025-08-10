@@ -31,28 +31,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Join Group</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS code/join_group.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body style="position:relative;">
-<div class="container" style="max-width:400px;margin:60px auto;padding:32px;background:#222;border-radius:16px;box-shadow:0 4px 24px #0003;">
-    <h2 style="color:#3a7bd5;text-align:center;margin-bottom:32px;">Project group</h2>
-    <?php if ($message): ?>
-        <p class="error" style="color:#ff4d4f;text-align:center;margin-bottom:16px;">
-            <?= $message ?>
-        </p>
-    <?php endif; ?>
-    <form method="POST" action="" style="display:flex;flex-direction:column;gap:16px;">
-        <input type="text" id="gamePin" name="pin" class="form-control"
-               placeholder="Group PIN" required maxlength="5" minlength="4"
-               style="font-size:1.2em;padding:12px 16px;border-radius:8px;border:1px solid #3a7bd5;">
-        <button type="submit" id="enterBtn" class="btn btn-primary"
-                style="background:#3a7bd5;border:none;padding:12px 0;font-size:1.1em;border-radius:8px;">
-            Enter
-        </button>
-    </form>
+<body>
+<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(135deg,#6A11CB,#2575FC);display:flex;align-items:center;justify-content:center;">
+    <div class="create-group-modal" style="background:#fff;border-radius:24px;box-shadow:0 8px 32px #0002;max-width:380px;width:100%;padding:0;overflow:hidden;">
+        <div class="modal-header" style="background:linear-gradient(90deg,#6A11CB,#2575FC);padding:20px 24px 12px 24px;display:flex;align-items:center;justify-content:space-between;">
+            <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
+                <span class="group-icon" style="font-size:1.6em;">👥</span>
+                <span style="font-size:1.2em;font-weight:600;color:#fff;">Join Group</span>
+            </div>
+            <button class="close-btn" onclick="window.history.back();" aria-label="Close" style="background:none;border:none;font-size:1.5em;color:#fff;opacity:0.8;cursor:pointer;">&times;</button>
+        </div>
+        <form method="POST" style="padding:32px 24px 24px 24px;">
+            <div class="input-group" style="margin-bottom:24px;">
+                <label for="gamePin" style="font-weight:600;color:#2575FC;display:block;margin-bottom:8px;">Group PIN</label>
+                <input type="text" id="gamePin" name="pin" class="form-control"
+                       placeholder="Enter group PIN..." required maxlength="5" minlength="4"
+                       style="font-size:1.1em;padding:12px 16px;border-radius:12px;border:1.5px solid #6A11CB;background:#f6f8fa;display:block;width: 300px;">
+            </div>
+            <?php if ($message): ?>
+                <p class="error" style="color:#ff4d4f;text-align:center;margin-bottom:16px;">
+                    <?= $message ?>
+                </p>
+            <?php endif; ?>
+            <button type="submit" class="create-btn" style="width:100%;padding:14px 0;font-size:1.1em;font-weight:600;border:none;border-radius:14px;background:linear-gradient(90deg,#6A11CB,#2575FC);color:#fff;box-shadow:0 2px 8px #0001;transition:background 0.2s;">
+                Join Group
+            </button>
+        </form>
+    </div>
 </div>
-
-<script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

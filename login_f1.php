@@ -35,7 +35,12 @@ session_start();
           {
             $_SESSION['user_id'] = $user_data['user_id'];
 
-            header("Location:index.php");
+            // Redirect admin user to admin-dashboard.php
+            if ($_SESSION['user_id'] == 971221) {
+                header("Location: admin-dashboard.php");
+            } else {
+                header("Location: index.php");
+            }
             die;
             //รอแก้จอขาว
           } else {
