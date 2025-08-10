@@ -102,26 +102,29 @@ $user_data = check_login($con);
       </label>
     </header>
 
-    <div class="container" style="max-width: 900px; margin: 48px auto 0 auto;">
-      <div class="content" style="padding: 48px 36px; border-radius: 18px; box-shadow: 0 4px 24px #3a7bd520;">
-        <h1 style="font-size: 2.8rem; font-weight: 800; color: #3C91E6; margin-bottom: 18px; letter-spacing: 0.02em;">Welcome to TypeToWork</h1>
-        <p style="font-size: 1.25rem; color: #222e3a; font-weight: 500; margin-bottom: 10px; letter-spacing: 0.01em;">
-          Discover your ideal work group based on your MBTI personality type.
-        </p>
-      </div>
-    </div>
+
   </div>
 
 
   <!-- Popup Recomend What u like it?  -->
 <div class="popup-overlay" id="popup1">
   <div class="popup1">
-    <h2>แจ้งเตือนการใช้งานเว็บไซต์</h2>
+    <h2>📢 Website Usage Notice – TypeToWork</h2>
     <p>
-      เว็บไซต์นี้ใช้คุกกี้และเทคโนโลยีต่าง ๆ เพื่อพัฒนาประสบการณ์ของคุณ<br>
-      กรุณาอ่านและยอมรับข้อกำหนดการใช้งานก่อนใช้งานเว็บไซต์
+      Welcome to <strong>TypeToWork</strong>, a platform that helps you find work groups and job opportunities 
+      based on your MBTI personality type.<br><br>
+      1. <strong>Data Collection</strong> – We collect general usage data, your MBTI test results (if provided), and information you submit to recommend suitable groups or opportunities.<br>
+      2. <strong>Cookies</strong> – We use cookies and similar technologies to store preferences and improve your browsing experience.<br>
+      3. <strong>Data Sharing</strong> – Non-identifiable data may be used for analytics and improvements. We do not share personal information without your consent.<br>
+      4. <strong>Security</strong> – We implement measures to protect your data from unauthorized access.<br>
+      5. <strong>User Rights</strong> – You can request to access, edit, or delete your data as explained in our Privacy Policy.<br>
+      6. <strong>Disclaimer</strong> – All recommendations are for informational purposes only.<br>
+      7. <strong>Acceptance</strong> – By clicking “Accept and Continue” you agree to our Terms of Service and Privacy Policy.<br><br>
+      💡 <strong>Tip:</strong> For the best experience, we recommend you take the MBTI test here: 
+      <a href="https://www.16personalities.com" target="_blank">https://www.16personalities.com</a>
     </p>
-    <button class="btn-confirm" onclick="acceptUsage()">Close</button>
+    <button onclick="acceptUsage()">✅ Accept and Continue</button>
+    
   </div>
 </div>
 
@@ -223,5 +226,17 @@ document.querySelectorAll('.popup-overlay').forEach(popup => {
     document.body.classList.toggle('dark', themeToggle.checked);
   });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

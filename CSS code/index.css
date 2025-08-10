@@ -49,10 +49,11 @@ body {
 }
 
 .container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 32px;
+    max-width: 700px;
+    margin: 50px 0 0 60px; /* Top, Right, Bottom, Left */
+    padding: 0 24px;
+    position: relative;
+    left: 0;
 }
 
 .content {
@@ -460,29 +461,69 @@ nav {
 
   .popup1 {
     background: #fff;
-    padding: 30px 25px;
-    border-radius: 16px;
-    max-width: 400px;
-    width: 90%;
+    padding: 48px 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 96%;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
     animation: popupIn 0.35s ease forwards;
+    text-align: left;
+    font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+    color: #222e3a;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+}
+
+.popup1 h2 {
+    font-size: 2rem;
+    margin-bottom: 22px;
+    color: #3C91E6;
+    font-weight: 800;
+    font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
+}
 
-  .popup1 h2 {
-    font-size: 1.6rem;
-    margin-bottom: 16px;
-    color: #2c3e50;
-  }
+.popup1 p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    color: #222e3a;
+    font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+}
 
-  .popup1 p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 24px;
-  }
- .popup2 {
+.popup1 strong {
+    color: #7116ad;
+    font-weight: 700;
+}
+
+.popup1 a {
+    color: #3C91E6;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.popup1 button {
+    padding: 14px 36px;
+    background-color: #3C91E6;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(58, 123, 213, 0.12);
+    transition: background 0.2s, transform 0.15s;
+    font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+    display: block;
+    margin: 0 auto;
+}
+
+.popup1 button:hover {
+    background-color: #2575FC;
+    transform: scale(1.05);
+}
+  .popup2 {
     background: white;
     padding: 30px;
     border-radius: 12px;
@@ -742,10 +783,10 @@ body.dark {
 .bb8 {
   position: absolute;
   left: -18%;
-  width: 140px;
+  width: 60px;
   -webkit-transform: scale(0.45);
   -ms-transform: scale(0.45);
-  transform: scale(0.45);
+  transform: scale(0.50);
   -webkit-transition: left .4s;
   -o-transition: left .4s;
   transition: left .4s;
@@ -944,10 +985,10 @@ body.dark {
 .ball {
   background-color: ghostwhite;
   border-radius: 50%;
-  height: 165px;
+  height: 135px;
   overflow: hidden;
   position: relative;
-  width: 165px;
+  width: 135px;
   -webkit-transition: -webkit-transform .4s;
   transition: -webkit-transform .4s;
   -o-transition: transform .4s;
