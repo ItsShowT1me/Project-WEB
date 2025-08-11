@@ -6,6 +6,20 @@ include 'connection.php';
 $user_data = check_login($con);
 $user_id = $_SESSION['user_id'];
 
+// Check if the user is banned
+if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) > time()) {
+    $ban_time = date('d M Y H:i', strtotime($user_data['banned_until']));
+    echo "<div style='background:#ffeaea;color:#DB504A;padding:24px 32px;border-radius:16px;margin:64px auto 0 auto;max-width:440px;text-align:center;font-size:1.18em;font-weight:600;box-shadow:0 4px 18px #DB504A22;'>
+        <i class='bx bxs-error' style='font-size:2.4em;vertical-align:middle;'></i>
+        <div style='margin:18px 0 8px 0;'>You are banned until <span style='color:#b92d23;'>$ban_time</span>.</div>
+        <div style='font-size:0.98em;font-weight:400;margin-bottom:18px;'>Please contact support if you believe this is a mistake.</div>
+        <button onclick=\"window.location.href='login_f1.php'\" style='background:linear-gradient(135deg,#DB504A 0%,#b92d23 100%);color:#fff;border:none;border-radius:10px;padding:12px 38px;font-size:1.08em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;transition:background 0.2s;'>
+            OK
+        </button>
+    </div>";
+    exit();
+}
+
 // Fetch only groups the user has joined
 $groups = [];
 $result = mysqli_query($con, "
@@ -140,11 +154,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <div class="group-title"><?= htmlspecialchars($group['name']) ?></div>
                     </div>
                 </div>
-                <div class="group-actions">
-                    <i class='bx bx-show' title="View"></i>
-                    <i class='bx bx-lock' title="Lock"></i>
-                    <i class='bx bx-edit' title="Edit"></i>
-                </div>
+                
             </div>
         </a>
     <?php endforeach; ?>

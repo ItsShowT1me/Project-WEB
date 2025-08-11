@@ -8,13 +8,13 @@ document.getElementById('languageLevel').addEventListener('change', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const searchType = document.getElementById('searchType');
-    const userCards = document.querySelectorAll('.user-card');
+    const groupCards = document.querySelectorAll('.user-card');
 
-    function filterUsers() {
+    function filterGroups() {
         const query = searchInput.value.trim().toLowerCase();
-        const type = searchType.value; // "name" or "mbti"
+        const type = searchType.value; // "name" or "category"
 
-        userCards.forEach(card => {
+        groupCards.forEach(card => {
             const value = card.dataset[type] || '';
             if (value.includes(query)) {
                 card.style.display = '';
@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    searchInput.addEventListener('input', filterUsers);
-    searchType.addEventListener('change', filterUsers);
+    searchInput.addEventListener('input', filterGroups);
+    searchType.addEventListener('change', filterGroups);
 
     // Modal functionality
     const modal = document.getElementById('userModal');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalPhone = document.getElementById('modalPhone');
     const modalMbti = document.getElementById('modalMbti');
 
-    userCards.forEach(card => {
+    groupCards.forEach(card => {
         card.addEventListener('click', function() {
             modalImage.src = card.dataset.image;
             modalName.textContent = card.dataset.name;

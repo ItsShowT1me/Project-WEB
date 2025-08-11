@@ -11,10 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = mysqli_real_escape_string($con, $_POST['name']);
     $color = mysqli_real_escape_string($con, $_POST['color']);
     $description = mysqli_real_escape_string($con, $_POST['description']);
-    $group_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT); // Numeric only
-    $pin = generatePin(rand(4,5)); // 4 or 5 digit pin
+    $category = mysqli_real_escape_string($con, $_POST['category']);
+    $is_private = isset($_POST['is_private']) ? intval($_POST['is_private']) : 0;
+    $pin = '';
+    if ($is_private) {
+        $pin = mysqli_real_escape_string($con, $_POST['pin']);
+        if (!$pin) $pin = generatePin(rand(4,5));
+    } else {
+        $pin = generatePin(rand(4,5)); // Still generate for consistency
+    }
+    $group_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-    $sql = "INSERT INTO groups (group_id, name, pin, color, description) VALUES ('$group_id', '$name', '$pin', '$color', '$description')";
+    $sql = "INSERT INTO groups (group_id, name, pin, color, description, category, is_private) VALUES ('$group_id', '$name', '$pin', '$color', '$description', '$category', '$is_private')";
     if (mysqli_query($con, $sql)) {
         // Get the inserted group's id using mysqli_insert_id for reliability
         $inserted_id = mysqli_insert_id($con);
@@ -66,6 +74,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="description">Project Detail</label>
                 <textarea name="description" id="description" rows="3" placeholder="Enter details..." required style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;"></textarea>
             </div>
+            <div class="input-group">
+                <label for="category">Category</label>
+                <select name="category" id="category" required style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;">
+                    <option value="game">Game</option>
+                    <option value="music">Music</option>
+                    <option value="movie">Movie</option>
+                    <option value="sport">Sport</option>
+                    <option value="tourism">Tourism</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="is_private">Group Type</label>
+                <select name="is_private" id="is_private" required style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;">
+                    <option value="0">Public</option>
+                    <option value="1">Private (Require PIN)</option>
+                </select>
+            </div>
+            <div class="input-group" id="pin-group" style="display:none;">
+                <label for="pin">Group PIN (4-5 digits)</label>
+                <input type="text" name="pin" id="pin" pattern="\d{4,5}" maxlength="5" minlength="4" placeholder="Enter PIN or leave blank for auto" style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;">
+            </div>
             <button type="submit" class="create-btn">Create Group</button>
         </form>
     </div>
@@ -74,6 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
 document.getElementById('color').addEventListener('input', function() {
     document.getElementById('colorPreview').style.background = this.value;
+});
+document.getElementById('is_private').addEventListener('change', function() {
+    document.getElementById('pin-group').style.display = this.value == "1" ? "" : "none";
 });
 </script>
 

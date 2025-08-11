@@ -1,3 +1,26 @@
+<?php
+session_start(); // <-- Always first!
+include 'function.php';
+include 'connection.php';
+
+$user_data = check_login($con);
+
+// Check if user is banned
+if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) > time()) {
+    $ban_time = date('d M Y H:i', strtotime($user_data['banned_until']));
+    echo "<div style='background:#ffeaea;color:#DB504A;padding:18px 24px;border-radius:12px;margin:32px auto;max-width:420px;text-align:center;font-size:1.15em;font-weight:600;box-shadow:0 2px 12px #DB504A22;'>
+        <i class='bx bxs-error' style='font-size:2em;vertical-align:middle;'></i>
+        <br>
+        You are banned until <span style='color:#b92d23;'>$ban_time</span>.
+        <br>
+        Please contact support if you believe this is a mistake.<br><br>
+        <button onclick=\"window.location.href='login_f1.php'\" style='background:#DB504A;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;'>OK</button>
+    </div>";
+    exit();
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

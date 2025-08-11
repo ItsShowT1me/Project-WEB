@@ -157,9 +157,8 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="logo">
-                <div class="logo-icon">B</div>
-                <div class="logo-text">BUMBTI</div>
+            <div class="logo" style="display: flex; align-items: center; justify-content: center; padding: 18px 0;">
+                <img src="images/Logo-nobg.png" alt="BUMBTI Logo" class="logo-img" style="height:80px; width:80px; display:block;">
             </div>
             
             <div class="admin-badge">
@@ -349,9 +348,9 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                                 <i class="bx bx-user-plus"></i>
                                 Manage Users
                             </a>
-                            <a href="admin-analytics.php" class="action-btn">
+                            <a href="index.php" class="action-btn">
                                 <i class="bx bx-download"></i>
-                                Generate Report
+                                Main Page
                             </a>
                             <a href="admin-settings.php" class="action-btn">
                                 <i class="bx bx-cog"></i>
