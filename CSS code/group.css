@@ -269,6 +269,114 @@ nav {
 }
 
 
+/* Logo in sidebar */
+.logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-right: 0;
+    display: block;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 0 28px 0;
+}
+
+
+#sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    color: var(--blue);
+    cursor: pointer;
+    z-index: 1100;
+    display: none;
+}
+
+.content {
+  margin-left: 280px;
+  margin-top: 70px; /* Adjust for header height */
+  padding: 20px;
+  width: 100%;
+}
 
 
 
+
+.main {
+  margin-left: 280px; /* Match sidebar width */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.main.expanded {
+  margin-left: 0;
+}
+
+
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 250px; /* or 280px if your sidebar is 280px */
+  right: 0;
+  height: 70px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This spaces left and right */
+  z-index: 100;
+  padding: 0 40px;
+  box-shadow: 0 2px 8px #6A11CB;
+}
+
+
+
+.breadcrumbs {
+  font-size: 2rem;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 20px;
+}
+
+.breadcrumb-separator {
+  color: #bfc1c2;
+  margin: 0 4px;
+}
+
+.breadcrumbs a {
+  color: #7116ad; /* Dark blue/black, matches image */
+  text-decoration: none;
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 2rem; /* Matches the image */
+  letter-spacing: 0.01em;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 340px;
+  right: 50px;
+  height: 50px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 14px;
+  z-index: 20;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}

@@ -30,6 +30,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS code/group.css">
+    <link rel="stylesheet" href="CSS code/index.css">
     <style>
     /* New group card styles */
     .group-card {
@@ -100,21 +101,22 @@ while ($row = mysqli_fetch_assoc($result)) {
 
   <!-- Sidebar -->
   <nav id="sidebar">
-        <a href="#" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text">Menu</span>
-        </a>
-        <ul class="sidebar-menu">
-            <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
-            <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-            <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
-        </ul>
-        <ul class="sidebar-menu">
-            <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
-        </ul>
-    </nav>
+      <a href="index.php">
+          <div class="sidebar-brand">
+              <img src="images/Logo-nobg.png" alt="Logo" class="logo">
+          </div>
+      </a>
+      <ul class="sidebar-menu">
+          <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
+          <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">My Group</span></a></li>
+          <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
+          <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
+          <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
+      </ul>
+      <ul class="sidebar-menu">
+          <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+      </ul>
+  </nav>
 
     
 <div class="header-bar">

@@ -78,7 +78,8 @@ body {
   opacity: 0;
 }
 .title-login {
-  top: 50%;
+  top: 20px;
+  top: 25%;
   opacity: 1;
 }
 .title-register {
