@@ -51,56 +51,41 @@ $user_data = check_login($con);
       <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px;">
         <a href="index.php">MAIN</a>
       </div>
-      <!-- Dark mode toggle in header, right side -->
-      <label style="margin-left: auto; cursor: pointer;">
-        <input class="slider" type="checkbox" id="themeToggle" style="display:none;">
-        <div class="switch" style="transform: scale(0.85);">
-          <div class="suns"></div>
-          <div class="moons">
-            <div class="star star-1"></div>
-            <div class="star star-2"></div>
-            <div class="star star-3"></div>
-            <div class="star star-4"></div>
-            <div class="star star-5"></div>
-            <div class="first-moon"></div>
+
+  <!-- From Uiverse.io by Galahhad --> 
+    <label class="bb8-toggle">
+      <input class="bb8-toggle__checkbox" type="checkbox">
+        <div class="bb8-toggle__container">
+          <div class="bb8-toggle__scenery">
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="tatto-1"></div>
+            <div class="tatto-2"></div>
+            <div class="gomrassen"></div>
+            <div class="hermes"></div>
+            <div class="chenini"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
           </div>
-          <div class="sand"></div>
           <div class="bb8">
-            <div class="antennas">
-              <div class="antenna short"></div>
-              <div class="antenna long"></div>
+            <div class="bb8__head-container">
+              <div class="bb8__antenna"></div>
+              <div class="bb8__antenna"></div>
+              <div class="bb8__head"></div>
             </div>
-            <div class="head">
-              <div class="stripe one"></div>
-              <div class="stripe two"></div>
-              <div class="eyes">
-                <div class="eye one"></div>
-                <div class="eye two"></div>
-              </div>
-              <div class="stripe detail">
-                <div class="detail zero"></div>
-                <div class="detail zero"></div>
-                <div class="detail one"></div>
-                <div class="detail two"></div>
-                <div class="detail three"></div>
-                <div class="detail four"></div>
-                <div class="detail five"></div>
-                <div class="detail five"></div>
-              </div>
-              <div class="stripe three"></div>
-            </div>
-            <div class="ball">
-              <div class="lines one"></div>
-              <div class="lines two"></div>
-              <div class="ring one"></div>
-              <div class="ring two"></div>
-              <div class="ring three"></div>
-            </div>
-            <div class="shadow"></div>
+            <div class="bb8__body"></div>
           </div>
+        <div class="artificial__hidden">
+          <div class="bb8__shadow"></div>
         </div>
-      </label>
-    </header>
+      </div>
+    </label>
 
 
   </div>
@@ -160,6 +145,49 @@ $user_data = check_login($con);
     </div>
   </div>
 </div>
+
+
+<div class="navbar">
+  <a href="#">Music</a>
+  <a href="#">Sport</a>
+  <a href="#">Movie</a>
+  <a href="#">Game</a>
+  <div class="right-btn">
+    <button>All
+      <i class="bx bx-chevron-right"></i>
+    </button>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search by name or MBTI" />
+    <select id="searchType">
+      <option value="mbti">MBTI</option>
+    </select>
+  </div>
+</div>
+</div>
+
+
+<div class="body-left">
+  <div class="recommend-group">
+    <li>Recommnt-group</li>
+  </div>
+    <div class="poppular-group">
+    <li>Poppular Group</li>
+  </div>
+</div>
+
+
+<div class="body-right">
+
+</div>
+
+
+
+
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -221,10 +249,18 @@ document.querySelectorAll('.popup-overlay').forEach(popup => {
   });
 });
   // Dark mode toggle using the switch
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('change', () => {
-    document.body.classList.toggle('dark', themeToggle.checked);
-  });
+  document.addEventListener('DOMContentLoaded', function() {
+  const bb8Toggle = document.querySelector('.bb8-toggle__checkbox');
+  if (bb8Toggle) {
+    bb8Toggle.addEventListener('change', function() {
+      document.body.classList.toggle('dark', bb8Toggle.checked);
+    });
+    // Optional: Set initial state based on dark mode
+    if (document.body.classList.contains('dark')) {
+      bb8Toggle.checked = true;
+    }
+  }
+});
 </script>
 
 
@@ -240,3 +276,4 @@ document.querySelectorAll('.popup-overlay').forEach(popup => {
 
 </body>
 </html>
+
