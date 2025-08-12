@@ -30,3 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// In loadModalMembers function, replace pagination block:
+if (data.total_pages > 1) {
+    html += '<div class="member-modal-pagination">';
+    for (let i = 1; i <= data.total_pages; i++) {
+        html += `<button class="${i==data.page?'active':''} member-page-btn" data-page="${i}">${i}</button>`;
+    }
+    html += '</div>';
+}

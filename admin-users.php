@@ -17,19 +17,24 @@ $offset = ($page - 1) * $limit;
 // Handle search
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $where = '';
+
+// Build WHERE clause to exclude admin
+$where_clause = '';
 if ($search !== '') {
     $safe_search = mysqli_real_escape_string($con, $search);
-    $where = "WHERE user_name LIKE '%$safe_search%' OR mbti LIKE '%$safe_search%'";
+    $where_clause = "WHERE (user_name LIKE '%$safe_search%' OR mbti LIKE '%$safe_search%') AND user_id != 971221";
+} else {
+    $where_clause = "WHERE user_id != 971221";
 }
 
 // Get total users count (with search)
-$total_result = mysqli_query($con, "SELECT COUNT(*) as total FROM users $where");
+$total_result = mysqli_query($con, "SELECT COUNT(*) as total FROM users $where_clause");
 $total_users = mysqli_fetch_assoc($total_result)['total'];
 $total_pages = ceil($total_users / $limit);
 
-// Fetch users for current page (with search)
+// Fetch users for current page (with search), EXCLUDE admin (user_id = 971221)
 $users = [];
-$result = mysqli_query($con, "SELECT * FROM users $where ORDER BY date DESC LIMIT $limit OFFSET $offset");
+$result = mysqli_query($con, "SELECT * FROM users $where_clause ORDER BY date DESC LIMIT $limit OFFSET $offset");
 while ($row = mysqli_fetch_assoc($result)) {
     // Get group count for each user
     $group_count = 0;

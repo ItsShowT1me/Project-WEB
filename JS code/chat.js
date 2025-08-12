@@ -4,25 +4,7 @@ $(function(){
         $.get('fetch_messages.php?group_id=' + group_id, function(data) {
             $('#chat-box').html('');
             data.forEach(function(msg) {
-                let fileHtml = '';
-                if (msg.file_path) {
-                    if (/\.(jpg|jpeg|png|gif)$/i.test(msg.file_path)) {
-                        fileHtml = `<div><img src="${msg.file_path}" style="max-width:200px;max-height:200px;border-radius:8px;margin-top:8px;"></div>`;
-                    } else {
-                        let fname = msg.file_path.split('/').pop();
-                        fileHtml = `<div><a href="${msg.file_path}" target="_blank">${fname}</a></div>`;
-                    }
-                }
-                $('#chat-box').append(
-                    `<div class="chat-message">
-                        <div class="chat-header">
-                            <span class="chat-user"><b>${msg.user_name}</b> <span class="chat-mbti">(${msg.mbti})</span></span>
-                            <span class="chat-time">${formatTime(msg.created_at)}</span>
-                        </div>
-                        <div class="chat-text">${escapeHtml(msg.message)}</div>
-                        ${fileHtml}
-                    </div>`
-                );
+                $('#chat-box').append(renderMessage(msg));
             });
             $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
         }, 'json');
@@ -66,4 +48,34 @@ $(function(){
         e.preventDefault();
         $('#file-input').click();
     });
+
+    function renderMessage(msg) {
+        var isMine = msg.user_id == window.currentUserId;
+        var align = isMine ? 'right' : 'left';
+        var bubble = isMine ? 'bubble-mine' : 'bubble-other';
+        var avatar = msg.image ? `<img src="${msg.image}" class="chat-avatar">` : `<div class="chat-avatar">${msg.user_name.charAt(0).toUpperCase()}</div>`;
+        var fileHtml = '';
+        if (msg.file_path) {
+            // Show image if file is an image
+            var ext = msg.file_path.split('.').pop().toLowerCase();
+            if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
+                fileHtml = `<div class="chat-file"><img src="${msg.file_path}" style="max-width:180px;max-height:180px;border-radius:10px;margin-top:8px;"></div>`;
+            } else {
+                fileHtml = `<div class="chat-file"><a href="${msg.file_path}" target="_blank" style="color:#3a7bd5;font-weight:600;"><i class="bx bx-file"></i> Download file</a></div>`;
+            }
+        }
+        return `
+        <div class="chat-message ${align}">
+            ${!isMine ? avatar : ''}
+            <div class="chat-bubble ${bubble}">
+                <div class="chat-header">
+                    <span class="chat-user">${msg.user_name}</span>
+                    <span class="chat-mbti">(${msg.mbti})</span>
+                    <span class="chat-time">${msg.time || ''}</span>
+                </div>
+                <div class="chat-text">${msg.message}</div>
+                ${fileHtml}
+            </div>
+        </div>`;
+    }
 });

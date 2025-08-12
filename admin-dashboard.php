@@ -222,11 +222,7 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
             <!-- Header -->
             <div class="header">
                 <div></div>
-                <div class="user-profile">
-                    <div class="user-avatar">A</div>
-                    <span class="user-name">Admin User</span>
-                    <i class="bx bx-chevron-down"></i>
-                </div>
+                
             </div>
 
             <div class="content-wrapper">

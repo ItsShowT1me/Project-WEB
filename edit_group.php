@@ -37,29 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_group'])) {
     header("Location: chat.php?group_id=$group_id");
     exit();
 }
-
-// Handle kick member
-if (isset($_GET['kick']) && is_numeric($_GET['kick'])) {
-    $kick_id = intval($_GET['kick']);
-    // Prevent owner from kicking themselves
-    if ($kick_id != $owner_id) {
-        mysqli_query($con, "DELETE FROM user_groups WHERE user_id='$kick_id' AND group_id='$group_id'");
-    }
-    header("Location: edit_group.php?group_id=$group_id");
-    exit();
-}
-
-// Fetch members
-$members = [];
-$res = mysqli_query($con, "
-    SELECT u.user_id, u.user_name, u.mbti
-    FROM user_groups ug
-    JOIN users u ON ug.user_id = u.user_id
-    WHERE ug.group_id = '$group_id'
-");
-while ($row = mysqli_fetch_assoc($res)) {
-    $members[] = $row;
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -223,72 +200,12 @@ while ($row = mysqli_fetch_assoc($res)) {
             object-fit: cover;
             border: 2px solid #eaf3ff;
         }
-        .member-list {
-            margin-top: 32px;
-            padding: 0 32px 24px 32px;
-        }
-        .member-list h4 {
-            font-size: 1.15em;
-            color: #3a7bd5;
-            margin-bottom: 18px;
-            font-weight: 700;
-        }
-        .member-item {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 14px;
-            background: #f7f9fb;
-            border-radius: 12px;
-            padding: 8px 14px;
-            box-shadow: 0 1px 4px #667eea12;
-        }
-        .member-avatar {
-            width:32px; height:32px;
-            border-radius:50%;
-            background:#eaf3ff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-weight:700;
-            color:#3a7bd5;
-            font-size:1.1em;
-            box-shadow: 0 1px 4px #667eea22;
-        }
-        .owner-badge {
-            color: #ffce26;
-            font-size: 1.2em;
-            margin-left: 6px;
-        }
-        .kick-btn {
-            background: #DB504A;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 4px 12px;
-            cursor: pointer;
-            font-size: 0.95em;
-            margin-left: 10px;
-            transition: background 0.2s;
-            box-shadow: 0 1px 4px #DB504A22;
-        }
-        .kick-btn:hover { background: #b92d23; }
-        .member-mbti {
-            background:#eaf3ff;
-            padding:2px 8px;
-            border-radius:8px;
-            display:inline-block;
-            margin-left:8px;
-            font-size: 0.98em;
-            color: #3a7bd5;
-            font-weight: 500;
-        }
         @media (max-width: 600px) {
             .create-group-modal {
                 width: 98vw;
                 padding: 0;
             }
-            .modal-header, .create-group-modal form, .member-list {
+            .modal-header, .create-group-modal form {
                 padding: 18px 8px;
             }
             .input-group img {
@@ -373,23 +290,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             </div>
             <button type="submit" name="update_group" class="create-btn">Update Group</button>
         </form>
-        <div class="member-list">
-            <h4>Members</h4>
-            <?php foreach ($members as $m): ?>
-                <div class="member-item">
-                    <div class="member-avatar"><?= strtoupper($m['user_name'][0]) ?></div>
-                    <div>
-                        <span class="member-name"><?= htmlspecialchars($m['user_name']) ?></span>
-                        <?php if ($m['user_id'] == $owner_id): ?>
-                            <span class="owner-badge" title="Owner">🛠️</span>
-                        <?php else: ?>
-                            <a href="edit_group.php?group_id=<?= $group_id ?>&kick=<?= $m['user_id'] ?>" class="kick-btn" onclick="return confirm('Kick this member?');">Kick</a>
-                        <?php endif; ?>
-                        <span class="member-mbti"><?= htmlspecialchars($m['mbti']) ?></span>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
     </div>
 </div>
 <script>

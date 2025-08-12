@@ -14,7 +14,7 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
         You are banned until <span style='color:#b92d23;'>$ban_time</span>.
         <br>
         Please contact support if you believe this is a mistake.<br><br>
-        <button onclick=\"window.location.href='login_f1.php'\" style='background:#DB504A;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;'>OK</button>
+        <button onclick=\"window.location.href='login.php'\" style='background:#DB504A;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;'>OK</button>
     </div>";
     exit();
 }

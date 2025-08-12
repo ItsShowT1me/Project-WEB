@@ -168,8 +168,31 @@ while ($row = mysqli_fetch_assoc($result)) {
                     modal.style.display = 'flex';
                     membersList.innerHTML = 'Loading...';
                     fetch('fetch-group-members.php?group_id=' + groupId)
-                        .then(response => response.text())
-                        .then(html => {
+                        .then(response => response.json())
+                        .then(data => {
+                            let html = '<ul style="list-style:none;padding:0;margin:0;">';
+                            data.members.forEach(function(m){
+                                let avatar = m.image ? `<img src="${m.image}" class="modal-member-avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">` : `<div class="modal-member-avatar">${m.user_name.charAt(0).toUpperCase()}</div>`;
+                                html += `<li style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">
+                                    ${avatar}
+                                    <div>
+                                        <div class="modal-member-name" style="font-weight:600;color:#222;">${m.user_name}</div>
+                                        <div class="modal-member-mbti" style="background:#eaf3ff;color:#3a7bd5;padding:2px 10px;border-radius:8px;font-size:0.98em;margin-top:2px;display:inline-block;">${m.mbti}</div>
+                                    </div>
+                                </li>`;
+                            });
+                            html += '</ul>';
+                            if (data.total_pages > 1) {
+                                html += '<div style="text-align:center;margin-top:12px;">';
+                                for (let i = 1; i <= data.total_pages; i++) {
+                                    html += `<button class="member-page-btn" data-page="${i}" style="
+                                        background:${i==data.page?'#3a7bd5':'#eaf3ff'};
+                                        color:${i==data.page?'#fff':'#3a7bd5'};
+                                        border:none;border-radius:6px;padding:6px 14px;margin:0 2px;cursor:pointer;font-weight:600;
+                                    ">${i}</button>`;
+                                }
+                                html += '</div>';
+                            }
                             membersList.innerHTML = html;
                         });
                 });
@@ -177,6 +200,43 @@ while ($row = mysqli_fetch_assoc($result)) {
             document.getElementById('closeGroupModal').onclick = function() {
                 document.getElementById('groupMembersModal').style.display = 'none';
             };
+            // Optional: handle pagination if needed
+            document.getElementById('groupMembersList').addEventListener('click', function(e){
+                if (e.target.classList.contains('member-page-btn')) {
+                    const page = e.target.getAttribute('data-page');
+                    const groupId = document.querySelector('.group-row[data-group-id]').getAttribute('data-group-id');
+                    const membersList = document.getElementById('groupMembersList');
+                    membersList.innerHTML = 'Loading...';
+                    fetch('fetch-group-members.php?group_id=' + groupId + '&page=' + page)
+                        .then(response => response.json())
+                        .then(data => {
+                            let html = '<ul style="list-style:none;padding:0;margin:0;">';
+                            data.members.forEach(function(m){
+                                let avatar = m.image ? `<img src="${m.image}" class="modal-member-avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">` : `<div class="modal-member-avatar">${m.user_name.charAt(0).toUpperCase()}</div>`;
+                                html += `<li style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">
+                                    ${avatar}
+                                    <div>
+                                        <div class="modal-member-name" style="font-weight:600;color:#222;">${m.user_name}</div>
+                                        <div class="modal-member-mbti" style="background:#eaf3ff;color:#3a7bd5;padding:2px 10px;border-radius:8px;font-size:0.98em;margin-top:2px;display:inline-block;">${m.mbti}</div>
+                                    </div>
+                                </li>`;
+                            });
+                            html += '</ul>';
+                            if (data.total_pages > 1) {
+                                html += '<div style="text-align:center;margin-top:12px;">';
+                                for (let i = 1; i <= data.total_pages; i++) {
+                                    html += `<button class="member-page-btn" data-page="${i}" style="
+                                        background:${i==data.page?'#3a7bd5':'#eaf3ff'};
+                                        color:${i==data.page?'#fff':'#3a7bd5'};
+                                        border:none;border-radius:6px;padding:6px 14px;margin:0 2px;cursor:pointer;font-weight:600;
+                                    ">${i}</button>`;
+                                }
+                                html += '</div>';
+                            }
+                            membersList.innerHTML = html;
+                        });
+                }
+            });
         });
     </script>
 </head>

@@ -16,7 +16,7 @@ function check_login($con)
     }
 
     // Redirect to login page if not logged in
-    header("Location: login_f1.php");
+    header("Location: login.php");
     die;
 }
 

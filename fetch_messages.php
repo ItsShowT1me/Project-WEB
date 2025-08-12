@@ -13,6 +13,7 @@ $result = mysqli_query($con, "
 
 $messages = [];
 while ($row = mysqli_fetch_assoc($result)) {
+    $row['user_id'] = (int)$row['user_id'];
     $messages[] = $row;
 }
 header('Content-Type: application/json');

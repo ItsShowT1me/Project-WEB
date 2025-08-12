@@ -59,7 +59,7 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
         <i class='bx bxs-error' style='font-size:2.4em;vertical-align:middle;'></i>
         <div style='margin:18px 0 8px 0;'>You are banned until <span style='color:#b92d23;'>$ban_time</span>.</div>
         <div style='font-size:0.98em;font-weight:400;margin-bottom:18px;'>Please contact support if you believe this is a mistake.</div>
-        <button onclick=\"window.location.href='login_f1.php'\" style='background:linear-gradient(135deg,#DB504A 0%,#b92d23 100%);color:#fff;border:none;border-radius:10px;padding:12px 38px;font-size:1.08em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;transition:background 0.2s;'>
+        <button onclick=\"window.location.href='login.php'\" style='background:linear-gradient(135deg,#DB504A 0%,#b92d23 100%);color:#fff;border:none;border-radius:10px;padding:12px 38px;font-size:1.08em;font-weight:600;cursor:pointer;box-shadow:0 2px 8px #DB504A22;transition:background 0.2s;'>
             OK
         </button>
     </div>";
@@ -114,6 +114,9 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
           border-radius: 50%;
           display: block;
         }
+        .edit-profile-form {
+            position: relative;
+        }
         .edit-profile-form .form-label {
           color: #3a7bd5;
           font-weight: 600;
@@ -150,14 +153,72 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
         .edit-profile-btn:hover {
           background: linear-gradient(90deg, #764ba2 0%, #3a7bd5 100%);
         }
+        .edit-profile-btn.cancel-btn {
+            position: absolute;
+            left: 0;
+            top: -12px;
+            width: auto;
+            background: #eaf3ff;
+            color: #3a7bd5;
+            margin-top: 0;
+            box-shadow: none;
+            border: none;
+            padding: 12px 32px;
+            font-weight: 700;
+            font-size: 1.08em;
+            border-radius: 10px;
+            text-align: left;
+            transition: background 0.2s;
+        }
+        .edit-profile-btn.cancel-btn:hover {
+            background: #dbeafe;
+            color: #764ba2;
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            background: none;
+            border: none;
+            font-size: 2.2em;
+            color: #888;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+        .close-modal-btn:hover {
+            color: #DB504A;
+        }
+        .edit-profile-card {
+    position: relative;
+}
         @media (max-width: 900px) {
           .edit-profile-card { width: 98vw; padding: 24px 6vw; }
+          .edit-profile-btn.cancel-btn {
+              position: static;
+              width: 100%;
+              margin-top: 12px;
+          }
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
     <div class="edit-profile-card">
+        <button type="button" onclick="window.location.href='profile.php'" class="close-modal-btn" aria-label="Close" style="
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    background: none;
+    border: none;
+    font-size: 2.2em;
+    color: #888;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s;
+">
+    &times;
+</button>
         <div class="edit-profile-title">Edit Profile</div>
         <div class="edit-profile-avatar">
             <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>" alt="Profile Image">
@@ -213,7 +274,7 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
             </div>
             
             <button type="submit" name="save_profile" class="edit-profile-btn">Save</button>
-            <a href="profile.php" class="edit-profile-btn" style="background:#eaf3ff;color:#3a7bd5;margin-top:8px;">Cancel</a>
+            <a href="profile.php" class="edit-profile-btn cancel-btn">Cancel</a>
         </form>
     </div>
 </div>
