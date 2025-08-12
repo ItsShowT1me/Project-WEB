@@ -75,6 +75,64 @@ if (isset($_SESSION['user_id'])) {
         $show_interest_modal = true;
     }
 }
+
+// Layer 1: Interested groups by user's interested_category
+$interested_groups = [];
+if ($interested_category) {
+    $sql = "SELECT id, group_id, name, color, image, description, category FROM groups WHERE is_private = 0 AND category = '" . mysqli_real_escape_string($con, $interested_category) . "' ORDER BY created_at DESC LIMIT 6";
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $interested_groups[] = $row;
+    }
+}
+
+// Layer 2: Popular groups by user's MBTI (most members with same MBTI)
+$popular_groups = [];
+if (!empty($user_data['mbti'])) {
+    $mbti = mysqli_real_escape_string($con, $user_data['mbti']);
+    $sql = "
+        SELECT g.id, g.group_id, g.name, g.color, g.image, g.description, g.category, COUNT(u.id) as mbti_count
+        FROM groups g
+        JOIN user_groups ug ON g.id = ug.group_id
+        JOIN users u ON ug.user_id = u.user_id
+        WHERE g.is_private = 0 AND u.mbti = '$mbti'
+        GROUP BY g.id
+        ORDER BY mbti_count DESC, g.created_at DESC
+        LIMIT 6
+    ";
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $popular_groups[] = $row;
+    }
+}
+
+// Layer 3: Random public groups
+$random_groups = [];
+$sql = "SELECT id, group_id, name, color, image, description, category FROM groups WHERE is_private = 0 ORDER BY RAND() LIMIT 6";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+    $random_groups[] = $row;
+}
+
+function paginate_groups($groups, $layer_name) {
+    $groups_per_page = 4;
+    $page = isset($_GET[$layer_name . '_page']) ? max(1, intval($_GET[$layer_name . '_page'])) : 1;
+    $total = count($groups);
+    $total_pages = ceil($total / $groups_per_page);
+    $start = ($page - 1) * $groups_per_page;
+    $paged_groups = array_slice($groups, $start, $groups_per_page);
+
+    return [
+        'groups' => $paged_groups,
+        'page' => $page,
+        'total_pages' => $total_pages
+    ];
+}
+
+// Paginate each layer
+$interested_pagination = paginate_groups($interested_groups, 'interested');
+$popular_pagination = paginate_groups($popular_groups, 'popular');
+$random_pagination = paginate_groups($random_groups, 'random');
 ?>
 
 <!DOCTYPE html>
@@ -93,105 +151,152 @@ if (isset($_SESSION['user_id'])) {
 <body>
   <div class="container">
       <!-- Header -->
-      <header class="top-header">
-        <div class="breadcrumbs" style="display: flex; align-items: center; gap: 16px;">
-          <a href="index.php">Main</a>
+      <header class="top-header" style="position:fixed;top:0;left:240px;right:0;height:90px;background:#fff;display:flex;flex-direction:row;align-items:center;justify-content:space-between;z-index:100;box-shadow:0 2px 8px #7b26e9;padding:0 32px;">
+    <div>
+        
+        <form method="POST" style="margin-top:8px;display:flex;justify-content:center;">
+            <div style="display:flex;gap:18px;align-items:center;justify-content:center;background:#f8faff;padding:10px 0;border-radius:16px;box-shadow:0 2px 12px #3a7bd522;width:fit-content;">
+                <?php
+                $categories = ['music','sport','movie','game','tourism'];
+                foreach ($categories as $cat):
+                ?>
+                    <button type="submit" name="interestCategory" value="<?= $cat ?>"
+                        style="background:<?= ($interested_category == $cat) ? 'linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%)' : 'none' ?>;
+                               color:<?= ($interested_category == $cat) ? '#fff' : '#222' ?>;
+                               border:none;font-size:1.08em;padding:8px 22px;border-radius:8px;cursor:pointer;font-weight:600;transition:background 0.18s, color 0.18s;box-shadow:<?= ($interested_category == $cat) ? '0 2px 8px #3a7bd522' : 'none' ?>;">
+                        <?= ucfirst($cat) ?>
+                    </button>
+                <?php endforeach; ?>
+                <button type="submit" name="interestCategory" value="all"
+                    style="background:<?= ($interested_category == 'all' || !$interested_category) ? 'linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%)' : 'none' ?>;
+                           color:<?= ($interested_category == 'all' || !$interested_category) ? '#fff' : '#222' ?>;
+                           font-size:1.08em;padding:8px 22px;border-radius:8px;cursor:pointer;font-weight:700;border:none;box-shadow:<?= ($interested_category == 'all' || !$interested_category) ? '0 2px 8px #3a7bd522' : 'none' ?>;">
+                    All &nbsp; <i class="bx bx-chevron-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="user-profile-bar" style="display:flex;align-items:center;gap:18px;">
+        <div class="user-profile-info" style="display:flex;align-items:center;gap:10px;">
+            <a href="profile.php" style="display:flex;align-items:center;text-decoration:none;gap:10px;">
+                <?php
+                $profile_img = !empty($user_data['image']) ? $user_data['image'] : '';
+                if ($profile_img && file_exists($profile_img)) {
+                    echo '<img src="' . htmlspecialchars($profile_img) . '" alt="Profile" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #3a7bd5;">';
+                } else {
+                    echo '<i class="bx bx-user-circle" style="font-size:2em;color:#3a7bd5;"></i>';
+                }
+                ?>
+                <span style="font-weight:600;font-size:1.08em;color:#222;">
+                    <?= htmlspecialchars($user_data['user_name'] ?? 'User') ?>
+                </span>
+            </a>
         </div>
-        <div class="search-bar" style="display: flex; align-items: center; gap: 8px;">
-          <form id="searchForm" style="display: flex; align-items: center; gap: 8px;">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search group..." style="height:32px; font-size:1em;">
-            <select id="searchType" class="form-select" style="height:32px; font-size:1em;">
-              <option value="name">Name</option>
-              <option value="category">Category</option>
-            </select>
-          </form>
-        </div>
-      </header>
+    </div>
+</header>
   </div>
 
   <!-- Sidebar -->
   <nav id="sidebar">
         <a href="#" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text">Menu</span>
+            <img src="images/Logo-nobg.png" alt="Logo">
+            
         </a>
         <ul class="sidebar-menu">
-            <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
-            <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-            <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
-        </ul>
-        <ul class="sidebar-menu">
-            <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+            <li><a href="index.php"><i class="bx bx-home"></i>Main</a></li>
+            <li><a href="group.php"><i class="bx bxs-group"></i>My Group</a></li>
+            <li><a href="about.php"><i class="bx bxs-group"></i>About</a></li>
+            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i>Contact us</a></li>
+            <li><a href="profile.php"><i class="bx bx-user"></i>Profile</a></li>
+            <li><a href="logout.php"><i class="bx bx-log-out"></i>Logout</a></li>
         </ul>
     </nav>
 
-<?php if ($show_interest_modal): ?>
-    <div class="interest-box">
-        <button onclick="document.getElementById('interestCategoryBox').style.display='block';this.style.display='none';"
-            class="interest-btn">
-            <i class="bx bxs-star"></i> Looking for group
-        </button>
-        <div id="interestCategoryBox" class="interest-category-box" style="display:none;margin-top:24px;">
-            <form id="interestForm" method="POST">
-                <label for="interestCategory">
-                    What group category are you interested in?
-                </label>
-                <select id="interestCategory" name="interestCategory" required>
-                    <option value="">Select category...</option>
-                    <option value="game">Game</option>
-                    <option value="music">Music</option>
-                    <option value="movie">Movie</option>
-                    <option value="sport">Sport</option>
-                    <option value="tourism">Tourism</option>
-                    <option value="other">Other</option>
-                </select>
-                <button type="submit">OK</button>
-            </form>
-        </div>
-    </div>
-<?php endif; ?>
 
-<!-- Group Grid -->
-<div class="user-grid">
-    <?php foreach ($groups as $group): ?>
-        <?php
-        // Check if user already joined this group
-        $already_joined = false;
-        if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
-            $check = mysqli_query($con, "SELECT 1 FROM user_groups WHERE user_id = '$user_id' AND group_id = '{$group['id']}' LIMIT 1");
-            $already_joined = mysqli_num_rows($check) > 0;
-        }
-        ?>
-        <div class="user-card"
-           data-name="<?= strtolower(htmlspecialchars($group['name'])) ?>"
-           data-category="<?= strtolower(htmlspecialchars($group['category'])) ?>"
-           style="cursor:pointer;text-decoration:none;">
-            <div class="user-image" style="background:<?= htmlspecialchars($group['color'] ?? '#eaf3ff') ?>;">
-                <i class="bx bxs-group" style="font-size:2.8em;color:#fff;"></i>
-            </div>
-            <div class="user-info">
-                <div class="user-name"><?= htmlspecialchars($group['name']) ?></div>
-                <div class="user-mbti"><?= ucfirst(htmlspecialchars($group['category'])) ?></div>
-                <div class="user-email"><?= htmlspecialchars($group['description']) ?></div>
-            </div>
-            <?php if ($already_joined): ?>
-                <a href="chat.php?group_id=<?= $group['id'] ?>" class="go-group-btn"
-                   style="margin-top:14px;width:100%;background:#3a7bd5;color:#fff;border:none;border-radius:8px;padding:10px 0;font-size:1em;font-weight:600;cursor:pointer;text-align:center;display:block;text-decoration:none;transition:background 0.2s;">
-                    <i class="bx bx-chat"></i> Go to Group
-                </a>
-            <?php else: ?>
-                <button class="join-btn"
-                    onclick="confirmJoin(<?= $group['id'] ?>)"
-                    style="margin-top:14px;width:100%;background:#667eea;color:#fff;border:none;border-radius:8px;padding:10px 0;font-size:1em;font-weight:600;cursor:pointer;transition:background 0.2s;">
-                    <i class="bx bx-log-in"></i> Join Group
-                </button>
+
+<!-- Main grid layout for layers -->
+<div class="main-layers-grid">
+    <!-- Layer 1: Interested Groups (row 1, col 1) -->
+    <section class="layer layer-1">
+        <h2 style="font-size:1.2em;font-weight:700;color:#3a7bd5;margin-bottom:18px;">Groups Based on Your Interest</h2>
+        <div class="group-grid">
+            <?php foreach ($interested_pagination['groups'] as $group): ?>
+                <?php include 'group_card_template.php'; ?>
+            <?php endforeach; ?>
+            <?php if (empty($interested_pagination['groups'])): ?>
+                <div style="color:#aaa;font-size:1.1em;">No groups found for your interest.</div>
             <?php endif; ?>
         </div>
-    <?php endforeach; ?>
+        <?php if ($interested_pagination['total_pages'] > 1): ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $interested_pagination['total_pages']; $i++): ?>
+                    <a href="?interested_page=<?= $i ?>" class="<?= $i == $interested_pagination['page'] ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
+    </section>
+    <!-- Layer 2: Popular Groups by MBTI (row 1, col 2) -->
+    <section class="layer layer-2">
+        <h2 style="font-size:1.2em;font-weight:700;color:#5636d6;margin-bottom:18px;">
+        Popular Groups for Your MBTI (<?= htmlspecialchars($user_data['mbti'] ?? '') ?>)
+    </h2>
+
+    <?php if (empty($user_data['mbti'])): ?>
+        <div style="background:#fffbe6;border-radius:18px;box-shadow:0 2px 12px #ffe06644;padding:32px 24px;margin-bottom:24px;text-align:center;">
+            <div style="font-size:1.15em;font-weight:600;color:#5636d6;margin-bottom:18px;">
+                You haven't set your MBTI yet!
+            </div>
+            <div style="display:flex;justify-content:center;gap:18px;">
+                <a href="https://www.16personalities.com/free-personality-test" target="_blank"
+                   style="background:linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%);color:#fff;font-weight:700;border-radius:10px;padding:12px 28px;font-size:1.08em;text-decoration:none;box-shadow:0 2px 8px #3a7bd522;transition:background 0.2s;">
+                    🧭 Find Your MBTI
+                </a>
+                <a href="edit_profile.php"
+                   style="background:#eaf3ff;color:#3a7bd5;font-weight:700;border-radius:10px;padding:12px 28px;font-size:1.08em;text-decoration:none;box-shadow:0 2px 8px #3a7bd522;transition:background 0.2s;">
+                    ✏️ Set Your MBTI
+                </a>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <div class="group-grid">
+        <?php foreach ($popular_pagination['groups'] as $group): ?>
+            <?php include 'group_card_template.php'; ?>
+        <?php endforeach; ?>
+        <?php if (empty($popular_pagination['groups'])): ?>
+            <div style="color:#aaa;font-size:1.1em;">No popular groups for your MBTI yet.</div>
+        <?php endif; ?>
+    </div>
+    <?php if ($popular_pagination['total_pages'] > 1): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $popular_pagination['total_pages']; $i++): ?>
+                <a href="?popular_page=<?= $i ?>" class="<?= $i == $popular_pagination['page'] ? 'active' : '' ?>"><?= $i ?></a>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
+    </section>
+    <!-- Layer 3: Random Public Groups (row 2, col 1 and 2) -->
+    <section class="layer layer-3">
+        <h2 style="font-size:1.2em;font-weight:700;color:#2575FC;margin-bottom:18px;">Random Public Groups</h2>
+        <div class="group-grid">
+            <?php foreach ($random_pagination['groups'] as $group): ?>
+                <?php include 'group_card_template.php'; ?>
+            <?php endforeach; ?>
+            <?php if (empty($random_pagination['groups'])): ?>
+                <div style="color:#aaa;font-size:1.1em;">No public groups found.</div>
+            <?php endif; ?>
+        </div>
+        <?php if ($random_pagination['total_pages'] > 1): ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $random_pagination['total_pages']; $i++): ?>
+                    <a href="?random_page=<?= $i ?>" class="<?= $i == $random_pagination['page'] ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
+    </section>
 </div>
+
+
 
 <script>
 function confirmJoin(groupId) {
@@ -199,35 +304,7 @@ function confirmJoin(groupId) {
         window.location.href = 'index.php?join=' + groupId;
     }
 }
-function closeInterestModal() {
-    document.getElementById('interestModal').style.display = 'none';
-}
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const searchType = document.getElementById('searchType');
-    const groupCards = document.querySelectorAll('.user-card');
 
-    function filterGroups() {
-        const query = searchInput.value.trim().toLowerCase();
-        const type = searchType.value; // "name" or "category"
-
-        groupCards.forEach(card => {
-            const value = card.dataset[type] || '';
-            if (value.includes(query)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    searchInput.addEventListener('input', filterGroups);
-    searchType.addEventListener('change', filterGroups);
-
-    <?php if ($show_interest_modal): ?>
-    document.getElementById('interestModal').style.display = 'flex';
-    <?php endif; ?>
-});
 </script>
 </body>
 </html>

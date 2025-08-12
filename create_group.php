@@ -22,7 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $group_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-    $sql = "INSERT INTO groups (group_id, name, pin, color, description, category, is_private) VALUES ('$group_id', '$name', '$pin', '$color', '$description', '$category', '$is_private')";
+    // Handle file upload
+    $image_path = '';
+    if (isset($_FILES['group_image']) && $_FILES['group_image']['error'] == UPLOAD_ERR_OK) {
+        $ext = pathinfo($_FILES['group_image']['name'], PATHINFO_EXTENSION);
+        $image_path = 'uploads/group_' . time() . '_' . rand(1000,9999) . '.' . $ext;
+        move_uploaded_file($_FILES['group_image']['tmp_name'], $image_path);
+        mysqli_query($con, "UPDATE groups SET image='$image_path' WHERE id='$group_id'");
+    }
+
+    $sql = "INSERT INTO groups (group_id, name, pin, color, image, description, category, is_private) VALUES ('$group_id', '$name', '$pin', '$color', '$image_path', '$description', '$category', '$is_private')";
     if (mysqli_query($con, $sql)) {
         // Get the inserted group's id using mysqli_insert_id for reliability
         $inserted_id = mysqli_insert_id($con);
@@ -57,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span>Create Group</span>
             </div>
         </div>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="input-group">
                 <label for="name">Project Name</label>
                 <input type="text" name="name" id="name" placeholder="Enter project name..." required>
@@ -95,6 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="input-group" id="pin-group" style="display:none;">
                 <label for="pin">Group PIN (4-5 digits)</label>
                 <input type="text" name="pin" id="pin" pattern="\d{4,5}" maxlength="5" minlength="4" placeholder="Enter PIN or leave blank for auto" style="width:100%;padding:12px 16px;border:2px solid #e3e8f0;border-radius:12px;font-size:1rem;">
+            </div>
+            <div class="input-group">
+                <label for="group_image">Group Image</label>
+                <input type="file" name="group_image" accept="image/*">
             </div>
             <button type="submit" class="create-btn">Create Group</button>
         </form>

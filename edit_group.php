@@ -25,6 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_group'])) {
     $is_private = isset($_POST['is_private']) ? intval($_POST['is_private']) : 0;
     $pin = $is_private ? mysqli_real_escape_string($con, $_POST['pin']) : $group['pin'];
     mysqli_query($con, "UPDATE groups SET name='$name', description='$description', color='$color', category='$category', is_private='$is_private', pin='$pin' WHERE id='$group_id'");
+    // Handle image upload
+    $image_path = '';
+    if (isset($_FILES['group_image']) && $_FILES['group_image']['error'] == UPLOAD_ERR_OK) {
+        $ext = pathinfo($_FILES['group_image']['name'], PATHINFO_EXTENSION);
+        $image_path = 'uploads/group_' . time() . '_' . rand(1000,9999) . '.' . $ext;
+        move_uploaded_file($_FILES['group_image']['tmp_name'], $image_path);
+        mysqli_query($con, "UPDATE groups SET image='$image_path' WHERE id='$group_id'");
+    }
     // Redirect back to chat page after update
     header("Location: chat.php?group_id=$group_id");
     exit();
@@ -60,6 +68,10 @@ while ($row = mysqli_fetch_assoc($res)) {
     <link rel="stylesheet" href="CSS code/create_group.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
+        body {
+            background: linear-gradient(120deg, #eaf3ff 0%, #fff 100%);
+            font-family: 'Poppins', sans-serif;
+        }
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -75,11 +87,10 @@ while ($row = mysqli_fetch_assoc($res)) {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         .create-group-modal {
             background: #fff;
-            border-radius: 28px;
-            width: 430px;
+            border-radius: 32px;
+            width: 420px;
             max-width: 98vw;
             box-shadow: 0 10px 32px #342e3720;
             position: relative;
@@ -92,38 +103,32 @@ while ($row = mysqli_fetch_assoc($res)) {
             from { transform: translateY(40px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
         .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             padding: 22px 32px 18px 32px;
-            border-radius: 28px 28px 0 0;
+            border-radius: 32px 32px 0 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         .modal-title {
             display: flex;
             align-items: center;
             gap: 14px;
             font-size: 1.35rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 1px;
         }
-
         .group-icon {
             font-size: 1.7rem;
         }
-
         .create-group-modal form {
             padding: 28px 32px 24px 32px;
         }
-
         .input-group {
-            margin-bottom: 22px;
+            margin-bottom: 18px;
         }
-
         .input-group label {
             display: block;
             color: #3686ea;
@@ -132,7 +137,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             font-size: 1rem;
             letter-spacing: 0.5px;
         }
-
         .input-group input[type="text"],
         .input-group input[type="color"],
         .input-group textarea,
@@ -147,14 +151,12 @@ while ($row = mysqli_fetch_assoc($res)) {
             background: #f7f9fb;
             margin-top: 4px;
         }
-
         .input-group input[type="text"]:focus,
         .input-group textarea:focus,
         .input-group select:focus {
             border-color: #667eea;
             box-shadow: 0 2px 8px #667eea22;
         }
-
         .input-group input[type="color"] {
             width: 48px;
             height: 38px;
@@ -165,14 +167,12 @@ while ($row = mysqli_fetch_assoc($res)) {
             border: 2px solid #e3e8f0;
             padding: 2px;
         }
-
         .color-container {
             display: flex;
             align-items: center;
             gap: 14px;
             margin-top: 8px;
         }
-
         #colorPreview {
             display: inline-block;
             width: 32px;
@@ -182,22 +182,20 @@ while ($row = mysqli_fetch_assoc($res)) {
             background: #3a7bd5;
             box-shadow: 0 1px 4px #667eea22;
         }
-
         .input-group textarea {
             resize: vertical;
             min-height: 70px;
             max-height: 180px;
         }
-
         .create-btn {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             border: none;
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
@@ -207,7 +205,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             transform: translateY(-2px) scale(1.03);
             box-shadow: 0 4px 16px #764ba240;
         }
-
         .edit-success {
             background: #eafbe7;
             color: #2e7d32;
@@ -217,19 +214,25 @@ while ($row = mysqli_fetch_assoc($res)) {
             font-size: 1.08em;
             display: inline-block;
         }
-
+        .input-group img {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px #667eea22;
+            object-fit: cover;
+            border: 2px solid #eaf3ff;
+        }
         .member-list {
             margin-top: 32px;
             padding: 0 32px 24px 32px;
         }
-
         .member-list h4 {
             font-size: 1.15em;
             color: #3a7bd5;
             margin-bottom: 18px;
-            font-weight: 600;
+            font-weight: 700;
         }
-
         .member-item {
             display: flex;
             align-items: center;
@@ -240,7 +243,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             padding: 8px 14px;
             box-shadow: 0 1px 4px #667eea12;
         }
-
         .member-avatar {
             width:32px; height:32px;
             border-radius:50%;
@@ -248,18 +250,16 @@ while ($row = mysqli_fetch_assoc($res)) {
             display:flex;
             align-items:center;
             justify-content:center;
-            font-weight:600;
+            font-weight:700;
             color:#3a7bd5;
             font-size:1.1em;
             box-shadow: 0 1px 4px #667eea22;
         }
-
         .owner-badge {
             color: #ffce26;
             font-size: 1.2em;
             margin-left: 6px;
         }
-
         .kick-btn {
             background: #DB504A;
             color: #fff;
@@ -273,7 +273,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             box-shadow: 0 1px 4px #DB504A22;
         }
         .kick-btn:hover { background: #b92d23; }
-
         .member-mbti {
             background:#eaf3ff;
             padding:2px 8px;
@@ -284,7 +283,6 @@ while ($row = mysqli_fetch_assoc($res)) {
             color: #3a7bd5;
             font-weight: 500;
         }
-
         @media (max-width: 600px) {
             .create-group-modal {
                 width: 98vw;
@@ -293,16 +291,18 @@ while ($row = mysqli_fetch_assoc($res)) {
             .modal-header, .create-group-modal form, .member-list {
                 padding: 18px 8px;
             }
+            .input-group img {
+                width: 40px;
+                height: 40px;
+            }
         }
-
-        /* Allow scrolling on body when modal is open */
         body {
             overflow: auto !important;
         }
     </style>
 </head>
 <body>
-<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(135deg,#6A11CB,#2575FC);display:flex;align-items:center;justify-content:center;">
+<div class="modal-overlay">
     <div class="create-group-modal">
         <div class="modal-header">
             <span class="modal-title"><i class="bx bxs-group group-icon"></i> Edit Group</span>
@@ -328,7 +328,7 @@ while ($row = mysqli_fetch_assoc($res)) {
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_group'])): ?>
             <div class="edit-success"><i class="bx bx-check-circle"></i> Group updated successfully.</div>
         <?php endif; ?>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="input-group">
                 <label for="name">Group Name</label>
                 <input type="text" name="name" id="name" value="<?= htmlspecialchars($group['name']) ?>" required>
@@ -364,10 +364,17 @@ while ($row = mysqli_fetch_assoc($res)) {
                 <label for="pin">Group PIN (4-5 digits)</label>
                 <input type="text" name="pin" id="pin" pattern="\d{4,5}" maxlength="5" minlength="4" value="<?= htmlspecialchars($group['pin']) ?>">
             </div>
+            <div class="input-group">
+                <label for="group_image">Group Image</label>
+                <?php if (!empty($group['image'])): ?>
+                    <img src="<?= htmlspecialchars($group['image']) ?>" alt="Group Image">
+                <?php endif; ?>
+                <input type="file" name="group_image" accept="image/*">
+            </div>
             <button type="submit" name="update_group" class="create-btn">Update Group</button>
         </form>
         <div class="member-list">
-            <h4 style="margin-bottom:16px;">Members</h4>
+            <h4>Members</h4>
             <?php foreach ($members as $m): ?>
                 <div class="member-item">
                     <div class="member-avatar"><?= strtoupper($m['user_name'][0]) ?></div>
@@ -378,9 +385,7 @@ while ($row = mysqli_fetch_assoc($res)) {
                         <?php else: ?>
                             <a href="edit_group.php?group_id=<?= $group_id ?>&kick=<?= $m['user_id'] ?>" class="kick-btn" onclick="return confirm('Kick this member?');">Kick</a>
                         <?php endif; ?>
-                        <span class="member-mbti" style="background:#eaf3ff;padding:2px 8px;border-radius:8px;display:inline-block;margin-left:8px;">
-                            <?= htmlspecialchars($m['mbti']) ?>
-                        </span>
+                        <span class="member-mbti"><?= htmlspecialchars($m['mbti']) ?></span>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -18,23 +18,8 @@ if (isset($_POST['save_profile'])) {
     $mbti = mysqli_real_escape_string($con, $_POST['mbti']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
-    $portfolio = mysqli_real_escape_string($con, $_POST['portfolio']);
-    $portfolio_file_path = $user['portfolio_file'] ?? null;
+    $interested_category = mysqli_real_escape_string($con, $_POST['interested_category'] ?? $user['interested_category']);
     $image_path = $user['image'] ?? null;
-
-    if (isset($_FILES['portfolio_file']) && $_FILES['portfolio_file']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES['portfolio_file']['name'], PATHINFO_EXTENSION));
-        $allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
-        if (in_array($ext, $allowed)) {
-            $upload_dir = 'uploads/';
-            if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-            $filename = 'portfolio_' . $user_id . '_' . time() . '.' . $ext;
-            $target = $upload_dir . $filename;
-            if (move_uploaded_file($_FILES['portfolio_file']['tmp_name'], $target)) {
-                $portfolio_file_path = $target;
-            }
-        }
-    }
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
@@ -46,6 +31,8 @@ if (isset($_POST['save_profile'])) {
             $target = $upload_dir . $filename;
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
                 $image_path = $target;
+            } else {
+                echo "<div style='color:red;'>Failed to move uploaded file.</div>";
             }
         }
     }
@@ -55,13 +42,15 @@ if (isset($_POST['save_profile'])) {
         mbti = '$mbti',
         email = '$email',
         phone = '$phone',
-        portfolio = '$portfolio',
-        portfolio_file = " . ($portfolio_file_path ? "'$portfolio_file_path'" : "NULL") . ",
-        image = " . ($image_path ? "'$image_path'" : "NULL") . "
+        image = " . ($image_path ? "'$image_path'" : "NULL") . ",
+        interested_category = '$interested_category'
         WHERE user_id = '$user_id' LIMIT 1";
-    mysqli_query($con, $update);
-    header("Location: profile.php");
-    exit();
+    if (!mysqli_query($con, $update)) {
+        echo "<div style='color:red;'>Database update failed: " . mysqli_error($con) . "</div>";
+    } else {
+        header("Location: profile.php");
+        exit();
+    }
 }
 
 if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) {
@@ -84,67 +73,149 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
     <title>Edit Profile</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS code/join_group.css">
+    <style>
+        .edit-profile-card {
+          background: #fff;
+          border-radius: 32px;
+          box-shadow: 0 8px 32px #3a7bd520;
+          padding: 48px 40px 36px 40px;
+          width: 420px;
+          max-width: 98vw;
+          margin: 40px auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .edit-profile-title {
+          color: #3a7bd5;
+          font-size: 2rem;
+          font-weight: 800;
+          margin-bottom: 18px;
+          text-align: center;
+          letter-spacing: 1px;
+        }
+        .edit-profile-avatar {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-bottom: 24px;
+          border: 4px solid #3a7bd5;
+          box-shadow: 0 2px 8px #3a7bd520;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .edit-profile-avatar img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+          display: block;
+        }
+        .edit-profile-form .form-label {
+          color: #3a7bd5;
+          font-weight: 600;
+          margin-bottom: 4px;
+          font-size: 1rem;
+        }
+        .edit-profile-form .form-control {
+          border-radius: 10px;
+          border: 2px solid #eaf3ff;
+          background: #f8faff;
+          font-size: 1rem;
+          margin-bottom: 12px;
+          transition: border-color 0.2s;
+        }
+        .edit-profile-form .form-control:focus {
+          border-color: #3a7bd5;
+          box-shadow: 0 2px 8px #3a7bd522;
+        }
+        .edit-profile-btn {
+          width: 100%;
+          background: linear-gradient(90deg, #3a7bd5 0%, #764ba2 100%);
+          color: #fff;
+          text-align: center;
+          padding: 12px 0;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 1.1rem;
+          margin-top: 12px;
+          text-decoration: none;
+          transition: background 0.2s;
+          box-shadow: 0 2px 8px #3a7bd522;
+          border: none;
+        }
+        .edit-profile-btn:hover {
+          background: linear-gradient(90deg, #764ba2 0%, #3a7bd5 100%);
+        }
+        @media (max-width: 900px) {
+          .edit-profile-card { width: 98vw; padding: 24px 6vw; }
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Edit Profile</h2>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="about" class="form-label">About Me</label>
-            <textarea class="form-control" id="about" name="about" rows="3"><?php echo htmlspecialchars($user['about'] ?? ''); ?></textarea>
+    <div class="edit-profile-card">
+        <div class="edit-profile-title">Edit Profile</div>
+        <div class="edit-profile-avatar">
+            <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>" alt="Profile Image">
         </div>
-        <div class="mb-3">
-            <label for="mbti" class="form-label" style="text-transform: uppercase;">MBTI</label>
-            <select class="form-control" id="mbti" name="mbti" style="text-transform: uppercase;">
-                <?php
-                $mbti_types = [
-                    "INTJ","INTP","ENTJ","ENTP",
-                    "INFJ","INFP","ENFJ","ENFP",
-                    "ISTJ","ISFJ","ESTJ","ESFJ",
-                    "ISTP","ISFP","ESTP","ESFP"
-                ];
-                foreach ($mbti_types as $type) {
-                    $selected = (strtoupper($user['mbti']) == $type) ? 'selected' : '';
-                    echo "<option value=\"$type\" $selected>$type</option>";
-                }
-                ?>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="portfolio" class="form-label">Portfolio</label>
-            <div class="d-flex gap-2">
-                <input type="url" class="form-control" id="portfolio" name="portfolio" placeholder="Portfolio Link (optional)" value="<?php echo htmlspecialchars($user['portfolio'] ?? ''); ?>">
-                <input type="file" class="form-control" id="portfolio_file" name="portfolio_file" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar">
+        <form method="POST" enctype="multipart/form-data" class="edit-profile-form">
+            <div class="mb-3">
+                <label for="about" class="form-label">About Me</label>
+                <textarea class="form-control" id="about" name="about" rows="3"><?php echo htmlspecialchars($user['about'] ?? ''); ?></textarea>
             </div>
-            <?php if (!empty($user['portfolio'])): ?>
-                <div class="mt-2">
-                    <a href="<?= htmlspecialchars($user['portfolio']) ?>" target="_blank">Current Portfolio Link</a>
-                </div>
-            <?php endif; ?>
-            <?php if (!empty($user['portfolio_file'])): ?>
-                <div class="mt-2">
-                    <a href="<?= htmlspecialchars($user['portfolio_file']) ?>" target="_blank">Current Portfolio File</a>
-                </div>
-            <?php endif; ?>
-        </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Profile Image</label><br>
-            <?php if (!empty($user['image'])): ?>
-                <img src="<?= htmlspecialchars($user['image']) ?>" alt="Profile Image" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
-            <?php endif; ?>
-            <input type="file" class="form-control" id="image" name="image" accept="image/*">
-        </div>
-        <button type="submit" name="save_profile" class="btn btn-primary">Save</button>
-        <a href="profile.php" class="btn btn-secondary">Cancel</a>
-    </form>
+            <div class="mb-3">
+                <label for="mbti" class="form-label" style="text-transform: uppercase;">MBTI</label>
+                <select class="form-control" id="mbti" name="mbti" style="text-transform: uppercase;">
+                    <?php
+                    $mbti_types = [
+                        "INTJ","INTP","ENTJ","ENTP",
+                        "INFJ","INFP","ENFJ","ENFP",
+                        "ISTJ","ISFJ","ESTJ","ESFJ",
+                        "ISTP","ISFP","ESTP","ESFP"
+                    ];
+                    foreach ($mbti_types as $type) {
+                        $selected = (strtoupper($user['mbti']) == $type) ? 'selected' : '';
+                        echo "<option value=\"$type\" $selected>$type</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="interested_category" class="form-label">Interested Category</label>
+                <select class="form-control" id="interested_category" name="interested_category" required>
+                    <?php
+                    $categories = ['game','music','movie','sport','tourism','other'];
+                    foreach ($categories as $cat) {
+                        $selected = ($user['interested_category'] == $cat) ? 'selected' : '';
+                        echo "<option value=\"$cat\" $selected>" . ucfirst($cat) . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>">
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Profile Image</label><br>
+                <?php if (!empty($user['image'])): ?>
+                    <img src="<?= htmlspecialchars($user['image']) ?>" alt="Profile Image" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
+                <?php endif; ?>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            </div>
+            
+            <button type="submit" name="save_profile" class="edit-profile-btn">Save</button>
+            <a href="profile.php" class="edit-profile-btn" style="background:#eaf3ff;color:#3a7bd5;margin-top:8px;">Cancel</a>
+        </form>
+    </div>
 </div>
 </body>
 </html>

@@ -245,22 +245,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <h1 style="color: #ffffffff;">Groups Management</h1>
             </div>
             <div class="content-wrapper">
-                <?php if (isset($_GET['deleted'])): ?>
-                    <div class="success-msg"><i class="bx bx-check-circle"></i> Group deleted successfully.</div>
-                <?php endif; ?>
-                <div id="groupMembersModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" id="closeGroupModal">&times;</span>
-                        <h3 class="modal-title"><i class="bx bx-group"></i> Group Members</h3>
-                        <div id="groupMembersList" class="modal-list">Loading...</div>
-                    </div>
-                </div>
                 <table class="groups-table">
+                    <!-- Table Header -->
                     <thead>
                         <tr>
                             <th>Color</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Category</th>
                             <th>Members</th>
                             <th>Created</th>
                             <th>Group ID</th>
@@ -277,6 +269,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             </td>
                             <td class="group-name"><?= htmlspecialchars($group['name']) ?></td>
                             <td class="group-desc"><?= htmlspecialchars($group['description'] ?? '') ?></td>
+                            <td><?= ucfirst(htmlspecialchars($group['category'])) ?></td>
                             <td><?= $group['member_count'] ?></td>
                             <td class="group-date">
                                 <?php if (isset($group['created_at'])): ?>
@@ -295,6 +288,18 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?php if (isset($_GET['deleted'])): ?>
+                    <div class="success-msg" style="margin-top:24px;">
+                        <i class="bx bx-check-circle"></i> Group deleted successfully.
+                    </div>
+                <?php endif; ?>
+                <div id="groupMembersModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" id="closeGroupModal">&times;</span>
+                        <h3 class="modal-title"><i class="bx bx-group"></i> Group Members</h3>
+                        <div id="groupMembersList" class="modal-list">Loading...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

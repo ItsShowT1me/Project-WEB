@@ -253,40 +253,29 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
 </head>
 <body>
 <!-- Sidebar from group.php -->
-<nav id="sidebar">
-    <a href="#" class="brand">
-        <i class="bx bxs-smile"></i>
-        <span class="text">Menu</span>
+<div id="sidebar" class="sidebar">
+    <a href="index.php" class="brand">
+        <img src="images/Logo-nobg.png" alt="Logo">
+        
     </a>
     <ul class="sidebar-menu">
-        <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-        <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
-        <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-        <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-        <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
+        <li><a href="index.php"><i class="bx bx-home"></i>Main</a></li>
+        <li><a href="group.php"><i class="bx bxs-group"></i>My Group</a></li>
+        <li><a href="about.php"><i class="bx bxs-group"></i>About</a></li>
+        <li><a href="contact-us.php"><i class="bx bxs-envelope"></i>Contact us</a></li>
+        <li><a href="profile.php"><i class="bx bx-user"></i>Profile</a></li>
+        <li><a href="logout.php"><i class="bx bx-log-out"></i>Logout</a></li>
     </ul>
-    <ul class="sidebar-menu">
-        <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
-    </ul>
-</nav>
+</div>
 <a href="group.php" class="return-btn"><i class="bx bx-arrow-back"></i> Return</a>
 <div class="container">
     <?php if ($group): ?>
     <div class="sidebar">
-        <h4 style="text-align:center;">Group Details</h4>
-        <div class="detail-label">Group Name:</div>
-        <div class="detail-value">
-            <span class="color-badge" style="background:<?= htmlspecialchars($group['color']) ?>"></span>
-            <?= htmlspecialchars($group['name']) ?>
-            <span class="group-type" style="background:#eaf3ff;color:#3a7bd5;padding:4px 12px;border-radius:10px;font-weight:500;margin-left:8px;">
-                <?= $group['is_private'] ? 'Private' : 'Public' ?>
-            </span>
-            <span class="group-category" style="background:#f7f9fb;color:#764ba2;padding:4px 12px;border-radius:10px;font-weight:500;margin-left:8px;">
-                <?= ucfirst($group['category']) ?>
-            </span>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h4 style="text-align:center;">Group Details</h4>
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $creator_id): ?>
                 <a href="edit_group.php?group_id=<?= $group_id ?>" class="edit-group-btn" style="
-                    background: #667eea;
+                    background: linear-gradient(90deg,#667eea 0%,#3a7bd5 100%);
                     color: #fff;
                     border: none;
                     border-radius: 8px;
@@ -300,20 +289,34 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
                     gap: 6px;
                     box-shadow: 0 2px 8px #667eea22;
                     transition: background 0.2s;
-                " onmouseover="this.style.background='#3a7bd5'" onmouseout="this.style.background='#667eea'">
+                " onmouseover="this.style.background='#3a7bd5'" onmouseout="this.style.background='linear-gradient(90deg,#667eea 0%,#3a7bd5 100%)'">
                     <i class="bx bx-edit"></i> Edit Group
                 </a>
             <?php endif; ?>
         </div>
+        <div class="detail-label">Group Name:</div>
+        <div class="detail-value" style="display:flex;align-items:center;gap:8px;">
+            <span class="color-badge" style="background:<?= htmlspecialchars($group['color']) ?>"></span>
+            <span style="font-size:1.18em;font-weight:700;color:#5636d6;"><?= htmlspecialchars($group['name']) ?></span>
+            <span class="group-type" style="background:#eaf3ff;color:#3a7bd5;padding:4px 12px;border-radius:10px;font-weight:500;">
+                <?= $group['is_private'] ? 'Private' : 'Public' ?>
+            </span>
+        </div>
+        <div class="detail-label">Category:</div>
+        <div class="detail-value">
+            <span class="group-category" style="background:#f7f9fb;color:#764ba2;padding:4px 12px;border-radius:10px;font-weight:500;">
+                <?= ucfirst($group['category']) ?>
+            </span>
+        </div>
         <div class="detail-label">Created:</div>
         <div class="detail-value"><?= date('d/m/Y', strtotime($group['created_at'])) ?></div>
         <div class="detail-label">Group Pin:</div>
-        <div class="detail-value"><?= htmlspecialchars($group['pin']) ?></div>
-        <div class="detail-label">Project Detail:</div>
+        <div class="detail-value" style="font-family:monospace;font-size:1.08em;"><?= htmlspecialchars($group['pin']) ?></div>
+        <div class="detail-label">Description:</div>
         <div class="group-description"><?= nl2br(htmlspecialchars($group['description'])) ?></div>
         <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $creator_id): ?>
             <a href="chat.php?group_id=<?= $group_id ?>&leave=1" class="leave-group-btn" style="
-                background: #DB504A;
+                background: linear-gradient(90deg,#DB504A 0%,#b92d23 100%);
                 color: #fff;
                 border: none;
                 border-radius: 8px;
@@ -333,38 +336,40 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
             </a>
         <?php endif; ?>
     </div>
-    <div class="chat-area">
-        <h4><i class="bx bx-chat"></i> Group Chat</h4>
+    <div class="chat-area" style="border-radius:0px;box-shadow:0 4px 16px #3a7bd520;">
+        <h4 style="margin-bottom:16px;color:#3a7bd5;"><i class="bx bx-chat"></i> Group Chat</h4>
         <div id="chat-box"></div>
-        <form id="chat-form" enctype="multipart/form-data">
+        <form id="chat-form" enctype="multipart/form-data" style="margin-top:12px;">
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
-            <input type="text" name="message" placeholder="Type your message..." required autocomplete="off">
+            <input type="text" name="message" placeholder="Type your message..." required autocomplete="off" style="font-size:1.08em;">
             <input type="file" name="file" id="file-input" style="display:none;">
             <button type="button" id="attach-btn" title="Attach file"><i class="bx bx-paperclip"></i></button>
             <button type="submit" class="send-btn" title="Send"><i class="bx bx-send"></i></button>
         </form>
     </div>
-    <div class="member-list">
-        <h4><i class="bx bx-group"></i> Members</h4>
+    <div class="member-list" style="border-radius:0px;box-shadow:0 4px 16px #3a7bd520;">
+        <h4 style="margin-bottom:24px;color:#3a7bd5;"><i class="bx bx-group"></i> Members</h4>
         <?php if (count($members) > 0): ?>
             <?php foreach ($members as $m): ?>
-                <div class="member-item">
-                    <div class="member-avatar"><?= strtoupper($m['user_name'][0]) ?></div>
+                <div class="member-item" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid #e0e0e0;">
+                    <div class="member-avatar" style="width:38px;height:38px;background:#3a7bd5;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2em;">
+                        <?= strtoupper($m['user_name'][0]) ?>
+                    </div>
                     <div>
-                        <div class="member-name">
+                        <div class="member-name" style="font-weight:bold;color:#222;">
                             <?= htmlspecialchars($m['user_name']) ?>
                             <?php if ($m['user_id'] == $creator_id): ?>
                                 <span title="Group Creator" style="margin-left:6px;font-size:1.2em;color:#ffce26;">🛠️</span>
                             <?php endif; ?>
                         </div>
-                        <div class="member-mbti" style="background:#eaf3ff;padding:2px 8px;border-radius:8px;display:inline-block;margin-top:2px;">
+                        <div class="member-mbti" style="background:#eaf3ff;padding:2px 8px;border-radius:8px;display:inline-block;margin-top:2px;color:#3a7bd5;font-size:0.98em;">
                             <?= htmlspecialchars($m['mbti']) ?>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="no-member">No members in this group yet.</div>
+            <div class="no-member" style="color:#aaa;font-size:1.08em;">No members in this group yet.</div>
         <?php endif; ?>
     </div>
     <?php else: ?>

@@ -37,33 +37,30 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
     <!-- Sidebar Menu -->
     <nav id="sidebar">
         <a href="index.php" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text">Menu</span>
+            <img src="images/Logo-nobg.png" alt="Logo">
+            
         </a>
         <ul class="sidebar-menu">
-            <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
-            <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-            <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
-            
-        </ul>
-        <ul class="sidebar-menu">
-            <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
+            <li><a href="index.php"><i class="bx bx-home"></i>Main</a></li>
+            <li><a href="group.php"><i class="bx bxs-group"></i>My Group</a></li>
+            <li><a href="about.php"><i class="bx bxs-group"></i>About</a></li>
+            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i>Contact us</a></li>
+            <li><a href="profile.php"><i class="bx bx-user"></i>Profile</a></li>
+            <li><a href="logout.php"><i class="bx bx-log-out"></i>Logout</a></li>
         </ul>
     </nav>
 
 
     <section class="about-hero">
         <div class="container">
-            <h1>About TypeToWork News</h1>
+            <h1>About TypeHUB News</h1>
             <p>Your trusted source for MBTI news, insights, and community.</p>
         </div>
     </section>
     <section class="about-mission">
         <div class="container">
             <h2>Our Mission</h2>
-            <p>We aim to provide accurate, engaging, and up-to-date information about MBTI, personality types, and related topics, fostering a vibrant and supportive community.</p>
+            <p>TypeHub aims to enhance efficiency and elevate the team collaboration experience by using the Myers–Briggs Type Indicator (MBTI) as its primary tool for assessing personalities. This enables the platform to match individuals with similar or compatible personality types, ensuring the formation of well-suited advisory teams. By considering personality similarities in team formation, TypeHub reduces potential conflicts arising from differences in perspectives, fosters smoother and more effective communication, and directly supports the achievement of users’ goals. Ultimately, this approach enhances satisfaction and cultivates a positive, long-term collaborative experience.</p>
         </div>
     </section>
     <section class="about-team">

@@ -292,21 +292,19 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
 <body>
   <!-- Sidebar -->
   <nav id="sidebar">
-        <a href="#" class="brand">
-            <i class="bx bxs-smile"></i>
-            <span class="text" >Menu</span>
-        </a>
-        <ul class="sidebar-menu">
-            <li><a href="index.php"><i class="bx bx-home"></i><span class="text">Main</span></a></li>
-            <li><a href="group.php"><i class="bx bxs-group"></i><span class="text">Group</span></a></li>
-            <li><a href="about.php"><i class="bx bxs-group"></i><span class="text">About</span></a></li>
-            <li><a href="contact-us.php"><i class="bx bxs-envelope"></i><span class="text">Contact us</span></a></li>
-            <li><a href="profile.php"><i class="bx bx-user"></i><span class="text">Profile</span></a></li>
-        </ul>
-        <ul class="sidebar-menu">
-            <li><a href="logout.php"><i class="bx bx-log-out"></i><span class="text">Logout</span></a></li>
-        </ul>
-    </nav>
+    <a href="index.php" class="brand">
+        <img src="images/Logo-nobg.png" alt="Logo">
+        
+    </a>
+    <ul class="sidebar-menu">
+        <li><a href="index.php"><i class="bx bx-home"></i>Main</a></li>
+        <li><a href="group.php"><i class="bx bxs-group"></i>My Group</a></li>
+        <li><a href="about.php"><i class="bx bxs-group"></i>About</a></li>
+        <li><a href="contact-us.php"><i class="bx bxs-envelope"></i>Contact us</a></li>
+        <li><a href="profile.php"><i class="bx bx-user"></i>Profile</a></li>
+        <li><a href="logout.php"><i class="bx bx-log-out"></i>Logout</a></li>
+    </ul>
+</nav>
   <div class="container">
     
 <div class="profile-wide-container">
@@ -329,18 +327,10 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
       <div class="profile-info-value"><?= htmlspecialchars($user['phone']) ?></div>
       <div class="profile-info-label">MBTI Type</div>
       <div class="profile-info-value"><?= htmlspecialchars($user['mbti']) ?></div>
-      <div class="profile-info-label">Portfolio</div>
+      
+      <div class="profile-info-label">Interested in Group</div>
       <div class="profile-info-value">
-        <?php if (!empty($user['portfolio'])): ?>
-          <a href="<?= htmlspecialchars($user['portfolio']) ?>" target="_blank">Portfolio Link</a>
-        <?php endif; ?>
-        <?php if (!empty($user['portfolio_file'])): ?>
-          <?php if (!empty($user['portfolio'])): ?> | <?php endif; ?>
-          <a href="<?= htmlspecialchars($user['portfolio_file']) ?>" target="_blank">Portfolio File</a>
-        <?php endif; ?>
-        <?php if (empty($user['portfolio']) && empty($user['portfolio_file'])): ?>
-          <span class="profile-no-link">No portfolio provided</span>
-        <?php endif; ?>
+          <?= !empty($user['interested_category']) ? ucfirst(htmlspecialchars($user['interested_category'])) : '<span class="profile-no-link">Not set</span>' ?>
       </div>
     </div>
     <a href="edit_profile.php" class="profile-wide-edit-btn">Edit</a>
