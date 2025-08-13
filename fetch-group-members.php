@@ -26,9 +26,10 @@ while ($row = mysqli_fetch_assoc($res)) {
 
 // Output JSON with pagination info
 header('Content-Type: application/json');
+// Example response from fetch-group-members.php
 echo json_encode([
-    'members' => $members,
-    'total_pages' => $total_pages,
-    'page' => $page
+    "members" => $members,
+    "total_pages" => $total_pages,
+    "page" => $page
 ]);
 ?>
