@@ -530,8 +530,18 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                 modal.style.display = 'flex';
                 membersList.innerHTML = 'Loading...';
                 fetch('fetch-group-members.php?group_id=' + groupId)
-                    .then(response => response.text())
-                    .then(html => {
+                    .then(response => response.json())
+                    .then(data => {
+                        let html = '<ul>';
+                        data.members.forEach(function(m){
+                            let avatar = m.image ? `<img src="${m.image}" class="modal-member-avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">` : `<div class="modal-member-avatar">${m.user_name.charAt(0).toUpperCase()}</div>`;
+                            html += `<li>
+                                ${avatar}
+                                <span class="modal-member-name">${m.user_name}</span>
+                                <span class="modal-member-mbti">${m.mbti}</span>
+                            </li>`;
+                        });
+                        html += '</ul>';
                         membersList.innerHTML = html;
                     });
             });
