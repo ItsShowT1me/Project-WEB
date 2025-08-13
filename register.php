@@ -84,7 +84,7 @@ session_start();
         <button class="btn-submit" id="button" value="Signup">Sign Up <i class='bx bx-log-out'></i></button>
       </div>
       <div class="switch-form">
-        <span>Already have an account? <a href="login_f1.php">Login</a></span>
+        <span>Already have an account? <a href="login.php">Login</a></span>
       </div>
     </form>
   </div>
@@ -132,3 +132,4 @@ session_start();
 
 </body>
 </html>
+
