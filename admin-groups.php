@@ -302,7 +302,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
         <div class="main-content">
             <div class="header">
-                <h1 style="color: #ffffffff;">Groups Management</h1>
+                <h1 style="color: #000000ff;">Groups Management</h1>
             </div>
             <div class="content-wrapper">
                 <table class="groups-table">
