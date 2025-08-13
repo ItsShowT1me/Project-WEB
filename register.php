@@ -89,5 +89,46 @@ session_start();
     </form>
   </div>
   <script src="register_f1.js"></script>
+
+  <video autoplay muted loop id="bg-video">
+      <source src="pf_image/bg-gif.mp4" type="video/mp4">
+    </video>
+
+
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    
+    video#bg-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    
+    .content {
+        position: relative;
+        z-index: 1;
+        color: white;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        background: rgba(0,0,0,0.4);
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+
 </body>
 </html>

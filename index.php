@@ -171,7 +171,7 @@ $random_pagination = paginate_groups($random_groups, 'random');
                     style="background:<?= ($interested_category == 'all' || !$interested_category) ? 'linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%)' : 'none' ?>;
                            color:<?= ($interested_category == 'all' || !$interested_category) ? '#fff' : '#222' ?>;
                            font-size:1.08em;padding:8px 22px;border-radius:8px;cursor:pointer;font-weight:700;border:none;box-shadow:<?= ($interested_category == 'all' || !$interested_category) ? '0 2px 8px #3a7bd522' : 'none' ?>;">
-                    All &nbsp; <i class="bx bx-chevron-right"></i>
+                    
                 </button>
             </div>
         </form>
