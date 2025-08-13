@@ -274,9 +274,10 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
             </div>
             
             <button type="submit" name="save_profile" class="edit-profile-btn">Save</button>
-            <a href="profile.php" class="edit-profile-btn cancel-btn">Cancel</a>
+            
         </form>
     </div>
 </div>
 </body>
+
 </html>
