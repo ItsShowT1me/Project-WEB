@@ -92,7 +92,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 // Monthly user growth data
 $growth_data = [];
-for ($i = 5; $i >= 0; $i--) {
+for ($i = 11; $i >= 0; $i--) {
     $month = date('Y-m', strtotime("-$i months"));
     $result = mysqli_query($con, "SELECT COUNT(*) as count FROM users WHERE DATE_FORMAT(date, '%Y-%m') = '$month'");
     $count = mysqli_fetch_assoc($result)['count'];
@@ -449,15 +449,20 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
     </style>
 
     <script>
-        // User Growth Chart
+        // User Growth Chart (One Year)
         const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
         new Chart(userGrowthCtx, {
             type: 'line',
             data: {
-                labels: <?= json_encode(array_column($growth_data, 'month')) ?>,
+                labels: <?= json_encode(array_map(function($i) { return date('M', strtotime("-$i months")); }, range(11,0))) ?>,
                 datasets: [{
                     label: 'New Users',
-                    data: <?= json_encode(array_column($growth_data, 'count')) ?>,
+                    data: <?= json_encode(array_map(function($i) use ($con) {
+                        $month = date('Y-m', strtotime("-$i months"));
+                        $result = mysqli_query($con, "SELECT COUNT(*) as count FROM users WHERE DATE_FORMAT(date, '%Y-%m') = '$month'");
+                        $count = mysqli_fetch_assoc($result)['count'];
+                        return $count;
+                    }, range(11,0))) ?>,
                     backgroundColor: 'rgba(102, 126, 234, 0.1)',
                     borderColor: '#667eea',
                     borderWidth: 3,
@@ -468,14 +473,14 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        display: false
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'User Growth (<?= date("Y") ?>)'
                     }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+                    y: { beginAtZero: true }
                 }
             }
         });

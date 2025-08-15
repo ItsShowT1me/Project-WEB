@@ -56,7 +56,6 @@ $(function(){
         var avatar = msg.image ? `<img src="${msg.image}" class="chat-avatar">` : `<div class="chat-avatar">${msg.user_name.charAt(0).toUpperCase()}</div>`;
         var fileHtml = '';
         if (msg.file_path) {
-            // Show image if file is an image
             var ext = msg.file_path.split('.').pop().toLowerCase();
             if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
                 fileHtml = `<div class="chat-file"><img src="${msg.file_path}" style="max-width:180px;max-height:180px;border-radius:10px;margin-top:8px;"></div>`;
@@ -71,11 +70,14 @@ $(function(){
                 <div class="chat-header">
                     <span class="chat-user">${msg.user_name}</span>
                     <span class="chat-mbti">(${msg.mbti})</span>
-                    <span class="chat-time">${msg.time || ''}</span>
                 </div>
                 <div class="chat-text">${msg.message}</div>
                 ${fileHtml}
+                <div class="chat-time" style="text-align:right;color:#888;font-size:0.92em;margin-top:6px;">
+                    ${msg.datetime || ''}
+                </div>
             </div>
+            ${isMine ? avatar : ''}
         </div>`;
     }
 });

@@ -279,5 +279,4 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
     </div>
 </div>
 </body>
-
 </html>

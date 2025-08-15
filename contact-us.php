@@ -20,10 +20,21 @@ $message = '';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $feedback_message = mysqli_real_escape_string($con, $_POST['message']);
-    
+    $file_path = null;
+
+    // Handle file upload
+    if (!empty($_FILES['evidence_file']['name'])) {
+        $target_dir = "uploads/feedback/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+        $file_name = 'fb_' . $user_id . '_' . time() . '_' . rand(1000,9999) . '.' . pathinfo($_FILES['evidence_file']['name'], PATHINFO_EXTENSION);
+        $target_file = $target_dir . $file_name;
+        if (move_uploaded_file($_FILES['evidence_file']['tmp_name'], $target_file)) {
+            $file_path = $target_file;
+        }
+    }
+
     if (!empty($feedback_message)) {
-        $insert_query = "INSERT INTO feedback (user_id, message) VALUES ('$user_id', '$feedback_message')";
-        
+        $insert_query = "INSERT INTO feedback (user_id, message, file_path) VALUES ('$user_id', '$feedback_message', " . ($file_path ? "'$file_path'" : "NULL") . ")";
         if (mysqli_query($con, $insert_query)) {
             $message = "Thank you for your feedback! We'll get back to you soon.";
         } else {
@@ -101,16 +112,60 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
                     <p><strong>Phone:</strong> <?= htmlspecialchars($user['phone']) ?></p>
                 </div>
 
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
+                    <div style="margin: 24px 0 8px 0; text-align: right;">
+                        <input type="file" name="evidence_file" id="evidence_file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt" style="display:none;">
+                        <label for="evidence_file" class="custom-file-label"
+                            style="cursor:pointer;display:inline-block;background:linear-gradient(90deg,#3C91E6 0%,#ab56d3 100%);color:#fff;padding:10px 22px;border-radius:10px;font-weight:600;box-shadow:0 2px 8px #3C91E622;">
+                            <i class="bx bx-upload"></i> Attach evidence (optional)
+                        </label>
+                        <span class="file-name" id="fileName"></span>
+                        <span class="file-error" id="fileError"></span>
+                        <img id="filePreview" class="file-preview" style="display:none;max-width:80px;max-height:80px;border-radius:10px;border:2px solid #e3e8f0;box-shadow:0 2px 8px #3C91E622;" />
+                    </div>
+
                     <div class="input-box-x">
                         <textarea name="message" class="input" required id="message" cols="40" rows="10"></textarea>
                         <label for="message">Message</label>
                     </div>
-                    
                     <button type="submit" class="btn-submit-con">Send Feedback</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+document.querySelector('.custom-file-label').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent accidental form submit
+    document.getElementById('evidence_file').click();
+});
+document.getElementById('evidence_file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileName = document.getElementById('fileName');
+    const fileError = document.getElementById('fileError');
+    const filePreview = document.getElementById('filePreview');
+    fileName.textContent = '';
+    fileError.textContent = '';
+    filePreview.style.display = 'none';
+    filePreview.src = '';
+
+    if (file) {
+        fileName.textContent = file.name;
+        if (file.size > 2 * 1024 * 1024) {
+            fileError.textContent = 'File size exceeds 2MB limit.';
+            e.target.value = '';
+            return;
+        }
+        if (file.type.match('image.*')) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                filePreview.src = evt.target.result;
+                filePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+</script>
 </body>
 </html>

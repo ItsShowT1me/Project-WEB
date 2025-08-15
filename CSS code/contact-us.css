@@ -778,4 +778,49 @@ form{
 .justify-between { justify-content: space-between; }
 .gap-1 { gap: 8px; }
 .gap-2 { gap: 16px; }
-.gap-3 { gap: 24px; }
+
+/* Custom file input */
+.input-box-x input[type="file"] {
+    display: none;
+}
+
+.input-box-x .custom-file-label {
+    display: inline-block;
+    background: linear-gradient(90deg, #3C91E6 0%, #ab56d3 100%);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px #3C91E622;
+}
+
+.input-box-x .custom-file-label:hover {
+    background: linear-gradient(90deg, #ab56d3 0%, #3C91E6 100%);
+    transform: scale(1.03);
+}
+
+.input-box-x .file-name {
+    display: block;
+    margin-top: 6px;
+    color: #3C91E6;
+    font-size: 0.98em;
+    font-weight: 500;
+}
+
+.input-box-x .file-error {
+    color: #DB504A;
+    font-size: 0.98em;
+    margin-top: 6px;
+}
+
+.input-box-x .file-preview {
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 10px;
+    border: 2px solid #e3e8f0;
+    box-shadow: 0 2px 8px #3C91E622;
+    display: block;
+}

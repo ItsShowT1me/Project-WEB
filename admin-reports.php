@@ -217,6 +217,13 @@ while ($row = mysqli_fetch_assoc($res)) {
                                     <span class="feedback-date"><?= date('d/m/Y H:i', strtotime($fb['created_at'])) ?></span>
                                 </div>
                                 <div class="feedback-message"><?= nl2br(htmlspecialchars($fb['message'])) ?></div>
+                                <?php if (!empty($fb['file_path'])): ?>
+                                    <div style="margin-top:8px;">
+                                        <a href="<?= htmlspecialchars($fb['file_path']) ?>" target="_blank" style="color:#3a7bd5;font-weight:600;text-decoration:underline;">
+                                            View Evidence
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <form method="post" style="margin:0;">
                                 <input type="hidden" name="feedback_id" value="<?= $fb['id'] ?>">

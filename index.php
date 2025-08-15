@@ -23,6 +23,24 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
 if (isset($_GET['join']) && is_numeric($_GET['join']) && isset($_SESSION['user_id'])) {
     $group_id = intval($_GET['join']);
     $user_id = $_SESSION['user_id'];
+
+    // Get user's MBTI
+    $user_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT mbti FROM users WHERE user_id = '$user_id'"));
+    $user_mbti = $user_row ? $user_row['mbti'] : '';
+
+    // Get group's allowed_mbti
+    $group_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT allowed_mbti FROM groups WHERE id = '$group_id'"));
+    $allowed_mbti = $group_row ? $group_row['allowed_mbti'] : '';
+
+    // Check MBTI restriction
+    if (!empty($allowed_mbti)) {
+        $allowed_types = array_map('trim', explode(',', $allowed_mbti));
+        if (empty($user_mbti) || !in_array($user_mbti, $allowed_types)) {
+            echo "<script>alert('Your MBTI type ($user_mbti) is not allowed to join this group.');window.location='index.php';</script>";
+            exit();
+        }
+    }
+
     // Check if user already joined
     $check = mysqli_query($con, "SELECT * FROM user_groups WHERE user_id = '$user_id' AND group_id = '$group_id'");
     if (mysqli_num_rows($check) == 0) {
@@ -35,12 +53,23 @@ if (isset($_GET['join']) && is_numeric($_GET['join']) && isset($_SESSION['user_i
     }
 }
 
-// Handle interest category selection and save to database
-if (isset($_POST['interestCategory']) && isset($_SESSION['user_id'])) {
-    $interest = mysqli_real_escape_string($con, $_POST['interestCategory']);
+if (isset($_SESSION['user_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_SESSION['user_id'];
-    mysqli_query($con, "UPDATE users SET interested_category='$interest' WHERE user_id='$user_id'");
-    $_SESSION['interested_category'] = $interest;
+    if (isset($_POST['interestCategory'])) {
+        $interest_arr = $_POST['interestCategory'];
+        if (is_array($interest_arr) && count($interest_arr) > 0) {
+            $interest = implode(',', array_map('mysqli_real_escape_string', array_fill(0, count($interest_arr), $con), $interest_arr));
+            mysqli_query($con, "UPDATE users SET interested_category='$interest' WHERE user_id='$user_id'");
+            $_SESSION['interested_category'] = $interest;
+        } else {
+            mysqli_query($con, "UPDATE users SET interested_category=NULL WHERE user_id='$user_id'");
+            $_SESSION['interested_category'] = '';
+        }
+    } else {
+        // No category selected at all
+        mysqli_query($con, "UPDATE users SET interested_category=NULL WHERE user_id='$user_id'");
+        $_SESSION['interested_category'] = '';
+    }
     $show_interest_modal = false;
 }
 
@@ -56,9 +85,11 @@ if (isset($_SESSION['user_id'])) {
 
 // Fetch only public groups, filtered by interest if set
 $groups = [];
-$group_sql = "SELECT id, group_id, name, color, description, category FROM groups WHERE is_private = 0";
+$group_sql = "SELECT id, group_id, name, color, description, category, allowed_mbti, image FROM groups WHERE is_private = 0";
 if ($interested_category) {
-    $group_sql .= " AND category = '" . mysqli_real_escape_string($con, $interested_category) . "'";
+    $cats = array_map('trim', explode(',', $interested_category));
+    $cat_sql = implode("','", array_map('mysqli_real_escape_string', array_fill(0, count($cats), $con), $cats));
+    $group_sql .= " AND category IN ('$cat_sql')";
 }
 $group_sql .= " ORDER BY created_at DESC";
 $result = mysqli_query($con, $group_sql);
@@ -79,7 +110,10 @@ if (isset($_SESSION['user_id'])) {
 // Layer 1: Interested groups by user's interested_category
 $interested_groups = [];
 if ($interested_category) {
-    $sql = "SELECT id, group_id, name, color, image, description, category FROM groups WHERE is_private = 0 AND category = '" . mysqli_real_escape_string($con, $interested_category) . "' ORDER BY created_at DESC LIMIT 6";
+    $cats = array_map('trim', explode(',', $interested_category));
+    $cat_sql = implode("','", array_map('mysqli_real_escape_string', array_fill(0, count($cats), $con), $cats));
+    // FIX: Add allowed_mbti to SELECT
+    $sql = "SELECT id, group_id, name, color, image, description, category, allowed_mbti FROM groups WHERE is_private = 0 AND category IN ('$cat_sql') ORDER BY created_at DESC LIMIT 6";
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
         $interested_groups[] = $row;
@@ -91,7 +125,7 @@ $popular_groups = [];
 if (!empty($user_data['mbti'])) {
     $mbti = mysqli_real_escape_string($con, $user_data['mbti']);
     $sql = "
-        SELECT g.id, g.group_id, g.name, g.color, g.image, g.description, g.category, COUNT(u.id) as mbti_count
+        SELECT g.id, g.group_id, g.name, g.color, g.image, g.description, g.category, g.allowed_mbti, COUNT(u.id) as mbti_count
         FROM groups g
         JOIN user_groups ug ON g.id = ug.group_id
         JOIN users u ON ug.user_id = u.user_id
@@ -108,10 +142,34 @@ if (!empty($user_data['mbti'])) {
 
 // Layer 3: Random public groups
 $random_groups = [];
-$sql = "SELECT id, group_id, name, color, image, description, category FROM groups WHERE is_private = 0 ORDER BY RAND() LIMIT 6";
+// FIX: Add allowed_mbti to SELECT
+$sql = "SELECT id, group_id, name, color, image, description, category, allowed_mbti FROM groups WHERE is_private = 0 ORDER BY RAND() LIMIT 6";
 $result = mysqli_query($con, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
     $random_groups[] = $row;
+}
+
+// Get all public groups with allowed_mbti set
+$sql = "SELECT g.id, g.group_id, g.name, g.color, g.image, g.description, g.category, g.allowed_mbti
+        FROM groups g
+        WHERE g.is_private = 0
+        ORDER BY g.created_at DESC";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+    $allowed_mbti = $row['allowed_mbti'];
+    if (!empty($allowed_mbti)) {
+        $allowed_types = array_map('trim', explode(',', $allowed_mbti));
+        // Calculate similarity: user's MBTI must be in at least 50% of allowed MBTI types
+        $similarity = in_array($user_data['mbti'], $allowed_types) ? (1 / count($allowed_types)) * 100 : 0;
+        if ($similarity >= 50) {
+            $popular_groups[] = $row;
+        }
+    } else {
+        // If no MBTI restriction, always recommend
+        $popular_groups[] = $row;
+    }
+    // Limit to 6 groups
+    if (count($popular_groups) >= 6) break;
 }
 
 function paginate_groups($groups, $layer_name) {
@@ -133,6 +191,78 @@ function paginate_groups($groups, $layer_name) {
 $interested_pagination = paginate_groups($interested_groups, 'interested');
 $popular_pagination = paginate_groups($popular_groups, 'popular');
 $random_pagination = paginate_groups($random_groups, 'random');
+
+// Redirect to first page if current page exceeds total pages
+if ($interested_pagination['total_pages'] > 0 && $interested_pagination['page'] > $interested_pagination['total_pages']) {
+    header('Location: ?interested_page=1');
+    exit();
+}
+if ($popular_pagination['total_pages'] > 0 && $popular_pagination['page'] > $popular_pagination['total_pages']) {
+    header('Location: ?popular_page=1');
+    exit();
+}
+if ($random_pagination['total_pages'] > 0 && $random_pagination['page'] > $random_pagination['total_pages']) {
+    header('Location: ?random_page=1');
+    exit();
+}
+
+// New code block for Layer 2 groups based on MBTI compatibility
+$user_mbti = $user_data['mbti'] ?? '';
+$user_id = $_SESSION['user_id'] ?? 0;
+$layer2_groups = [];
+
+if ($user_mbti && $user_id) {
+    // Get compatible MBTI types (score 0.95 or 0.90)
+    $compat_types = [];
+    $res = mysqli_query($con, "
+        SELECT type2 FROM mbti_compatibility
+        WHERE type1 = '$user_mbti' AND compatibility_score IN (0.95, 0.90)
+    ");
+    while ($row = mysqli_fetch_assoc($res)) {
+        $compat_types[] = $row['type2'];
+    }
+
+    // Get all public groups (not just joined)
+    $res_groups = mysqli_query($con, "
+        SELECT g.id, g.name, g.category, g.description, g.image, g.allowed_mbti
+        FROM groups g
+        WHERE g.is_private = 0
+        ORDER BY g.created_at DESC
+    ");
+    while ($group = mysqli_fetch_assoc($res_groups)) {
+        $group_id = $group['id'];
+        $allowed_mbti = $group['allowed_mbti'];
+        $show_group = false;
+
+        if (empty($allowed_mbti)) {
+            // No MBTI restriction, always show
+            $show_group = true;
+        } else {
+            $allowed_types = array_map('trim', explode(',', $allowed_mbti));
+            if (in_array($user_mbti, $allowed_types)) {
+                $show_group = true;
+            } else {
+                foreach ($compat_types as $type) {
+                    if (in_array($type, $allowed_types)) {
+                        $show_group = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Exclude groups the user already joined
+        $already_joined = mysqli_query($con, "
+            SELECT 1 FROM user_groups WHERE user_id = '$user_id' AND group_id = '$group_id' LIMIT 1
+        ");
+        if ($show_group && mysqli_num_rows($already_joined) == 0) {
+            $layer2_groups[] = $group;
+        }
+        if (count($layer2_groups) >= 6) break; // Limit to 6
+    }
+}
+
+$layer2_pagination = paginate_groups($layer2_groups, 'layer2');
 ?>
 
 <!DOCTYPE html>
@@ -157,22 +287,21 @@ $random_pagination = paginate_groups($random_groups, 'random');
         <form method="POST" style="margin-top:8px;display:flex;justify-content:center;">
             <div style="display:flex;gap:18px;align-items:center;justify-content:center;background:#f8faff;padding:10px 0;border-radius:16px;box-shadow:0 2px 12px #3a7bd522;width:fit-content;">
                 <?php
-                $categories = ['music','sport','movie','game','tourism'];
+                $categories = ['music','sport','movie','game','tourism','other'];
+                $selected = [];
+                if (!empty($interested_category)) {
+                    $selected = explode(',', $interested_category);
+                }
                 foreach ($categories as $cat):
                 ?>
-                    <button type="submit" name="interestCategory" value="<?= $cat ?>"
-                        style="background:<?= ($interested_category == $cat) ? 'linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%)' : 'none' ?>;
-                               color:<?= ($interested_category == $cat) ? '#fff' : '#222' ?>;
-                               border:none;font-size:1.08em;padding:8px 22px;border-radius:8px;cursor:pointer;font-weight:600;transition:background 0.18s, color 0.18s;box-shadow:<?= ($interested_category == $cat) ? '0 2px 8px #3a7bd522' : 'none' ?>;">
-                        <?= ucfirst($cat) ?>
-                    </button>
+                  <input type="checkbox"
+                         class="interest-checkbox"
+                         id="interest-<?= $cat ?>"
+                         name="interestCategory[]"
+                         value="<?= $cat ?>"
+                         <?= in_array($cat, $selected) ? 'checked' : '' ?>>
+                  <label for="interest-<?= $cat ?>" class="interest-label"><?= ucfirst($cat) ?></label>
                 <?php endforeach; ?>
-                <button type="submit" name="interestCategory" value="all"
-                    style="background:<?= ($interested_category == 'all' || !$interested_category) ? 'linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%)' : 'none' ?>;
-                           color:<?= ($interested_category == 'all' || !$interested_category) ? '#fff' : '#222' ?>;
-                           font-size:1.08em;padding:8px 22px;border-radius:8px;cursor:pointer;font-weight:700;border:none;box-shadow:<?= ($interested_category == 'all' || !$interested_category) ? '0 2px 8px #3a7bd522' : 'none' ?>;">
-                    
-                </button>
             </div>
         </form>
     </div>
@@ -235,13 +364,13 @@ $random_pagination = paginate_groups($random_groups, 'random');
             </div>
         <?php endif; ?>
     </section>
-    <!-- Layer 2: Popular Groups by MBTI (row 1, col 2) -->
+    <!-- Layer 2: Groups You Joined (Same or Compatible MBTI) -->
     <section class="layer layer-2">
         <h2 style="font-size:1.2em;font-weight:700;color:#5636d6;margin-bottom:18px;">
-        Popular Groups for Your MBTI (<?= htmlspecialchars($user_data['mbti'] ?? '') ?>)
+        Recommended Groups Related for Your MBTI (<?= htmlspecialchars($user_data['mbti'] ?? '') ?>)
     </h2>
 
-    <?php if (empty($user_data['mbti'])): ?>
+    <?php if (!isset($user_data['mbti']) || trim($user_data['mbti']) === '' || strtolower($user_data['mbti']) === 'null'): ?>
         <div style="background:#fffbe6;border-radius:18px;box-shadow:0 2px 12px #ffe06644;padding:32px 24px;margin-bottom:24px;text-align:center;">
             <div style="font-size:1.15em;font-weight:600;color:#5636d6;margin-bottom:18px;">
                 You haven't set your MBTI yet!
@@ -257,22 +386,22 @@ $random_pagination = paginate_groups($random_groups, 'random');
                 </a>
             </div>
         </div>
-    <?php endif; ?>
-
-    <div class="group-grid">
-        <?php foreach ($popular_pagination['groups'] as $group): ?>
-            <?php include 'group_card_template.php'; ?>
-        <?php endforeach; ?>
-        <?php if (empty($popular_pagination['groups'])): ?>
-            <div style="color:#aaa;font-size:1.1em;">No popular groups for your MBTI yet.</div>
-        <?php endif; ?>
-    </div>
-    <?php if ($popular_pagination['total_pages'] > 1): ?>
-        <div class="pagination">
-            <?php for ($i = 1; $i <= $popular_pagination['total_pages']; $i++): ?>
-                <a href="?popular_page=<?= $i ?>" class="<?= $i == $popular_pagination['page'] ? 'active' : '' ?>"><?= $i ?></a>
-            <?php endfor; ?>
+    <?php else: ?>
+        <div class="group-grid">
+            <?php foreach ($layer2_pagination['groups'] as $group): ?>
+                <?php include 'group_card_template.php'; ?>
+            <?php endforeach; ?>
+            <?php if (empty($layer2_pagination['groups'])): ?>
+                <div style="color:#aaa;font-size:1.1em;">No compatible groups found.</div>
+            <?php endif; ?>
         </div>
+        <?php if ($layer2_pagination['total_pages'] > 1): ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $layer2_pagination['total_pages']; $i++): ?>
+                    <a href="?layer2_page=<?= $i ?>" class="<?= $i == $layer2_pagination['page'] ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
     </section>
     <!-- Layer 3: Random Public Groups (row 2, col 1 and 2) -->
@@ -294,6 +423,8 @@ $random_pagination = paginate_groups($random_groups, 'random');
             </div>
         <?php endif; ?>
     </section>
+    
+    
 </div>
 
 
@@ -305,6 +436,17 @@ function confirmJoin(groupId) {
     }
 }
 
+// Auto-submit interests form on checkbox change
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('.top-header form');
+    if (form) {
+        form.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                form.submit();
+            });
+        });
+    }
+});
 </script>
 </body>
 </html>

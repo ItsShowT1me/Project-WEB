@@ -16,6 +16,14 @@ if (isset($_POST['delete_message']) && isset($_POST['message_id'])) {
     exit();
 }
 
+// Search functionality
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$where = '';
+if ($search !== '') {
+    $safe_search = mysqli_real_escape_string($con, $search);
+    $where = "WHERE u.user_name LIKE '%$safe_search%'";
+}
+
 // Fetch messages with user and group info
 $messages = [];
 $res = mysqli_query($con, "
@@ -23,6 +31,7 @@ $res = mysqli_query($con, "
     FROM messages m
     LEFT JOIN users u ON m.user_id = u.user_id
     LEFT JOIN groups g ON m.group_id = g.id
+    $where
     ORDER BY m.created_at DESC
     LIMIT 100
 ");
@@ -226,6 +235,13 @@ while ($row = mysqli_fetch_assoc($res)) {
         </div>
         <div class="main-content">
             <div class="messages-title"><i class="bx bx-message-dots"></i> Messages</div>
+            <form method="get" style="text-align:center;margin-bottom:24px;">
+                <input type="text" name="search" placeholder="Search by user name..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                    style="width:260px;padding:10px 16px;border-radius:8px;border:2px solid #eaf3ff;font-size:1.08em;">
+                <button type="submit" style="background:linear-gradient(90deg,#3a7bd5 0%,#764ba2 100%);color:#fff;font-weight:600;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;margin-left:8px;">
+                    <i class="bx bx-search"></i> Search
+                </button>
+            </form>
             <div class="message-list">
                 <?php if (count($messages) === 0): ?>
                     <div style="color:#aaa;text-align:center;font-size:1.1em;">No messages found.</div>

@@ -845,4 +845,31 @@ nav {
     color: #fff;
 }
 
+/* Custom checkbox style for interestCategory[] */
+.interest-checkbox {
+  display: none;
+}
+
+.interest-label {
+  display: inline-block;
+  padding: 8px 26px;
+  margin: 0 8px 8px 0;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #000000 0%, #b9b9b9 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #3a7bd522;
+  transition: background 0.2s, transform 0.2s;
+  user-select: none;
+  text-align: center;
+}
+
+.interest-checkbox:checked + .interest-label {
+  background: linear-gradient(90deg, #764ba2 0%, #3a7bd5 100%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px #764ba244;
+}
+
 

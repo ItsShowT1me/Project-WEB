@@ -359,6 +359,27 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
         .kick-member-btn:hover {
             background: linear-gradient(90deg,#b92d23 0%,#DB504A 100%);
         }
+        .group-type-tooltip .tooltip-box {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 110%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #3a7bd5;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #3a7bd522;
+            padding: 8px 16px;
+            font-size: 0.98em;
+            font-weight: 500;
+            white-space: nowrap;
+            z-index: 100;
+            border: 1px solid #eaf3ff;
+        }
+
+        .group-type-tooltip:hover .tooltip-box {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -408,8 +429,14 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
         <div class="detail-value" style="display:flex;align-items:center;gap:8px;">
             <span class="color-badge" style="background:<?= htmlspecialchars($group['color']) ?>"></span>
             <span style="font-size:1.18em;font-weight:700;color:#5636d6;"><?= htmlspecialchars($group['name']) ?></span>
-            <span class="group-type" style="background:#eaf3ff;color:#3a7bd5;padding:4px 12px;border-radius:10px;font-weight:500;">
+            <span class="group-type group-type-tooltip"
+                  style="background:#eaf3ff;color:#3a7bd5;padding:4px 12px;border-radius:10px;font-weight:500;position:relative;cursor:pointer;">
                 <?= $group['is_private'] ? 'Private' : 'Public' ?>
+                <span class="tooltip-box">
+                    <?= $group['is_private'] 
+                        ? 'Private groups are only visible to invited members.' 
+                        : 'Public groups are visible to everyone.' ?>
+                </span>
             </span>
         </div>
         <div class="detail-label">Category:</div>
@@ -463,6 +490,9 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
         <div style="display:flex;align-items:center;justify-content:flex-start;margin-bottom:16px;">
             <h4 style="color:#3a7bd5;margin:0;">
                 <i class="bx bx-chat"></i> Group Chat
+                <span style="color:#666;font-size:0.95em;font-weight:400;margin-left:8px;">
+                    (<?= count($members) ?> members)
+                </span>
             </h4>
         </div>
         <div id="chat-box"></div>
@@ -689,7 +719,7 @@ $(function(){
 <script>
     $(function(){
         function renderMessage(msg) {
-            var isMine = msg.user_id == <?= json_encode($_SESSION['user_id']) ?>;
+            var isMine = msg.user_id == window.currentUserId;
             var align = isMine ? 'right' : 'left';
             var bubble = isMine ? 'bubble-mine' : 'bubble-other';
             var avatar = msg.image ? `<img src="${msg.image}" class="chat-avatar">` : `<div class="chat-avatar">${msg.user_name.charAt(0).toUpperCase()}</div>`;
@@ -700,9 +730,11 @@ $(function(){
                     <div class="chat-header">
                         <span class="chat-user">${msg.user_name}</span>
                         <span class="chat-mbti">(${msg.mbti})</span>
-                        <span class="chat-time">${msg.time}</span>
                     </div>
                     <div class="chat-text">${msg.text}</div>
+                    <div class="chat-time" style="text-align:right;color:#888;font-size:0.92em;margin-top:6px;">
+                        ${msg.datetime}
+                    </div>
                 </div>
                 ${isMine ? avatar : ''}
             </div>`;

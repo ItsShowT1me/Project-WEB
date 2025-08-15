@@ -75,7 +75,7 @@ session_start();
       </div>
       <div class="form-cols">
         <div class="col-1">
-          <input type="checkbox" id="agree" />
+          <input type="checkbox" id="agree" required/>
           <label for="agree"> I agree to terms & condition</label>
         </div>
         <div class="col_2"></div>
@@ -132,4 +132,3 @@ session_start();
 
 </body>
 </html>
-

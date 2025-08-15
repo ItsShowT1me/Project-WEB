@@ -78,8 +78,29 @@ if (isset($user_data['user_id'], $group['id'])) {
             text-align:center;
             box-shadow:0 2px 8px #3a7bd522;
         ">
-            <?= ucfirst(htmlspecialchars($group['category'])) ?>
+            <?= ucfirst(htmlspecialchars($group['category']))  ?>
         </div>
+        <?php if (!empty($group['allowed_mbti'])): 
+            $mbti_arr = array_map('trim', explode(',', $group['allowed_mbti']));
+        ?>
+            <div class="group-mbti" style="
+                font-size:0.82em;
+                color:#5636d6;
+                background:#eaf3ff;
+                font-weight:500;
+                border-radius:8px;
+                padding:2px 10px;
+                margin-bottom:6px;
+                display:inline-block;
+                text-align:center;
+                box-shadow:0 2px 8px #3a7bd522;
+            ">
+                Can join only:<br>
+                <?php foreach (array_chunk($mbti_arr, 2) as $pair): ?>
+                    <?= htmlspecialchars(implode(', ', $pair)) ?><br>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <div class="group-desc" style="
             font-size:0.85em;
             color:#555;
@@ -135,3 +156,4 @@ if (isset($user_data['user_id'], $group['id'])) {
         </a>
     <?php endif; ?>
 </div>
+

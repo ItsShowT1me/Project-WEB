@@ -33,8 +33,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_group'])) {
         move_uploaded_file($_FILES['group_image']['tmp_name'], $image_path);
         mysqli_query($con, "UPDATE groups SET image='$image_path' WHERE id='$group_id'");
     }
+    // Handle allowed MBTI types
+    $allowed_mbti = '';
+    if (isset($_POST['allowed_mbti']) && is_array($_POST['allowed_mbti'])) {
+        $allowed_mbti = implode(',', array_map('mysqli_real_escape_string', array_fill(0, count($_POST['allowed_mbti']), $con), $_POST['allowed_mbti']));
+    }
+    mysqli_query($con, "UPDATE groups SET allowed_mbti='$allowed_mbti' WHERE id='$group_id'");
+    
     // Redirect back to chat page after update
     header("Location: chat.php?group_id=$group_id");
+    exit();
+}
+
+// Handle group deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_group'])) {
+    // Delete group from groups table
+    mysqli_query($con, "DELETE FROM groups WHERE id='$group_id'");
+    // Delete all user-group relations
+    mysqli_query($con, "DELETE FROM user_groups WHERE group_id='$group_id'");
+    // Delete all messages in the group
+    mysqli_query($con, "DELETE FROM messages WHERE group_id='$group_id'");
+    // Optionally: delete analytics/reports if you use those tables
+    mysqli_query($con, "DELETE FROM group_analytics WHERE group_id='$group_id'");
+    mysqli_query($con, "DELETE FROM group_reports WHERE group_id='$group_id'");
+    // Redirect to group list page
+    header("Location: group.php");
     exit();
 }
 ?>
@@ -284,11 +307,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_group'])) {
             <div class="input-group">
                 <label for="group_image">Group Image</label>
                 <?php if (!empty($group['image'])): ?>
-                    <img src="<?= htmlspecialchars($group['image']) ?>" alt="Group Image">
+                    <img src="<?= htmlspecialchars($group['image']) ?>" alt="Group Image" style="max-width:120px;max-height:120px;border-radius:12px;border:2px solid #e3e8f0;margin-bottom:8px;">
                 <?php endif; ?>
-                <input type="file" name="group_image" accept="image/*">
+                <input type="file" name="group_image" id="group_image" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp">
+                <small style="color:#666;">
+                    Allowed types: PNG, JPG, JPEG, GIF, WEBP. Max size: 2MB
+                </small>
+                <div id="imagePreview" style="margin-top:10px;"></div>
+                <div id="imageError" style="color:#DB504A;margin-top:6px;"></div>
             </div>
+            <div class="input-group">
+    <label for="allowed_mbti">Allowed MBTI Types (leave blank for all)</label>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <?php
+        $mbti_types = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+        $selected_mbti = isset($group['allowed_mbti']) ? explode(',', $group['allowed_mbti']) : [];
+        foreach ($mbti_types as $type):
+        ?>
+            <label style="display:inline-flex;align-items:center;gap:4px;background:#eaf3ff;padding:4px 10px;border-radius:8px;">
+                <input type="checkbox" name="allowed_mbti[]" value="<?= $type ?>" <?= in_array($type, $selected_mbti) ? 'checked' : '' ?>>
+                <?= $type ?>
+            </label>
+        <?php endforeach; ?>
+    </div>
+    <small style="color:#666;">Check MBTI types allowed to join. Leave all unchecked for no restriction.</small>
+</div>
             <button type="submit" name="update_group" class="create-btn">Update Group</button>
+            <button type="submit" name="delete_group" class="create-btn" style="background:#DB504A;margin-top:10px;" onclick="return confirm('Are you sure you want to delete this group? This action cannot be undone.');">
+        Delete Group
+    </button>
         </form>
     </div>
 </div>
@@ -298,6 +345,27 @@ document.getElementById('color').addEventListener('input', function() {
 });
 document.getElementById('is_private').addEventListener('change', function() {
     document.getElementById('pin-group').style.display = this.value == "1" ? "" : "none";
+});
+document.getElementById('group_image').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    const error = document.getElementById('imageError');
+    preview.innerHTML = '';
+    error.innerHTML = '';
+    const file = e.target.files[0];
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) { // 2MB
+            error.innerHTML = 'File size exceeds 2MB limit.';
+            e.target.value = '';
+            return;
+        }
+        if (file.type.match('image.*')) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                preview.innerHTML = '<img src="' + evt.target.result + '" style="max-width:120px;max-height:120px;border-radius:12px;border:2px solid #e3e8f0;" />';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 });
 </script>
 </body>

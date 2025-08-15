@@ -8,16 +8,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_SESSION['user_id'];
 
     // Find group by PIN (allow both public and private)
-    $group_result = mysqli_query($con, "SELECT id, is_private FROM groups WHERE pin = '$pin' LIMIT 1");
+    $group_result = mysqli_query($con, "SELECT id, is_private, allowed_mbti FROM groups WHERE pin = '$pin' LIMIT 1");
     if ($group = mysqli_fetch_assoc($group_result)) {
         $group_id = $group['id'];
         // Check if user already joined
         $check = mysqli_query($con, "SELECT * FROM user_groups WHERE user_id = '$user_id' AND group_id = '$group_id'");
         if (mysqli_num_rows($check) == 0) {
-            // Add user to group
-            mysqli_query($con, "INSERT INTO user_groups (user_id, group_id) VALUES ('$user_id', '$group_id')");
-            header("Location: group.php");
-            exit();
+            // MBTI Type Check
+            $allowed_mbti = $group['allowed_mbti'];
+            $user_mbti = '';
+            $user_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT mbti FROM users WHERE user_id = '$user_id'"));
+            if ($user_row) $user_mbti = $user_row['mbti'];
+
+            // Only allow join if:
+            // - allowed_mbti is empty (no restriction)
+            // - OR user's MBTI is in allowed_mbti
+            if (!empty($allowed_mbti)) {
+                $allowed_types = array_map('trim', explode(',', $allowed_mbti));
+                if (empty($user_mbti) || !in_array($user_mbti, $allowed_types)) {
+                    $message = "Your MBTI type ($user_mbti) is not allowed to join this group.";
+                }
+            }
+
+            // Add user to group if no message (error) is set
+            if (!$message) {
+                mysqli_query($con, "INSERT INTO user_groups (user_id, group_id) VALUES ('$user_id', '$group_id')");
+                header("Location: group.php");
+                exit();
+            }
         } else {
             $message = "You are already a member of this group.";
         }

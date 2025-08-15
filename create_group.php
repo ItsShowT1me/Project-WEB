@@ -31,7 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_query($con, "UPDATE groups SET image='$image_path' WHERE id='$group_id'");
     }
 
-    $sql = "INSERT INTO groups (group_id, name, pin, color, image, description, category, is_private) VALUES ('$group_id', '$name', '$pin', '$color', '$image_path', '$description', '$category', '$is_private')";
+    // Handle allowed MBTI types
+    $allowed_mbti = '';
+    if (isset($_POST['allowed_mbti']) && is_array($_POST['allowed_mbti'])) {
+        $allowed_mbti = implode(',', array_map('mysqli_real_escape_string', array_fill(0, count($_POST['allowed_mbti']), $con), $_POST['allowed_mbti']));
+    }
+
+    $sql = "INSERT INTO groups (group_id, name, pin, color, image, description, category, is_private, allowed_mbti) VALUES ('$group_id', '$name', '$pin', '$color', '$image_path', '$description', '$category', '$is_private', '$allowed_mbti')";
     if (mysqli_query($con, $sql)) {
         // Get the inserted group's id using mysqli_insert_id for reliability
         $inserted_id = mysqli_insert_id($con);
@@ -107,7 +113,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="input-group">
                 <label for="group_image">Group Image</label>
-                <input type="file" name="group_image" accept="image/*">
+                <?php if (!empty($group['image'])): ?>
+                    <img src="<?= htmlspecialchars($group['image']) ?>" alt="Group Image" style="max-width:120px;max-height:120px;border-radius:12px;border:2px solid #e3e8f0;margin-bottom:8px;">
+                <?php endif; ?>
+                <input type="file" name="group_image" id="group_image" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp">
+                <small style="color:#666;">
+                    Allowed types: PNG, JPG, JPEG, GIF, WEBP. Max size: 2MB
+                </small>
+                <div id="imagePreview" style="margin-top:10px;"></div>
+                <div id="imageError" style="color:#DB504A;margin-top:6px;"></div>
+            </div>
+            <div class="input-group">
+                <label for="allowed_mbti">Allowed MBTI Types (leave blank for all)</label>
+                <<div style="display:flex;flex-wrap:wrap;gap:10px;">
+                <?php
+                $mbti_types = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+                $selected_mbti = isset($group['allowed_mbti']) ? explode(',', $group['allowed_mbti']) : [];
+                foreach ($mbti_types as $type):
+                ?>
+                    <label class="mbti-checkbox-label">
+                        <input type="checkbox" name="allowed_mbti[]" value="<?= $type ?>" <?= in_array($type, $selected_mbti) ? 'checked' : '' ?>>
+                        <?= $type ?>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+            <small style="color:#666;">Check MBTI types allowed to join. Leave all unchecked for no restriction.</small>
             </div>
             <button type="submit" class="create-btn">Create Group</button>
         </form>
@@ -120,6 +150,27 @@ document.getElementById('color').addEventListener('input', function() {
 });
 document.getElementById('is_private').addEventListener('change', function() {
     document.getElementById('pin-group').style.display = this.value == "1" ? "" : "none";
+});
+document.getElementById('group_image').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    const error = document.getElementById('imageError');
+    preview.innerHTML = '';
+    error.innerHTML = '';
+    const file = e.target.files[0];
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) { // 2MB
+            error.innerHTML = 'File size exceeds 2MB limit.';
+            e.target.value = '';
+            return;
+        }
+        if (file.type.match('image.*')) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                preview.innerHTML = '<img src="' + evt.target.result + '" style="max-width:120px;max-height:120px;border-radius:12px;border:2px solid #e3e8f0;" />';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 });
 </script>
 

@@ -413,14 +413,15 @@ body {
     border-radius: 24px;
     width: 410px;
     max-width: 98vw;
-    box-shadow: 0 10px 32px #342e3720;
+    box-shadow: 0 10px 32px #342e3720, 0 2px 8px #667eea22;
     position: relative;
     overflow: hidden;
     animation: slideUpModal 0.25s;
     max-height: 90vh;
     overflow-y: auto;
-    padding-bottom: 16px;
-    margin-top: 32px; /* centers vertically with some top margin */
+    padding-bottom: 24px;
+    margin-top: 32px;
+    border: 1px solid #e3e8f0;
 }
 @keyframes slideUpModal {
     from { transform: translateY(40px); opacity: 0; }
@@ -428,10 +429,9 @@ body {
 }
 
 .modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3a7bd5 0%, #764ba2 100%);
     color: #fff;
     padding: 22px 32px 18px 32px;
-    position: relative;
     border-radius: 24px 24px 0 0;
     display: flex;
     align-items: center;
@@ -503,8 +503,14 @@ body {
 .input-group input[type="text"]:focus,
 .input-group textarea:focus,
 .input-group select:focus {
-    border-color: #667eea;
-    box-shadow: 0 2px 8px #667eea22;
+    border-color: #764ba2;
+    box-shadow: 0 2px 8px #764ba240;
+    background: #f0f6ff;
+}
+.input-group input[type="text"]:hover,
+.input-group textarea:hover,
+.input-group select:hover {
+    border-color: #3a7bd5;
 }
 
 .input-group input[type="color"] {
@@ -542,7 +548,6 @@ body {
 }
 
 .create-btn {
-    width: 100%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff;
     border: none;
@@ -551,12 +556,13 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
     margin-top: 10px;
-    box-shadow: 0 2px 8px #667eea22;
+    box-shadow: 0 2px 8px #764ba240;
 }
 .create-btn:hover {
-    transform: translateY(-2px) scale(1.03);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px) scale(1.04);
     box-shadow: 0 4px 16px #764ba240;
 }
 
@@ -573,4 +579,36 @@ body {
     .modal-header, .create-group-modal form {
         padding: 18px 8px;
     }
+}
+
+.input-group .mbti-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eaf3ff;
+    padding: 6px 14px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 0.98em;
+    font-weight: 500;
+    color: #5636d6;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+.input-group .mbti-checkbox-label:hover {
+    background: #d1e6ff;
+}
+.input-group input[type="checkbox"] {
+    accent-color: #764ba2;
+    width: 18px;
+    height: 18px;
+}
+
+#imagePreview img {
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 14px;
+    border: 2px solid #764ba2;
+    box-shadow: 0 2px 8px #764ba240;
+    margin-top: 8px;
 }

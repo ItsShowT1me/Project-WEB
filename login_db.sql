@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2025 at 01:34 AM
+-- Generation Time: Aug 15, 2025 at 06:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,169 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `file_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `groups`
+--
+
+CREATE TABLE `groups` (
+  `id` int(11) NOT NULL,
+  `group_id` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `pin` varchar(5) NOT NULL,
+  `color` varchar(16) DEFAULT '#3a7bd5',
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `description` text NOT NULL,
+  `is_private` tinyint(1) DEFAULT 0,
+  `member_count` int(11) DEFAULT 0,
+  `category` enum('game','music','movie','sport','tourism','other') DEFAULT 'other',
+  `allowed_mbti` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `groups`
+--
+
+INSERT INTO `groups` (`id`, `group_id`, `name`, `pin`, `color`, `image`, `created_at`, `description`, `is_private`, `member_count`, `category`, `allowed_mbti`) VALUES
+(31, '756829', 'WOW', '6431', '#3a7bd5', 'uploads/group_1755261828_3612.jpg', '2025-08-12 23:06:59', 'TEST', 0, 0, 'game', ''),
+(32, '264838', 'Cursed Music', '31232', '#3a7bd5', 'uploads/group_1755112061_7559.jpg', '2025-08-13 19:07:41', 'Just Found a song that I looking for', 0, 0, 'music', NULL),
+(33, '062996', 'Recommend Movie Group', '28686', '#cdff1a', 'uploads/group_1755112146_8405.jpg', '2025-08-13 19:09:06', 'Finally Some good movie', 0, 0, 'movie', NULL),
+(34, '944480', 'Bet Group', '51946', '#000000', 'uploads/group_1755112203_9391.jpg', '2025-08-13 19:10:03', 'Just BET', 0, 0, 'sport', NULL),
+(35, '157296', 'Recommend Jail', '4828', '#3a7bd5', 'uploads/group_1755112261_6873.jpg', '2025-08-13 19:11:01', 'I\'m going to jail', 0, 0, 'tourism', NULL),
+(36, '792884', 'IDK', '1597', '#ff0a0a', 'uploads/group_1755112320_6691.jpg', '2025-08-13 19:12:00', 'IDK', 0, 0, 'other', NULL),
+(37, '727016', 'GameDEV', '6216', '#020912', 'uploads/group_1755112636_8773.jpg', '2025-08-13 19:17:16', 'DEV LISTENED', 0, 0, 'game', NULL),
+(38, '699489', 'TEST1', '4937', '#df1616', 'uploads/group_1755139339_2031.jpg', '2025-08-14 02:42:19', 'THIS IS FOR TEST', 0, 0, 'tourism', 'INTJ,INTP,ENTJ,INFJ,INFP,ENFJ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_analytics`
+--
+
+CREATE TABLE `group_analytics` (
+  `id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `message_count` int(11) DEFAULT 0,
+  `active_members` int(11) DEFAULT 0,
+  `engagement_score` decimal(5,2) DEFAULT 0.00,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_reports`
+--
+
+CREATE TABLE `group_reports` (
+  `id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `report_type` enum('weekly','monthly') NOT NULL,
+  `period_start` date NOT NULL,
+  `period_end` date NOT NULL,
+  `total_messages` int(11) DEFAULT 0,
+  `active_members` int(11) DEFAULT 0,
+  `avg_response_time` decimal(10,2) DEFAULT 0.00,
+  `sentiment_score` decimal(3,2) DEFAULT 0.00,
+  `mbti_distribution` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`mbti_distribution`)),
+  `recommendations` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mbti_compatibility`
+--
+
+CREATE TABLE `mbti_compatibility` (
+  `id` int(11) NOT NULL,
+  `type1` varchar(4) NOT NULL,
+  `type2` varchar(4) NOT NULL,
+  `compatibility_score` decimal(3,2) NOT NULL,
+  `relationship_type` enum('golden_pair','compatible','neutral','challenging') DEFAULT 'neutral'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mbti_compatibility`
+--
+
+INSERT INTO `mbti_compatibility` (`id`, `type1`, `type2`, `compatibility_score`, `relationship_type`) VALUES
+(1, 'INTJ', 'ENFP', 0.95, 'golden_pair'),
+(2, 'INTP', 'ENFJ', 0.95, 'golden_pair'),
+(3, 'ENTJ', 'INFP', 0.95, 'golden_pair'),
+(4, 'ENTP', 'INFJ', 0.95, 'golden_pair'),
+(5, 'ISTJ', 'ESFP', 0.90, 'compatible'),
+(6, 'ISFJ', 'ESTP', 0.90, 'compatible'),
+(7, 'ESTJ', 'ISFP', 0.90, 'compatible'),
+(8, 'ESFJ', 'ISTP', 0.90, 'compatible');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `file_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `group_id`, `user_id`, `message`, `created_at`, `file_path`) VALUES
+(41, 38, 278366, 'HELLO', '2025-08-15 20:57:17', NULL),
+(42, 38, 723242, 'This thing is suck', '2025-08-15 21:02:32', NULL),
+(43, 38, 723242, 'TESTEST', '2025-08-15 21:06:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system_settings`
+--
+
+CREATE TABLE `system_settings` (
+  `id` int(11) NOT NULL,
+  `setting_key` varchar(100) NOT NULL,
+  `setting_value` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `system_settings`
+--
+
+INSERT INTO `system_settings` (`id`, `setting_key`, `setting_value`, `description`, `updated_at`) VALUES
+(1, 'site_name', 'TypeHub', 'Website name', '2025-08-12 22:51:10'),
+(2, 'max_group_members', '50', 'Maximum members per group', '2025-08-08 18:28:50'),
+(3, 'ai_analysis_enabled', '1', 'Enable AI personality analysis', '2025-08-08 18:28:50'),
+(4, 'notification_system', '1', 'Enable notification system', '2025-08-08 18:28:50'),
+(5, 'site_desc', 'Your trusted MBTI collaboration platform', NULL, '2025-08-12 22:51:10');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -39,7 +202,7 @@ CREATE TABLE `users` (
   `about` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `banned_until` datetime DEFAULT NULL,
-  `interested_category` enum('game','music','movie','sport','tourism','other') DEFAULT NULL
+  `interested_category` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -47,23 +210,23 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `email`, `phone`, `mbti`, `about`, `image`, `banned_until`, `interested_category`) VALUES
-(5, 1001, 'AnanyaR', 'pass1234', '2025-08-12 21:30:59', 'ananya.r@gmail.com', '0891234567', 'INFJ', 'A passionate UI/UX designer from Bangkok.', 'uploads/profile_1001_1754240818.png', NULL, 'music'),
-(6, 1002, 'ThanapatMC', '1234abcd', '2025-08-12 23:19:17', 'thanapat.mc@hotmail.com', '0819876543', 'ENTP', 'A tech lover who enjoys building things from scratch.', 'uploads/profile_1002_1754240852.png', NULL, 'music'),
-(7, 1003, 'JiraKit', 'myp@ssword', '2025-08-03 11:33:34', 'jirapat.k@gmail.com', '0623456789', 'INFP', 'Quiet thinker who enjoys meaningful connections.', NULL, NULL, NULL),
-(8, 1004, 'KanyaSuda', 'hello@123', '2025-08-03 11:33:34', 'k.srisuda@yahoo.com', '0837654321', 'ESFJ', 'Friendly, warm-hearted, and driven to help others.', NULL, NULL, NULL),
-(9, 1005, 'NattaBM', 'boonmee99', '2025-08-03 11:33:34', 'nattawut.b@hotmail.com', '0951237890', 'ISTP', 'Love exploring how things work and solving problems.', NULL, NULL, NULL),
-(10, 1006, 'PNamS', 'coolpass12', '2025-08-03 11:33:34', 'p.namsai@gmail.com', '0889911223', 'ENTJ', 'Strategic leader with a passion for development.', NULL, NULL, NULL),
-(11, 1007, 'RattanaTW', 'rat@secure', '2025-08-03 11:33:34', 'rattana.tw@gmail.com', '0865544332', 'ISFJ', 'Loyal and considerate, always ready to help.', NULL, NULL, NULL),
-(12, 1008, 'ChaninWW', 'wwchanin88', '2025-08-03 11:33:34', 'chanin.w@gmail.com', '0894455661', 'ENFP', 'Energetic, creative, and loves to inspire others.', NULL, NULL, NULL),
-(13, 1009, 'SirinLS', 'sirinpass', '2025-08-03 11:33:34', 'sirin.ls@gmail.com', '0841122334', 'ISTJ', 'Responsible and values tradition and order.', NULL, NULL, NULL),
-(14, 1010, 'PongThav', 'ptsecure', '2025-08-03 11:33:34', 'pongsak.t@hotmail.com', '0905566778', 'ESTP', 'Bold and spontaneous, lives life to the fullest.', NULL, NULL, NULL),
-(15, 3001, 'jamie33', ')r8u^Zwm(!', '2025-08-03 16:16:01', 'obeck@hotmail.com', '0475530541', 'INFP', 'Dark experience drive art safe somebody.', NULL, NULL, NULL),
-(16, 3002, 'cookmary', '+UE@&r5j6S', '2025-08-03 16:16:01', 'qrodriguez@bell-garner.com', '3250745204', 'ESFP', 'Our ten instead common create police clear memory for.', NULL, NULL, NULL),
-(17, 3003, 'kimberlythomas', 'F+iHbDfe*3', '2025-08-03 16:16:01', 'maria00@yahoo.com', '985.599.39', 'ISTJ', 'Point song would need miss notice draw certain.', NULL, NULL, NULL),
-(18, 3004, 'daniel17', 'SM+g*6Fr$v', '2025-08-03 16:16:01', 'morganjeremiah@gmail.com', '757.330.61', 'INFJ', 'Wear instead price common common western be ball certain good score yeah.', NULL, NULL, NULL),
-(19, 3005, 'margaret98', '$Y%o^uhr2F', '2025-08-03 16:16:01', 'xhenderson@hotmail.com', '8170211905', 'ESFJ', 'Billion agree however building help son hand another.', NULL, NULL, NULL),
-(20, 3006, 'dennis67', 'A2m%6lUt3(', '2025-08-03 16:16:01', 'tina08@campos.com', '7778575647', 'INTJ', 'Admit begin message need standard build.', NULL, NULL, NULL),
-(21, 3007, 'stacy15', '!9)F)OFb&M', '2025-08-03 16:16:01', 'reneemcdonald@jensen.com', '1748045637', 'ESFJ', 'Tv wrong future here message least tax.', NULL, NULL, NULL),
+(5, 1001, 'AnanyaR', 'pass1234', '2025-08-15 12:39:28', 'ananya.r@gmail.com', '0891234567', 'INFJ', 'A passionate UI/UX designer from Bangkok.', 'uploads/profile_1001_1754240818.png', NULL, 'sport,movie'),
+(6, 1002, 'ThanapatMC', '1234abcd', '2025-08-14 03:06:36', 'thanapat.mc@hotmail.com', '0819876543', 'ENTP', 'A tech lover who enjoys building things from scratch.', 'uploads/profile_1002_1754240852.png', '2025-08-15 05:06:36', 'music'),
+(7, 1003, 'JiraKit', 'myp@ssword', '2025-08-13 19:06:36', 'jirapat.k@gmail.com', '0623456789', 'INFP', 'Quiet thinker who enjoys meaningful connections.', NULL, NULL, 'music'),
+(8, 1004, 'KanyaSuda', 'hello@123', '2025-08-13 19:09:18', 'k.srisuda@yahoo.com', '0837654321', 'ESFJ', 'Friendly, warm-hearted, and driven to help others.', NULL, NULL, 'tourism'),
+(9, 1005, 'NattaBM', 'boonmee99', '2025-08-13 19:10:14', 'nattawut.b@hotmail.com', '0951237890', 'ISTP', 'Love exploring how things work and solving problems.', NULL, NULL, 'music'),
+(10, 1006, 'PNamS', 'coolpass12', '2025-08-13 19:11:23', 'p.namsai@gmail.com', '0889911223', 'ENTJ', 'Strategic leader with a passion for development.', NULL, NULL, 'music'),
+(11, 1007, 'RattanaTW', 'rat@secure', '2025-08-13 19:12:53', 'rattana.tw@gmail.com', '0865544332', 'ISFJ', 'Loyal and considerate, always ready to help.', NULL, NULL, 'other'),
+(12, 1008, 'ChaninWW', 'wwchanin88', '2025-08-13 19:13:14', 'chanin.w@gmail.com', '0894455661', 'ENFP', 'Energetic, creative, and loves to inspire others.', NULL, NULL, 'music'),
+(13, 1009, 'SirinLS', 'sirinpass', '2025-08-13 19:13:29', 'sirin.ls@gmail.com', '0841122334', 'ISTJ', 'Responsible and values tradition and order.', NULL, NULL, 'sport'),
+(14, 1010, 'PongThav', 'ptsecure', '2025-08-13 19:13:41', 'pongsak.t@hotmail.com', '0905566778', 'ESTP', 'Bold and spontaneous, lives life to the fullest.', NULL, NULL, 'movie'),
+(15, 3001, 'jamie33', ')r8u^Zwm(!', '2025-08-13 19:13:56', 'obeck@hotmail.com', '0475530541', 'INFP', 'Dark experience drive art safe somebody.', NULL, NULL, 'game'),
+(16, 3002, 'cookmary', '+UE@&r5j6S', '2025-08-13 19:14:07', 'qrodriguez@bell-garner.com', '3250745204', 'ESFP', 'Our ten instead common create police clear memory for.', NULL, NULL, 'tourism'),
+(17, 3003, 'kimberlythomas', 'F+iHbDfe*3', '2025-08-13 19:14:48', 'maria00@yahoo.com', '985.599.39', 'ISTJ', 'Point song would need miss notice draw certain.', NULL, NULL, 'music'),
+(18, 3004, 'daniel17', 'SM+g*6Fr$v', '2025-08-13 19:15:29', 'morganjeremiah@gmail.com', '757.330.61', 'INFJ', 'Wear instead price common common western be ball certain good score yeah.', NULL, NULL, 'movie'),
+(19, 3005, 'margaret98', '$Y%o^uhr2F', '2025-08-13 19:15:45', 'xhenderson@hotmail.com', '8170211905', 'ESFJ', 'Billion agree however building help son hand another.', NULL, NULL, 'game'),
+(20, 3006, 'dennis67', 'A2m%6lUt3(', '2025-08-13 19:15:53', 'tina08@campos.com', '7778575647', 'INTJ', 'Admit begin message need standard build.', NULL, NULL, 'game'),
+(21, 3007, 'stacy15', '!9)F)OFb&M', '2025-08-13 19:17:25', 'reneemcdonald@jensen.com', '1748045637', 'ESFJ', 'Tv wrong future here message least tax.', NULL, NULL, 'game'),
 (22, 3008, 'jeff31', '@2QB$P11nn', '2025-08-03 16:16:01', 'lauren09@hotmail.com', '2545592507', 'ENFP', 'Key next brother style institution world state more billion yes teach run.', NULL, NULL, NULL),
 (23, 3009, 'jimenezkelly', '&A6XShexmg', '2025-08-03 16:16:01', 'nelsonjustin@glover.com', '+101942754', 'ENTP', 'Popular allow rate right mouth trouble owner behind marriage we cultural teacher seek.', NULL, NULL, NULL),
 (24, 3010, 'irobinson', 'j5aRNA(D$z', '2025-08-03 16:16:01', 'colinperry@powers.biz', '3544508669', 'ESFJ', 'Outside into free one finally member rest learn executive article.', NULL, NULL, NULL),
@@ -72,14 +235,14 @@ INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `email`, 
 (27, 3013, 'jenniferbright', 's5JH+NuL&!', '2025-08-03 16:16:01', 'diana18@white-kim.com', '0328090667', 'INTP', 'Soon keep hour water success which baby state how loss.', NULL, NULL, NULL),
 (28, 3014, 'ayerstimothy', '51jfp%Tm*b', '2025-08-03 16:16:01', 'carol59@hotmail.com', '0395435279', 'ISTJ', 'Story arrive time center majority region road performance stay.', NULL, NULL, NULL),
 (29, 3015, 'bennettchristopher', '&BE2tKxF22', '2025-08-03 16:16:01', 'ingramjames@gay.com', '8736266596', 'ISFP', 'Green general campaign smile energy kid believe lot able these whole decade.', NULL, NULL, NULL),
-(30, 3016, 'kaitlynsmith', '$1WCl6wGXO', '2025-08-03 16:16:01', 'james57@gmail.com', '4423153985', 'ESTJ', 'Eat professor number southern a training behavior hot particularly TV conference receive.', NULL, NULL, NULL),
-(31, 3017, 'tonyramos', ')&v7EG!p&b', '2025-08-03 16:16:01', 'alvarezheather@guzman.biz', '+187604971', 'ENFJ', 'Decision reveal expert free pick cut.', NULL, NULL, NULL),
-(32, 3018, 'qwhite', '1h+vAjjS(8', '2025-08-03 16:16:01', 'rjohnson@griffith.com', '0018735723', 'ESFP', 'Same Mrs discussion you wind plant material who adult us to significant.', NULL, NULL, NULL),
-(33, 3019, 'dale73', 'X!&5pZ)v&r', '2025-08-03 16:16:01', 'carolyn20@gmail.com', '3103920985', 'INTJ', 'Information or its face agree growth.', NULL, NULL, NULL),
-(34, 3020, 'chayes', '#6*iGIjkKn', '2025-08-03 16:16:01', 'jodynorman@bryant-morrison.com', '+183038143', 'ESTJ', 'Science address their operation truth dark decide themselves.', NULL, NULL, NULL),
-(35, 3021, 'lanefernando', 'kV%6PUxomK', '2025-08-03 16:16:01', 'jessica11@wright-reese.biz', '8109372974', 'INFJ', 'Customer paper direction in follow nearly within.', NULL, NULL, NULL),
-(36, 3022, 'jordanjeffery', 'SaIs9Hr^%2', '2025-08-03 16:16:01', 'michaellittle@miller.org', '735.576.05', 'ISTP', 'By child different fill inside seem its yard style hot guess number vote.', NULL, NULL, NULL),
-(37, 3023, 'colekathryn', 'oOEB2kUcf!', '2025-08-03 16:16:01', 'laurenfigueroa@yahoo.com', '0016752125', 'ISTJ', 'Purpose able miss success middle wish fire different matter life despite edge.', NULL, NULL, NULL),
+(30, 3016, 'kaitlynsmith', '$1WCl6wGXO', '2025-08-15 16:20:00', 'james57@gmail.com', '4423153985', 'ESTJ', 'Eat professor number southern a training behavior hot particularly TV conference receive.', NULL, NULL, 'music'),
+(31, 3017, 'tonyramos', ')&v7EG!p&b', '2025-08-15 16:20:13', 'alvarezheather@guzman.biz', '+187604971', 'ENFJ', 'Decision reveal expert free pick cut.', NULL, NULL, 'sport'),
+(32, 3018, 'qwhite', '1h+vAjjS(8', '2025-08-15 16:20:27', 'rjohnson@griffith.com', '0018735723', 'ESFP', 'Same Mrs discussion you wind plant material who adult us to significant.', NULL, NULL, 'movie'),
+(33, 3019, 'dale73', 'X!&5pZ)v&r', '2025-08-15 16:20:57', 'carolyn20@gmail.com', '3103920985', 'INTJ', 'Information or its face agree growth.', NULL, NULL, NULL),
+(34, 3020, 'chayes', '#6*iGIjkKn', '2025-08-15 16:21:09', 'jodynorman@bryant-morrison.com', '+183038143', 'ESTJ', 'Science address their operation truth dark decide themselves.', NULL, NULL, 'tourism'),
+(35, 3021, 'lanefernando', 'kV%6PUxomK', '2025-08-15 16:21:31', 'jessica11@wright-reese.biz', '8109372974', 'INFJ', 'Customer paper direction in follow nearly within.', NULL, NULL, NULL),
+(36, 3022, 'jordanjeffery', 'SaIs9Hr^%2', '2025-08-15 16:21:43', 'michaellittle@miller.org', '735.576.05', 'ISTP', 'By child different fill inside seem its yard style hot guess number vote.', NULL, NULL, 'music'),
+(37, 3023, 'colekathryn', 'oOEB2kUcf!', '2025-08-15 16:26:37', 'laurenfigueroa@yahoo.com', '0016752125', 'ISTJ', 'Purpose able miss success middle wish fire different matter life despite edge.', NULL, NULL, NULL),
 (38, 3024, 'ryan52', 'Z2H1IaL2)j', '2025-08-03 16:16:01', 'chancock@nielsen-lucero.com', '1299369004', 'ENFP', 'Start into west he ready audience individual.', NULL, NULL, NULL),
 (39, 3025, 'mrodriguez', 'k1ByJjaW*L', '2025-08-03 16:16:01', 'tnichols@contreras.com', '4751649625', 'ESFP', 'Scene must structure present option yourself talk real we after up.', NULL, NULL, NULL),
 (40, 3026, 'robin05', 'Ei2TshJzu_', '2025-08-03 16:16:01', 'silvaadam@yahoo.com', '+159162841', 'ENTP', 'Board generation message boy method least forget second training democratic should nor yourself.', NULL, NULL, NULL),
@@ -157,11 +320,133 @@ INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `email`, 
 (112, 3098, 'kenneth64', 'q*5H$jP6&1', '2025-08-03 16:16:01', 'sjacobs@yahoo.com', '269.466.65', 'INTJ', 'Movie international poor song day open modern wind enough floor.', NULL, NULL, NULL),
 (113, 3099, 'anitakim', 'Q_B8SjLs&G', '2025-08-03 16:16:01', 'wreid@yahoo.com', '547.524.32', 'INFP', 'Push no industry only politics throw inside listen seat coach yard continue claim.', NULL, NULL, NULL),
 (114, 3100, 'michael38', 'X!2GfUZlYa', '2025-08-03 16:16:01', 'ghatfield@hotmail.com', '6476785934', 'ISFP', 'Usually happen drug big rest choice.', NULL, NULL, NULL),
-(115, 971221, 'ADMIN', '1', '2025-08-12 23:04:54', 'admin@email.com', '', 'ENTJ', '', 'uploads/profile_971221_1755028188.jpg', NULL, 'tourism');
+(115, 971221, 'ADMIN', '1', '2025-08-15 16:14:38', 'admin@email.com', '', 'INTJ', '', 'uploads/profile_971221_1755028188.jpg', NULL, NULL),
+(116, 278366, 'narakorn ', '1120', '2025-08-15 15:29:23', 'narakorn.tess@bumail.net', '', 'INTJ', 'Hello', NULL, NULL, 'music,sport,movie,tourism'),
+(117, 723242, 'korn', '1234', '2025-08-15 14:01:03', 'korn@email.com', '', 'INTJ', '', NULL, NULL, 'game');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_activity_logs`
+--
+
+CREATE TABLE `user_activity_logs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `action` varchar(100) NOT NULL,
+  `details` text DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_groups`
+--
+
+CREATE TABLE `user_groups` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_groups`
+--
+
+INSERT INTO `user_groups` (`id`, `user_id`, `group_id`) VALUES
+(65, 1001, 31),
+(66, 1002, 31),
+(67, 1003, 32),
+(68, 1004, 33),
+(69, 1005, 34),
+(70, 1006, 35),
+(71, 1007, 36),
+(72, 1008, 32),
+(73, 1009, 34),
+(74, 1010, 33),
+(75, 3001, 31),
+(76, 3002, 35),
+(77, 3003, 32),
+(78, 3004, 34),
+(79, 3005, 33),
+(80, 3004, 33),
+(81, 3006, 31),
+(82, 3007, 35),
+(83, 3007, 37),
+(84, 278366, 37),
+(85, 278366, 31),
+(86, 278366, 38),
+(88, 723242, 34),
+(94, 723242, 38),
+(95, 723242, 31),
+(106, 3016, 32),
+(107, 3017, 34),
+(108, 3018, 33),
+(109, 3019, 37),
+(110, 3019, 31),
+(111, 3020, 35),
+(112, 3021, 36),
+(113, 3022, 32),
+(114, 3023, 34),
+(116, 3023, 33),
+(117, 3023, 37),
+(118, 3023, 31),
+(119, 3023, 35),
+(120, 3023, 36),
+(121, 3023, 32);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `group_analytics`
+--
+ALTER TABLE `group_analytics`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `group_date` (`group_id`,`date`);
+
+--
+-- Indexes for table `group_reports`
+--
+ALTER TABLE `group_reports`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `group_id` (`group_id`),
+  ADD KEY `report_type` (`report_type`);
+
+--
+-- Indexes for table `mbti_compatibility`
+--
+ALTER TABLE `mbti_compatibility`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `type_pair` (`type1`,`type2`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `setting_key` (`setting_key`);
 
 --
 -- Indexes for table `users`
@@ -173,14 +458,83 @@ ALTER TABLE `users`
   ADD KEY `user_name` (`user_name`);
 
 --
+-- Indexes for table `user_activity_logs`
+--
+ALTER TABLE `user_activity_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `action` (`action`),
+  ADD KEY `created_at` (`created_at`);
+
+--
+-- Indexes for table `user_groups`
+--
+ALTER TABLE `user_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `group_analytics`
+--
+ALTER TABLE `group_analytics`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `group_reports`
+--
+ALTER TABLE `group_reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `mbti_compatibility`
+--
+ALTER TABLE `mbti_compatibility`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+
+--
+-- AUTO_INCREMENT for table `user_activity_logs`
+--
+ALTER TABLE `user_activity_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_groups`
+--
+ALTER TABLE `user_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
