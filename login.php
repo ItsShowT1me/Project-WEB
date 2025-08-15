@@ -1,47 +1,47 @@
 <?php
 session_start();
 
-  include 'function.php';
-  include 'connection.php';
+include 'function.php';
+include 'connection.php';
 
-  if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    if(!empty($email) && !empty($password)) {
-      
-      // read from database (PostgreSQL)
-      $query = "SELECT * FROM users WHERE email = $1 LIMIT 1";
-      $result = pg_query_params($con, $query, array($email));
+    if (!empty($email) && !empty($password)) {
 
-      if($result) {
-        if(pg_num_rows($result) > 0) {
-          $user_data = pg_fetch_assoc($result);
+        // PostgreSQL query using parameterized statement
+        $query = "SELECT * FROM users WHERE email = $1 LIMIT 1";
+        $result = pg_query_params($con, $query, array($email));
 
-          // If you store hashed passwords, use password_verify()
-          // if(password_verify($password, $user_data['password'])) {
-          if($user_data['password'] === $password) {
-            $_SESSION['user_id'] = $user_data['user_id'];
+        if ($result) {
+            if (pg_num_rows($result) > 0) {
+                $user_data = pg_fetch_assoc($result);
 
-            // Redirect admin user to admin-dashboard.php
-            if ($_SESSION['user_id'] == 971221) {
-                header("Location: admin-dashboard.php");
+                // If you store hashed passwords, use password_verify()
+                // if(password_verify($password, $user_data['password'])) {
+                if ($user_data['password'] === $password) {
+                    $_SESSION['user_id'] = $user_data['user_id'];
+
+                    // Redirect admin user to admin-dashboard.php
+                    if ($_SESSION['user_id'] == 971221) {
+                        header("Location: admin-dashboard.php");
+                    } else {
+                        header("Location: index.php");
+                    }
+                    die;
+                } else {
+                    echo "<script>alert('Wrong email or password');</script>";
+                }
             } else {
-                header("Location: index.php");
+                echo "<script>alert('Wrong email or password');</script>";
             }
-            die;
-          } else {
-            echo "<script>alert('Wrong email or password');</script>";
-          }
-        } else {
-          echo "<script>alert('Wrong email or password');</script>";
         }
-      }
     } else {
-      echo "<script>alert('Please enter some valid information!');</script>";
+        echo "<script>alert('Please enter some valid information!');</script>";
     }
-  }
+}
 ?>
 
 
