@@ -4,35 +4,24 @@ session_start();
   include 'function.php';
   include 'connection.php';
 
-  
-
   if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    
     $email = $_POST["email"];
     $password = $_POST["password"];
 
     if(!empty($email) && !empty($password)) {
       
-      
-      // read to database
-      
-      $query = "select * from users where email = '$email' limit 1";
+      // read from database (PostgreSQL)
+      $query = "SELECT * FROM users WHERE email = $1 LIMIT 1";
+      $result = pg_query_params($con, $query, array($email));
 
-      $result = mysqli_query($con, $query);
-
-      mysqli_query($con, $query);
-
-      if($result) 
-
-      { if($result && mysqli_num_rows($result) > 0) 
-        {
-          $user_data = mysqli_fetch_assoc($result);
+      if($result) {
+        if(pg_num_rows($result) > 0) {
+          $user_data = pg_fetch_assoc($result);
 
           // If you store hashed passwords, use password_verify()
           // if(password_verify($password, $user_data['password'])) {
-          if($user_data['password'] === $password) 
-          {
+          if($user_data['password'] === $password) {
             $_SESSION['user_id'] = $user_data['user_id'];
 
             // Redirect admin user to admin-dashboard.php
@@ -42,21 +31,16 @@ session_start();
                 header("Location: index.php");
             }
             die;
-            //รอแก้จอขาว
           } else {
             echo "<script>alert('Wrong email or password');</script>";
           }
         } else {
           echo "<script>alert('Wrong email or password');</script>";
         }
-    
-    }
-      
-
+      }
     } else {
-      echo "<script>alert(Please enter some valid information!.);</script>";
+      echo "<script>alert('Please enter some valid information!');</script>";
     }
-
   }
 ?>
 
