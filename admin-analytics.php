@@ -492,6 +492,20 @@ while ($group = mysqli_fetch_assoc($res_groups)) {
             .mbti-chart { gap: 8px; }
             .mbti-card { width: 70px; font-size: 0.92em; }
         }
+        @media print {
+    .sidebar {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+    body {
+        background: #fff !important;
+    }
+}
     </style>
 </head>
 <body>

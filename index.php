@@ -367,7 +367,7 @@ $layer2_pagination = paginate_groups($layer2_groups, 'layer2');
     <!-- Layer 2: Groups You Joined (Same or Compatible MBTI) -->
     <section class="layer layer-2">
         <h2 style="font-size:1.2em;font-weight:700;color:#5636d6;margin-bottom:18px;">
-        Recommended Groups Related for Your MBTI (<?= htmlspecialchars($user_data['mbti'] ?? '') ?>)
+        Recommended Groups Related to Your MBTI (<?= htmlspecialchars($user_data['mbti'] ?? '') ?>)
     </h2>
 
     <?php if (!isset($user_data['mbti']) || trim($user_data['mbti']) === '' || strtolower($user_data['mbti']) === 'null'): ?>

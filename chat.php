@@ -500,6 +500,7 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
             <input type="text" name="message" placeholder="Type your message..." required autocomplete="off" style="font-size:1.08em;">
             <input type="file" name="file" id="file-input" style="display:none;">
+            <div id="file-preview" style="margin-top:10px;"></div>
             <button type="button" id="attach-btn" title="Attach file"><i class="bx bx-paperclip"></i></button>
             <button type="submit" class="send-btn" title="Send"><i class="bx bx-send"></i></button>
         </form>
@@ -742,6 +743,37 @@ $(function(){
         // Example: Load messages (replace with AJAX)
         // $('#chat-box').html(renderMessage({user_id:1,user_name:'Alice',mbti:'INTJ',text:'Hello!',time:'10:00',image:''}));
     });
+</script>
+<script>
+
+
+document.getElementById('file-input').addEventListener('change', function(e) {
+    const preview = document.getElementById('file-preview');
+    preview.innerHTML = '';
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.style.maxWidth = '120px';
+        img.style.maxHeight = '120px';
+        img.style.borderRadius = '12px';
+        img.style.boxShadow = '0 2px 8px #3a7bd522';
+        img.alt = 'Preview';
+        preview.appendChild(img);
+    } else {
+        const info = document.createElement('div');
+        info.textContent = `File: ${file.name} (${Math.round(file.size/1024)} KB)`;
+        info.style.color = '#5636d6';
+        info.style.fontWeight = '600';
+        preview.appendChild(info);
+    }
+});
+
+document.getElementById('chat-form').addEventListener('submit', function() {
+    document.getElementById('file-preview').innerHTML = '';
+});
 </script>
 </body>
 </html>

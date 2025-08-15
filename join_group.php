@@ -33,7 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Add user to group if no message (error) is set
             if (!$message) {
                 mysqli_query($con, "INSERT INTO user_groups (user_id, group_id) VALUES ('$user_id', '$group_id')");
-                header("Location: group.php");
+                echo "<script>
+                    alert('Join Group successful!');
+                    window.location.href = 'group.php';
+                </script>";
                 exit();
             }
         } else {

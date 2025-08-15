@@ -267,10 +267,13 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Profile Image</label><br>
-                <?php if (!empty($user['image'])): ?>
-                    <img src="<?= htmlspecialchars($user['image']) ?>" alt="Profile Image" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;">
-                <?php endif; ?>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <div style="margin-bottom:10px;">
+                    <img src="<?= !empty($user['image']) ? htmlspecialchars($user['image']) : 'images/default-user.png' ?>" 
+                         alt="Profile Image" 
+                         style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
+                </div>
+                <input type="file" class="form-control" id="image" name="image" accept=".jpg,.jpeg,.png,.gif,.webp,image/*">
+                <small style="color:#888;">You can attach image file types: jpg, jpeg, png, gif, webp.</small>
             </div>
             
             <button type="submit" name="save_profile" class="edit-profile-btn">Save</button>
@@ -278,5 +281,15 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
         </form>
     </div>
 </div>
+
+<script>
+document.getElementById('image').addEventListener('change', function(e) {
+    const [file] = e.target.files;
+    if (file) {
+        const preview = document.querySelector('.edit-profile-avatar img');
+        preview.src = URL.createObjectURL(file);
+    }
+});
+</script>
 </body>
 </html>

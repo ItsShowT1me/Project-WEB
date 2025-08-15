@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2025 at 06:29 PM
+-- Generation Time: Aug 15, 2025 at 09:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,13 @@ CREATE TABLE `feedback` (
   `file_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`id`, `user_id`, `message`, `created_at`, `file_path`) VALUES
+(11, 278366, 'BAN HIM PLSS', '2025-08-15 17:23:50', 'uploads/feedback/fb_278366_1755278630_5303.JPG');
+
 -- --------------------------------------------------------
 
 --
@@ -61,14 +68,14 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `group_id`, `name`, `pin`, `color`, `image`, `created_at`, `description`, `is_private`, `member_count`, `category`, `allowed_mbti`) VALUES
-(31, '756829', 'WOW', '6431', '#3a7bd5', 'uploads/group_1755261828_3612.jpg', '2025-08-12 23:06:59', 'TEST', 0, 0, 'game', ''),
+(31, '756829', 'WOW', '6431', '#3a7bd5', 'uploads/group_1755261828_3612.jpg', '2025-08-12 23:06:59', 'TEST', 0, 0, 'game', NULL),
 (32, '264838', 'Cursed Music', '31232', '#3a7bd5', 'uploads/group_1755112061_7559.jpg', '2025-08-13 19:07:41', 'Just Found a song that I looking for', 0, 0, 'music', NULL),
 (33, '062996', 'Recommend Movie Group', '28686', '#cdff1a', 'uploads/group_1755112146_8405.jpg', '2025-08-13 19:09:06', 'Finally Some good movie', 0, 0, 'movie', NULL),
 (34, '944480', 'Bet Group', '51946', '#000000', 'uploads/group_1755112203_9391.jpg', '2025-08-13 19:10:03', 'Just BET', 0, 0, 'sport', NULL),
 (35, '157296', 'Recommend Jail', '4828', '#3a7bd5', 'uploads/group_1755112261_6873.jpg', '2025-08-13 19:11:01', 'I\'m going to jail', 0, 0, 'tourism', NULL),
 (36, '792884', 'IDK', '1597', '#ff0a0a', 'uploads/group_1755112320_6691.jpg', '2025-08-13 19:12:00', 'IDK', 0, 0, 'other', NULL),
 (37, '727016', 'GameDEV', '6216', '#020912', 'uploads/group_1755112636_8773.jpg', '2025-08-13 19:17:16', 'DEV LISTENED', 0, 0, 'game', NULL),
-(38, '699489', 'TEST1', '4937', '#df1616', 'uploads/group_1755139339_2031.jpg', '2025-08-14 02:42:19', 'THIS IS FOR TEST', 0, 0, 'tourism', 'INTJ,INTP,ENTJ,INFJ,INFP,ENFJ');
+(41, '139585', 'GET OUT', '5371', '#3a7bd5', 'uploads/group_1755279152_1244.png', '2025-08-15 17:32:32', 'GET OUT', 0, 0, 'other', 'ENFP');
 
 -- --------------------------------------------------------
 
@@ -155,9 +162,9 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `group_id`, `user_id`, `message`, `created_at`, `file_path`) VALUES
-(41, 38, 278366, 'HELLO', '2025-08-15 20:57:17', NULL),
-(42, 38, 723242, 'This thing is suck', '2025-08-15 21:02:32', NULL),
-(43, 38, 723242, 'TESTEST', '2025-08-15 21:06:00', NULL);
+(44, 41, 278366, 'GOOD', '2025-08-16 02:26:11', NULL),
+(45, 41, 278366, 'GUY', '2025-08-16 02:31:28', 'uploads/1755286288_cat.jpg'),
+(46, 37, 278366, 'DOG', '2025-08-16 02:42:15', 'uploads/1755286935_Capture.PNG');
 
 -- --------------------------------------------------------
 
@@ -210,7 +217,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `email`, `phone`, `mbti`, `about`, `image`, `banned_until`, `interested_category`) VALUES
-(5, 1001, 'AnanyaR', 'pass1234', '2025-08-15 12:39:28', 'ananya.r@gmail.com', '0891234567', 'INFJ', 'A passionate UI/UX designer from Bangkok.', 'uploads/profile_1001_1754240818.png', NULL, 'sport,movie'),
+(5, 1001, 'AnanyaR', 'pass1234', '2025-08-15 16:42:45', 'ananya.r@gmail.com', '0891234567', 'INFJ', 'A passionate UI/UX designer from Bangkok.', 'uploads/profile_1001_1754240818.png', NULL, 'tourism'),
 (6, 1002, 'ThanapatMC', '1234abcd', '2025-08-14 03:06:36', 'thanapat.mc@hotmail.com', '0819876543', 'ENTP', 'A tech lover who enjoys building things from scratch.', 'uploads/profile_1002_1754240852.png', '2025-08-15 05:06:36', 'music'),
 (7, 1003, 'JiraKit', 'myp@ssword', '2025-08-13 19:06:36', 'jirapat.k@gmail.com', '0623456789', 'INFP', 'Quiet thinker who enjoys meaningful connections.', NULL, NULL, 'music'),
 (8, 1004, 'KanyaSuda', 'hello@123', '2025-08-13 19:09:18', 'k.srisuda@yahoo.com', '0837654321', 'ESFJ', 'Friendly, warm-hearted, and driven to help others.', NULL, NULL, 'tourism'),
@@ -320,8 +327,8 @@ INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `email`, 
 (112, 3098, 'kenneth64', 'q*5H$jP6&1', '2025-08-03 16:16:01', 'sjacobs@yahoo.com', '269.466.65', 'INTJ', 'Movie international poor song day open modern wind enough floor.', NULL, NULL, NULL),
 (113, 3099, 'anitakim', 'Q_B8SjLs&G', '2025-08-03 16:16:01', 'wreid@yahoo.com', '547.524.32', 'INFP', 'Push no industry only politics throw inside listen seat coach yard continue claim.', NULL, NULL, NULL),
 (114, 3100, 'michael38', 'X!2GfUZlYa', '2025-08-03 16:16:01', 'ghatfield@hotmail.com', '6476785934', 'ISFP', 'Usually happen drug big rest choice.', NULL, NULL, NULL),
-(115, 971221, 'ADMIN', '1', '2025-08-15 16:14:38', 'admin@email.com', '', 'INTJ', '', 'uploads/profile_971221_1755028188.jpg', NULL, NULL),
-(116, 278366, 'narakorn ', '1120', '2025-08-15 15:29:23', 'narakorn.tess@bumail.net', '', 'INTJ', 'Hello', NULL, NULL, 'music,sport,movie,tourism'),
+(115, 971221, 'ADMIN', '1', '2025-08-15 19:34:58', 'admin@email.com', '', 'ENTP', '', 'uploads/profile_971221_1755028188.jpg', NULL, NULL),
+(116, 278366, 'narakorn ', '1120', '2025-08-15 19:45:46', 'narakorn.tess@bumail.net', '', 'ENFP', 'Hello', 'uploads/profile_278366_1755285683.jpg', NULL, NULL),
 (117, 723242, 'korn', '1234', '2025-08-15 14:01:03', 'korn@email.com', '', 'INTJ', '', NULL, NULL, 'game');
 
 -- --------------------------------------------------------
@@ -375,11 +382,7 @@ INSERT INTO `user_groups` (`id`, `user_id`, `group_id`) VALUES
 (81, 3006, 31),
 (82, 3007, 35),
 (83, 3007, 37),
-(84, 278366, 37),
-(85, 278366, 31),
-(86, 278366, 38),
 (88, 723242, 34),
-(94, 723242, 38),
 (95, 723242, 31),
 (106, 3016, 32),
 (107, 3017, 34),
@@ -395,7 +398,11 @@ INSERT INTO `user_groups` (`id`, `user_id`, `group_id`) VALUES
 (118, 3023, 31),
 (119, 3023, 35),
 (120, 3023, 36),
-(121, 3023, 32);
+(121, 3023, 32),
+(125, 278366, 33),
+(126, 278366, 41),
+(127, 971221, 37),
+(129, 278366, 37);
 
 --
 -- Indexes for dumped tables
@@ -480,13 +487,13 @@ ALTER TABLE `user_groups`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `group_analytics`
@@ -510,7 +517,7 @@ ALTER TABLE `mbti_compatibility`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `system_settings`
@@ -534,7 +541,7 @@ ALTER TABLE `user_activity_logs`
 -- AUTO_INCREMENT for table `user_groups`
 --
 ALTER TABLE `user_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

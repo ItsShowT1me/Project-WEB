@@ -1,7 +1,9 @@
 <?php
-session_start();
-include("connection.php");
+session_start(); // <-- Always first!
+include 'function.php';
+include 'connection.php';
 
+$user_data = check_login($con);
 
 
 // ดึงข้อมูลผู้ใช้
