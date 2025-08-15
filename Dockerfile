@@ -5,5 +5,4 @@ COPY . /var/www/html/
 EXPOSE 80
 
 RUN apt-get update && apt-get install -y libpq-dev libssl-dev ca-certificates \
-    && docker-php-ext-install pgsql \
-    && docker-php-ext-install openssl
+    && docker-php-ext-install pgsql
