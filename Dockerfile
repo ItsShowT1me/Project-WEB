@@ -6,3 +6,5 @@ COPY . /var/www/html/
 
 # เปิดพอร์ต
 EXPOSE 80
+
+RUN apt-get update && apt-get install -y php-pgsql
