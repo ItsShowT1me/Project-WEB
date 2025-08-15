@@ -11,6 +11,7 @@ try {
 } catch (PDOException $e) {
     exit; // No message, no output
 }
-?>
+
+
 
 
