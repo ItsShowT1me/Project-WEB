@@ -1,5 +1,5 @@
 <?php
-<?php
+
 
 $db_host = 'dpg-d7zb1br1leoes73cnfv1g-a'; // Hostname from Render
 $db_user = 'login_db';                     // Username from Render
@@ -13,3 +13,4 @@ if (!$conn) {
     die("Connection failed: " . pg_last_error());
 }
 ?>
+
