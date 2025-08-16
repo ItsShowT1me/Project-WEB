@@ -12,4 +12,5 @@ $db_port = '5432';
 //     exit; // No message, no output
 // }
 
-$con = pg_connect("host=localhost dbname=your_db user=your_user password=your_password");
+$con = pg_connect("host=$db_host port=$db_port dbname=$db_name user=$db_user password=$db_pass sslmode=require");
+
