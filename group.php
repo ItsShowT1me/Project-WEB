@@ -26,6 +26,7 @@ $result = mysqli_query($con, "
     SELECT g.* FROM groups g
     JOIN user_groups ug ON g.id = ug.group_id
     WHERE ug.user_id = '$user_id'
+    ORDER BY ug.id DESC
 ");
 while ($row = mysqli_fetch_assoc($result)) {
     $groups[] = $row;

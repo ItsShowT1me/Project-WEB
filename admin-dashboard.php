@@ -202,12 +202,7 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                         Reports
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="admin-settings.php" class="nav-link">
-                        <i class="bx bx-cog nav-icon"></i>
-                        Settings
-                    </a>
-                </li>
+                
                 <li class="nav-item">
                     <a href="logout.php" class="nav-link">
                         <i class="bx bx-log-out nav-icon"></i>
@@ -348,10 +343,7 @@ $system_health['avg_session'] = $avg_session_result ? round($avg_session_result[
                                 <i class="bx bx-download"></i>
                                 Main Page
                             </a>
-                            <a href="admin-settings.php" class="action-btn">
-                                <i class="bx bx-cog"></i>
-                                System Settings
-                            </a>
+                            
                         </div>
                     </div>
                 </div>

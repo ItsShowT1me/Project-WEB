@@ -140,36 +140,38 @@ if (!empty($user_data['mbti'])) {
     }
 }
 
-// Layer 3: Random public groups
+// Layer 3: Public groups where user's MBTI is allowed or matches at least 50% of allowed_mbti types
 $random_groups = [];
-// FIX: Add allowed_mbti to SELECT
-$sql = "SELECT id, group_id, name, color, image, description, category, allowed_mbti FROM groups WHERE is_private = 0 ORDER BY RAND() LIMIT 6";
-$result = mysqli_query($con, $sql);
-while ($row = mysqli_fetch_assoc($result)) {
-    $random_groups[] = $row;
-}
+$user_mbti = $user_data['mbti'] ?? '';
 
-// Get all public groups with allowed_mbti set
-$sql = "SELECT g.id, g.group_id, g.name, g.color, g.image, g.description, g.category, g.allowed_mbti
-        FROM groups g
-        WHERE g.is_private = 0
-        ORDER BY g.created_at DESC";
+$sql = "SELECT id, group_id, name, color, image, description, category, allowed_mbti 
+        FROM groups 
+        WHERE is_private = 0 
+        ORDER BY RAND()";
 $result = mysqli_query($con, $sql);
+
 while ($row = mysqli_fetch_assoc($result)) {
     $allowed_mbti = $row['allowed_mbti'];
-    if (!empty($allowed_mbti)) {
-        $allowed_types = array_map('trim', explode(',', $allowed_mbti));
-        // Calculate similarity: user's MBTI must be in at least 50% of allowed MBTI types
-        $similarity = in_array($user_data['mbti'], $allowed_types) ? (1 / count($allowed_types)) * 100 : 0;
-        if ($similarity >= 50) {
-            $popular_groups[] = $row;
-        }
+    $show_group = false;
+
+    if (empty($allowed_mbti)) {
+        // No MBTI restriction, always show
+        $show_group = true;
     } else {
-        // If no MBTI restriction, always recommend
-        $popular_groups[] = $row;
+        $allowed_types = array_map('trim', explode(',', $allowed_mbti));
+        // User MBTI must be in at least 50% of allowed MBTI types
+        if (!empty($user_mbti) && in_array($user_mbti, $allowed_types)) {
+            $similarity = (1 / count($allowed_types)) * 100;
+            if ($similarity >= 50) {
+                $show_group = true;
+            }
+        }
     }
-    // Limit to 6 groups
-    if (count($popular_groups) >= 6) break;
+
+    if ($show_group) {
+        $random_groups[] = $row;
+    }
+    if (count($random_groups) >= 6) break; // Limit to 6
 }
 
 function paginate_groups($groups, $layer_name) {
@@ -406,7 +408,7 @@ $layer2_pagination = paginate_groups($layer2_groups, 'layer2');
     </section>
     <!-- Layer 3: Random Public Groups (row 2, col 1 and 2) -->
     <section class="layer layer-3">
-        <h2 style="font-size:1.2em;font-weight:700;color:#2575FC;margin-bottom:18px;">Random Public Groups</h2>
+        <h2 style="font-size:1.2em;font-weight:700;color:#2575FC;margin-bottom:18px;">Public Groups</h2>
         <div class="group-grid">
             <?php foreach ($random_pagination['groups'] as $group): ?>
                 <?php include 'group_card_template.php'; ?>

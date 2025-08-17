@@ -318,12 +318,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
                         Reports
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="admin-settings.php" class="nav-link">
-                        <i class="bx bx-cog nav-icon"></i>
-                        Settings
-                    </a>
-                </li>
+                
                 <li class="nav-item">
                     <a href="logout.php" class="nav-link">
                         <i class="bx bx-log-out nav-icon"></i>

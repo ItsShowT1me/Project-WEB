@@ -286,12 +286,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         Reports
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="admin-settings.php" class="nav-link">
-                        <i class="bx bx-cog nav-icon"></i>
-                        Settings
-                    </a>
-                </li>
+                
                 <li class="nav-item">
                     <a href="logout.php" class="nav-link">
                         <i class="bx bx-log-out nav-icon"></i>
