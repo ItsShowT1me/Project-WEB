@@ -449,6 +449,16 @@ if (!empty($user_data['banned_until']) && strtotime($user_data['banned_until']) 
         <div class="detail-value"><?= date('d/m/Y', strtotime($group['created_at'])) ?></div>
         <div class="detail-label">Group Pin:</div>
         <div class="detail-value" style="font-family:monospace;font-size:1.08em;"><?= htmlspecialchars($group['pin']) ?></div>
+        <div class="detail-label">Allowed MBTI:</div>
+        <div class="detail-value" style="font-size:1.08em;">
+            <?php
+            if (!empty($group['allowed_mbti'])) {
+                echo htmlspecialchars($group['allowed_mbti']);
+            } else {
+                echo "None";
+            }
+            ?>
+        </div>
         <div class="detail-label">Description:</div>
         <div class="group-description"><?= nl2br(htmlspecialchars($group['description'])) ?></div>
         <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $creator_id): ?>

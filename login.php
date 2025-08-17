@@ -98,10 +98,7 @@ session_start();
         <label for="log-pass" class="label">Password</label>
         <i class='bx bxs-lock-alt icon'></i>
       </div>
-      <div class="form-cols">
-        <div class="col-1"></div>
-        <div class="col_2"><a href="#">Forgot password?</a></div>
-      </div>
+      
       <div class="input-box">
         <button class="btn-submit" id="button" value="Login">Sign In <i class='bx bx-log-in'></i></button>
       </div>

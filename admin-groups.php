@@ -310,7 +310,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <th>Category</th>
                             <th>Members</th>
                             <th>Created</th>
-                            <th>Group ID</th>
+                            <th>Pin Code</th> <!-- Changed from Group ID -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -333,7 +333,13 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     -
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($group['group_id']) ?></td>
+                            <td>
+                                <?php if (isset($group['pin'])): ?>
+                                    <?= htmlspecialchars($group['pin']) ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <button class="delete-btn" onclick="confirmDelete('<?= htmlspecialchars($group['name']) ?>', <?= $group['id'] ?>); event.stopPropagation();">
                                     <i class="bx bx-trash"></i> Delete

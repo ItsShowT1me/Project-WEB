@@ -1,39 +1,43 @@
 <?php
 session_start();
 
-  include 'function.php';
-  include 'connection.php';
+include 'function.php';
+include 'connection.php';
 
-  
+$success_message = '';
 
-  if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $user_name = $_POST["user_name"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+  $user_name = $_POST["user_name"];
+  $email = $_POST["email"];
+  $password = $_POST["password"];
+  $confirm_password = $_POST["confirm_password"];
 
-    if(!empty($user_name) && !empty($email) && !empty($password)) {
-      
-      
+  if(!empty($user_name) && !empty($email) && !empty($password) && !empty($confirm_password)) {
+
+    if($password !== $confirm_password) {
+      echo "<script>alert('Passwords do not match!');</script>";
+    } else {
       // Save to database
       do {
-          $user_id = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT); // never 0
+          $user_id = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
           $check = mysqli_query($con, "SELECT 1 FROM users WHERE user_id = '$user_id' LIMIT 1");
       } while(mysqli_num_rows($check) > 0);
-      
+
       $query = "INSERT INTO users (user_id, user_name, email, password) 
                 VALUES ('$user_id', '$user_name', '$email', '$password')";
 
       mysqli_query($con, $query);
 
-      header("Location: login.php");
-      die;
-
-    } else {
-      echo "Please enter some valid information!.";
+      $success_message = "Success! Account created. Redirecting to login...";
+      // Do not redirect immediately
     }
 
+  } else {
+    echo "Please enter some valid information!.";
   }
+
+}
 ?>
 
 
@@ -50,6 +54,16 @@ session_start();
 </head>
 <body>
   <div class="wrapper" style="height: 580px;">
+    <?php if (!empty($success_message)): ?>
+      <div style="background:#e6ffe6;color:#2e7d32;padding:16px 24px;border-radius:10px;margin-bottom:18px;text-align:center;font-size:1.1em;font-weight:600;box-shadow:0 2px 8px #2e7d3222;">
+        <?php echo $success_message; ?>
+      </div>
+      <script>
+        setTimeout(function() {
+          window.location.href = "login.php";
+        }, 1000); // 1 seconds delay
+      </script>
+    <?php endif; ?>
     <div class="form-header">
       <div class="titles">
         <div class="title-register" style="opacity: 1; top: 50%;">Register</div>
@@ -71,6 +85,11 @@ session_start();
       <div class="input-box">
         <input type="password" class="input-field" id="reg-pass" name="password" required />
         <label for="reg-pass" class="label">Password</label>
+        <i class='bx bxs-lock-alt icon'></i>
+      </div>
+      <div class="input-box">
+        <input type="password" class="input-field" id="reg-confirm-pass" name="confirm_password" required />
+        <label for="reg-confirm-pass" class="label">Confirm Password</label>
         <i class='bx bxs-lock-alt icon'></i>
       </div>
       <div class="form-cols">

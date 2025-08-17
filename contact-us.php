@@ -117,7 +117,7 @@ if (!empty($user['banned_until']) && strtotime($user['banned_until']) > time()) 
                         <input type="file" name="evidence_file" id="evidence_file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt" style="display:none;">
                         <label for="evidence_file" class="custom-file-label"
                             style="cursor:pointer;display:inline-block;background:linear-gradient(90deg,#3C91E6 0%,#ab56d3 100%);color:#fff;padding:10px 22px;border-radius:10px;font-weight:600;box-shadow:0 2px 8px #3C91E622;">
-                            <i class="bx bx-upload"></i> Attach evidence (optional)
+                            <i class="bx bx-upload"></i> Attach evidence Filesize limit: 10MB
                         </label>
                         <span class="file-name" id="fileName"></span>
                         <span class="file-error" id="fileError"></span>
@@ -151,8 +151,8 @@ document.getElementById('evidence_file').addEventListener('change', function(e) 
 
     if (file) {
         fileName.textContent = file.name;
-        if (file.size > 2 * 1024 * 1024) {
-            fileError.textContent = 'File size exceeds 2MB limit.';
+        if (file.size > 10 * 1024 * 1024) { // 10MB limit
+            fileError.textContent = 'File size exceeds 10MB limit.';
             e.target.value = '';
             return;
         }
